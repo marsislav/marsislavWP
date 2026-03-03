@@ -1525,3 +1525,149 @@ body.menu-open {
 		display: none;
 	}
 }
+
+/* ================================================
+   LAYOUT — Single Container + Gutenberg Compatible
+   ================================================ */
+
+:root {
+	--content-width: 760px;
+	--wide-width: 1100px;
+	--full-width: 100%;
+	--container-padding: clamp(1rem, 4vw, 2rem);
+}
+
+/* Main content wrapper */
+#content.site-content {
+	width: 100%;
+}
+
+/* Central container */
+.container {
+	width: 100%;
+	max-width: var(--wide-width);
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: var(--container-padding);
+	padding-right: var(--container-padding);
+}
+
+/* Site main inside container */
+.site-main {
+	width: 100%;
+	padding-top: 3rem;
+	padding-bottom: 4rem;
+}
+
+/* ------------------------------------------------
+   Gutenberg Block Alignment
+   ------------------------------------------------ */
+
+/* Default block — constrained to content width */
+.entry-content > *,
+.page-content > * {
+	max-width: var(--content-width);
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* Wide alignment — breaks out to wide-width */
+.entry-content .alignwide,
+.page-content .alignwide {
+	max-width: var(--wide-width);
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* Full alignment — edge to edge */
+.entry-content .alignfull,
+.page-content .alignfull {
+	max-width: none;
+	width: calc(100% + (var(--container-padding) * 2));
+	margin-left: calc(var(--container-padding) * -1);
+	margin-right: calc(var(--container-padding) * -1);
+}
+
+/* Left / Right alignment */
+.entry-content .alignleft,
+.page-content .alignleft {
+	float: left;
+	margin-right: 2em;
+	margin-bottom: 1em;
+	max-width: 50%;
+}
+
+.entry-content .alignright,
+.page-content .alignright {
+	float: right;
+	margin-left: 2em;
+	margin-bottom: 1em;
+	max-width: 50%;
+}
+
+.entry-content .aligncenter,
+.page-content .aligncenter {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* Gutenberg wp-block-group full-width support */
+.wp-block-group.alignfull {
+	padding-left: var(--container-padding);
+	padding-right: var(--container-padding);
+}
+
+/* Gutenberg cover block */
+.wp-block-cover.alignfull {
+	width: calc(100% + (var(--container-padding) * 2));
+	margin-left: calc(var(--container-padding) * -1);
+	margin-right: calc(var(--container-padding) * -1);
+}
+
+/* Gutenberg image blocks */
+.wp-block-image img {
+	height: auto;
+	max-width: 100%;
+}
+
+/* Gutenberg columns */
+.wp-block-columns {
+	gap: 2em;
+}
+
+/* Gutenberg buttons */
+.wp-block-button__link {
+	border-radius: 4px;
+}
+
+/* Gutenberg quote */
+.wp-block-quote {
+	border-left: 4px solid currentColor;
+	padding-left: 1.5em;
+	margin-left: 0;
+}
+
+/* Gutenberg separator */
+.wp-block-separator {
+	border: none;
+	border-top: 2px solid rgba(0,0,0,0.1);
+	margin: 3em auto;
+	max-width: var(--content-width);
+}
+
+/* Clearfix for floated content */
+.entry-content::after,
+.page-content::after {
+	content: '';
+	display: table;
+	clear: both;
+}
+
+/* ---- Remove old page-container if exists ---- */
+.page-container {
+	max-width: none;
+	margin: 0;
+	padding: 0;
+}

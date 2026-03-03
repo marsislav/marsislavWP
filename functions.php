@@ -90,6 +90,9 @@ function marsislav_setup() {
 	add_theme_support( 'responsive-embeds' );
 	add_theme_support( 'align-wide' );
 
+	// Gutenberg layout settings (content width + wide width).
+	add_theme_support( 'editor-content-width', 760 );
+
 	// Editor styling so the block editor matches the front end.
 	add_editor_style( 'style.css' );
 
@@ -118,7 +121,7 @@ add_action( 'after_setup_theme', 'marsislav_setup' );
  * @global int $content_width
  */
 function marsislav_content_width() {
-	$GLOBALS['content_width'] = apply_filters( 'marsislav_content_width', 640 );
+	$GLOBALS['content_width'] = apply_filters( 'marsislav_content_width', 1100 );
 }
 add_action( 'after_setup_theme', 'marsislav_content_width', 0 );
 

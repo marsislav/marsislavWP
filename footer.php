@@ -30,6 +30,9 @@ $footer_col2_text = get_theme_mod( 'footer_col2_text', '' );
 	</div><!-- .site-info -->
 </footer><!-- #colophon -->
 
+        </div><!-- .container -->
+    </div><!-- #content -->
+
 </div><!-- #page -->
 
 <?php wp_footer(); ?>
