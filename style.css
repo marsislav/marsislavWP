@@ -3,10 +3,10 @@ Theme Name: marsislav
 Theme URI: http://marsislav.net/marsislav
 Author: marsislav
 Author URI: http://marsislav.net
-Description: Description
+Description: A clean, flexible WordPress theme with customizable sidebar layout, footer widgets, top bar, and responsive mobile menu. Built on Underscores.
 Version: 1.0.0
-Tested up to: 5.4
-Requires PHP: 5.6
+Tested up to: 6.5
+Requires PHP: 7.4
 License: GNU General Public License v2 or later
 License URI: LICENSE
 Text Domain: marsislav
@@ -1112,97 +1112,7 @@ textarea {
     color: var(--color-primary);
 }
 
-/* Mobile */
-.menu-toggle {
-    display: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.5rem;
-}
-
-.hamburger-lines {
-    width: 28px;
-    height: 20px;
-    position: relative;
-    display: inline-block;
-}
-
-.hamburger-lines span {
-    background: var(--color-primary);
-    height: 3px;
-    width: 100%;
-    position: absolute;
-    left: 0;
-    border-radius: 2px;
-    transition: var(--transition);
-}
-
-.hamburger-lines span:nth-child(1) { top: 0; }
-.hamburger-lines span:nth-child(2) { top: 8px; }
-.hamburger-lines span:nth-child(3) { top: 16px; }
-
-.menu-toggle[aria-expanded="true"] .hamburger-lines span:nth-child(1) {
-    transform: rotate(45deg);
-    top: 8px;
-}
-.menu-toggle[aria-expanded="true"] .hamburger-lines span:nth-child(2) {
-    opacity: 0;
-}
-.menu-toggle[aria-expanded="true"] .hamburger-lines span:nth-child(3) {
-    transform: rotate(-45deg);
-    top: 8px;
-}
-
-@media (max-width: 960px) {
-    .menu-toggle {
-        display: block;
-    }
-
-    .primary-menu {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: white;
-        flex-direction: column;
-        padding: 1rem 0;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        max-height: 0;
-        overflow: hidden;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.35s ease;
-    }
-
-    .main-navigation.toggled .primary-menu {
-        max-height: 80vh;
-        opacity: 1;
-        visibility: visible;
-    }
-
-    .primary-menu > li > a {
-        padding: 1rem 1.5rem;
-    }
-
-    .primary-menu .sub-menu {
-        position: static;
-        border: none;
-        box-shadow: none;
-        padding-left: 1.5rem;
-        background: transparent;
-        opacity: 1;
-        visibility: visible;
-        transform: none;
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.4s ease;
-    }
-
-    .primary-menu .menu-item-has-children.active > .sub-menu {
-        max-height: 500px; /* adjust as needed */
-    }
-}
+/* Mobile menu styles — see MOBILE MENU section below */
 
 /* Container helper */
 .container-wide {
@@ -1340,6 +1250,14 @@ textarea {
 	position: relative;
 }
 
+.menu-text {
+	font-size: 0.8rem;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	font-weight: 600;
+	line-height: 1;
+}
+
 .hamburger-lines {
 	display: flex;
 	flex-direction: column;
@@ -1416,7 +1334,7 @@ body.menu-open {
 		transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
+		justify-content: flex-start;
 		padding: 80px 48px 48px;
 		overflow-y: auto;
 		box-shadow: -8px 0 40px rgba(0,0,0,0.3);

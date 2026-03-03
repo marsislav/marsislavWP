@@ -245,7 +245,7 @@ function marsislav_footer_customizer( $wp_customize ) {
 
     $wp_customize->add_setting( 'show_footer_menu', array(
         'default'           => true,
-        'sanitize_callback' => function($val) { return (bool) $val; },
+        'sanitize_callback' => 'marsislav_sanitize_checkbox',
     ));
 
     $wp_customize->add_control( 'show_footer_menu', array(
@@ -307,7 +307,7 @@ function marsislav_footer_credits_customizer( $wp_customize ) {
     // Опция за показване на credits изобщо (в случай че искаш да скриеш всичко)
     $wp_customize->add_setting( 'show_footer_credits', array(
         'default'           => true,
-        'sanitize_callback' => function( $val ) { return (bool) $val; },
+        'sanitize_callback' => 'marsislav_sanitize_checkbox',
         'transport'         => 'refresh',
     ) );
 
@@ -383,8 +383,9 @@ function marsislav_topbar_customizer($wp_customize) {
 
     // Layout (1 or 2 columns)
     $wp_customize->add_setting('topbar_layout', array(
-        'default'   => 'one',
-        'transport' => 'postMessage',
+        'default'           => 'one',
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'marsislav_sanitize_topbar_layout',
     ));
 
     $wp_customize->add_control('topbar_layout', array(
@@ -399,8 +400,9 @@ function marsislav_topbar_customizer($wp_customize) {
 
     // Marquee
     $wp_customize->add_setting('topbar_marquee', array(
-        'default'   => false,
-        'transport' => 'postMessage',
+        'default'           => false,
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'wp_validate_boolean',
     ));
 
     $wp_customize->add_control('topbar_marquee', array(
@@ -411,8 +413,9 @@ function marsislav_topbar_customizer($wp_customize) {
 
     // Text
     $wp_customize->add_setting('topbar_text', array(
-        'default'   => 'Welcome to our website',
-        'transport' => 'postMessage',
+        'default'           => 'Welcome to our website',
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'wp_kses_post',
     ));
 
     $wp_customize->add_control('topbar_text', array(
@@ -423,8 +426,9 @@ function marsislav_topbar_customizer($wp_customize) {
 
     // Background color
     $wp_customize->add_setting('topbar_bg_color', array(
-        'default'   => '#000000',
-        'transport' => 'postMessage',
+        'default'           => '#000000',
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'sanitize_hex_color',
     ));
 
     $wp_customize->add_control(new WP_Customize_Color_Control(
@@ -438,8 +442,9 @@ function marsislav_topbar_customizer($wp_customize) {
 
     // Text color
     $wp_customize->add_setting('topbar_text_color', array(
-        'default'   => '#ffffff',
-        'transport' => 'postMessage',
+        'default'           => '#ffffff',
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'sanitize_hex_color',
     ));
 
     $wp_customize->add_control(new WP_Customize_Color_Control(
@@ -567,6 +572,27 @@ add_action( 'customize_register', 'marsislav_sidebar_settings' );
 /**
  * 2. Почистване на данните
  */
+/**
+ * Sanitize checkbox / boolean values.
+ */
+function marsislav_sanitize_checkbox( $val ) {
+    return (bool) $val;
+}
+
+/**
+ * Sanitize topbar layout choice (one|two).
+ */
+function marsislav_sanitize_topbar_layout( $val ) {
+    return in_array( $val, array( 'one', 'two' ), true ) ? $val : 'one';
+}
+
+/**
+ * Sanitize footer sidebar columns (1-4).
+ */
+function marsislav_sanitize_footer_columns( $val ) {
+    return in_array( (string) $val, array( '1', '2', '3', '4' ), true ) ? $val : '3';
+}
+
 function marsislav_sanitize_sidebar_position( $val ) {
     return in_array( $val, array( 'left', 'right', 'disabled' ), true ) ? $val : 'right';
 }
@@ -663,7 +689,7 @@ function marsislav_footer_sidebar_customizer( $wp_customize ) {
     $wp_customize->add_setting( 'footer_sidebar_enable', array(
         'default'           => true,
         'transport'         => 'postMessage',
-        'sanitize_callback' => function( $v ) { return (bool) $v; },
+        'sanitize_callback' => 'marsislav_sanitize_checkbox',
     ) );
     $wp_customize->add_control( 'footer_sidebar_enable', array(
         'label'    => esc_html__( 'Показвай Footer Sidebar (widget зони)', 'marsislav' ),
@@ -676,9 +702,7 @@ function marsislav_footer_sidebar_customizer( $wp_customize ) {
     $wp_customize->add_setting( 'footer_sidebar_columns', array(
         'default'           => '3',
         'transport'         => 'postMessage',
-        'sanitize_callback' => function( $v ) {
-            return in_array( (string) $v, array( '1', '2', '3', '4' ), true ) ? $v : '3';
-        },
+        'sanitize_callback' => 'marsislav_sanitize_footer_columns',
     ) );
     $wp_customize->add_control( 'footer_sidebar_columns', array(
         'label'   => esc_html__( 'Брой колони в Footer Sidebar', 'marsislav' ),
