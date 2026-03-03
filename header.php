@@ -127,4 +127,3 @@ $topbar_hide    = $topbar_enabled ? '' : ' style="display:none"';
     </header><!-- #masthead -->
 
     <div id="content" class="site-content">
-        <div class="container">

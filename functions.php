@@ -517,3 +517,111 @@ function marsislav_topbar_inline_css() {
     <?php
 }
 add_action( 'wp_head', 'marsislav_topbar_inline_css' );
+
+// =============================================================================
+// SIDEBAR CUSTOMIZER
+// =============================================================================
+
+/**
+ * Register sidebar customizer settings — per-context dropdowns
+ */
+function marsislav_sidebar_customizer( $wp_customize ) {
+
+    $wp_customize->add_section( 'marsislav_sidebar_section', array(
+        'title'    => __( 'Sidebar настройки', 'marsislav' ),
+        'priority' => 35,
+    ) );
+
+    $choices = array(
+        'right'    => __( 'Дясно', 'marsislav' ),
+        'left'     => __( 'Ляво', 'marsislav' ),
+        'disabled' => __( 'Изключен (Full Width)', 'marsislav' ),
+    );
+
+    $contexts = array(
+        'sidebar_blog'    => __( 'Блог / Архив', 'marsislav' ),
+        'sidebar_post'    => __( 'Пост', 'marsislav' ),
+        'sidebar_page'    => __( 'Страница', 'marsislav' ),
+        'sidebar_home'    => __( 'Начална страница', 'marsislav' ),
+        'sidebar_shop'    => __( 'Магазин (WooCommerce)', 'marsislav' ),
+        'sidebar_product' => __( 'Продуктова страница', 'marsislav' ),
+    );
+
+    foreach ( $contexts as $key => $label ) {
+        $wp_customize->add_setting( $key, array(
+            'default'           => 'right',
+            'transport'         => 'postMessage',
+            'sanitize_callback' => 'marsislav_sanitize_sidebar_position',
+        ) );
+        $wp_customize->add_control( $key, array(
+            'label'   => $label,
+            'section' => 'marsislav_sidebar_section',
+            'type'    => 'select',
+            'choices' => $choices,
+        ) );
+    }
+}
+add_action( 'customize_register', 'marsislav_sidebar_customizer' );
+
+/**
+ * Sanitize sidebar position value
+ */
+function marsislav_sanitize_sidebar_position( $val ) {
+    return in_array( $val, array( 'left', 'right', 'disabled' ), true ) ? $val : 'right';
+}
+
+/**
+ * Get sidebar position for the current page context
+ */
+function marsislav_get_sidebar_position() {
+    if ( function_exists( 'is_shop' ) && is_shop() )           return get_theme_mod( 'sidebar_shop',    'right' );
+    if ( function_exists( 'is_product' ) && is_product() )     return get_theme_mod( 'sidebar_product', 'right' );
+    if ( is_front_page() && ! is_home() )                      return get_theme_mod( 'sidebar_home',    'right' );
+    if ( is_home() || is_archive() || is_search() )            return get_theme_mod( 'sidebar_blog',    'right' );
+    if ( is_singular( 'post' ) )                               return get_theme_mod( 'sidebar_post',    'right' );
+    if ( is_page() )                                           return get_theme_mod( 'sidebar_page',    'right' );
+    return 'disabled';
+}
+
+/**
+ * Add sidebar body classes for CSS targeting
+ */
+function marsislav_sidebar_body_class( $classes ) {
+    $position = marsislav_get_sidebar_position();
+    if ( $position !== 'disabled' ) {
+        $classes[] = 'has-sidebar';
+        $classes[] = 'sidebar-' . $position;
+    } else {
+        $classes[] = 'no-sidebar';
+    }
+    return $classes;
+}
+add_filter( 'body_class', 'marsislav_sidebar_body_class' );
+
+/**
+ * Enqueue sidebar customizer preview JS
+ */
+function marsislav_sidebar_preview_js() {
+    wp_enqueue_script(
+        'marsislav-customizer-sidebar',
+        get_template_directory_uri() . '/js/customizer-sidebar.js',
+        array( 'customize-preview', 'jquery' ),
+        _S_VERSION,
+        true
+    );
+
+    // Determine current page context key
+    $ctx_key = 'sidebar_page';
+    if ( function_exists( 'is_shop' ) && is_shop() )        $ctx_key = 'sidebar_shop';
+    elseif ( function_exists( 'is_product' ) && is_product() ) $ctx_key = 'sidebar_product';
+    elseif ( is_front_page() && ! is_home() )               $ctx_key = 'sidebar_home';
+    elseif ( is_home() || is_archive() || is_search() )     $ctx_key = 'sidebar_blog';
+    elseif ( is_singular( 'post' ) )                        $ctx_key = 'sidebar_post';
+    elseif ( is_page() )                                    $ctx_key = 'sidebar_page';
+
+    wp_localize_script( 'marsislav-customizer-sidebar', 'marsislavSidebar', array(
+        'ctxKey'   => $ctx_key,
+        'position' => marsislav_get_sidebar_position(),
+    ) );
+}
+add_action( 'customize_preview_init', 'marsislav_sidebar_preview_js' );

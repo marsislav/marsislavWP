@@ -1754,4 +1754,105 @@ body.menu-open {
 @keyframes marsislavMarquee {
     0%   { transform: translateX(0); }
     100% { transform: translateX(-100%); }
+
+/* =============================================================================
+   Sidebar Layout System
+   ============================================================================= */
+
+/* The wrap uses container-wide for consistent max-width + padding like the header */
+#content-sidebar-wrap {
+    display: flex;
+    align-items: flex-start;
+    gap: 2.5rem;
+    padding-top: 3rem;
+    padding-bottom: 4rem;
+}
+
+/* ── Layouts ── */
+
+/* Sidebar disabled → full width, content centered */
+#content-sidebar-wrap.layout-disabled .site-main,
+#content-sidebar-wrap.layout-disabled #primary {
+    flex: 1 1 100%;
+    max-width: 100%;
+}
+
+#content-sidebar-wrap.layout-disabled .sidebar-column {
+    display: none !important;
+}
+
+/* Sidebar right (default) */
+#content-sidebar-wrap.layout-right {
+    flex-direction: row;
+}
+
+#content-sidebar-wrap.layout-right .site-main {
+    flex: 1 1 0;
+    min-width: 0;
+    order: 1;
+}
+
+#content-sidebar-wrap.layout-right .sidebar-column {
+    order: 2;
+}
+
+/* Sidebar left */
+#content-sidebar-wrap.layout-left {
+    flex-direction: row;
+}
+
+#content-sidebar-wrap.layout-left .site-main {
+    flex: 1 1 0;
+    min-width: 0;
+    order: 2;
+}
+
+#content-sidebar-wrap.layout-left .sidebar-column {
+    order: 1;
+}
+
+/* ── Sidebar column ── */
+.sidebar-column {
+    flex: 0 0 280px;
+    width: 280px;
+    min-width: 0;
+}
+
+.sidebar-column .widget {
+    margin-bottom: 2rem;
+    padding: 1.25rem;
+    background: #f9f9f9;
+    border-radius: 6px;
+}
+
+.sidebar-column .widget-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: .75rem;
+    padding-bottom: .5rem;
+    border-bottom: 2px solid currentColor;
+}
+
+/* Remove top padding from site-main since wrap handles it */
+#content-sidebar-wrap .site-main {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    #content-sidebar-wrap {
+        flex-direction: column !important;
+        gap: 2rem;
+    }
+
+    .sidebar-column {
+        width: 100%;
+        flex: 1 1 100%;
+        order: 99 !important; /* always after main on mobile */
+    }
+
+    #content-sidebar-wrap .site-main {
+        order: 1 !important;
+    }
 }
