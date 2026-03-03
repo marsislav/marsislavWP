@@ -23,9 +23,9 @@ $topbar_marquee = (bool) get_theme_mod( 'topbar_marquee', false );
 $topbar_text    = (string) get_theme_mod( 'topbar_text', 'Welcome to our website' );
 $topbar_col1    = (string) get_theme_mod( 'topbar_col1_text', '' );
 $topbar_col2    = (string) get_theme_mod( 'topbar_col2_text', '' );
-$topbar_hide    = $topbar_enabled ? '' : ' style="display:none"';
+// $topbar_hide built via esc_attr below
 ?>
-<div id="site-topbar" class="topbar layout-<?php echo esc_attr( $topbar_layout ); ?>"<?php echo $topbar_hide; ?>>
+<div id="site-topbar" class="topbar layout-<?php echo esc_attr( $topbar_layout ); ?>"<?php if ( ! $topbar_enabled ) : ?> style="display:none"<?php endif; ?>>
     <div class="topbar-inner">
 
         <?php if ( $topbar_layout === 'two' ) : ?>

@@ -32,9 +32,8 @@ for ( $i = 1; $i <= 4; $i++ ) {
         // Рендираме ВИНАГИ всичките 4 колони в HTML-а.
         // CSS и JS управляват кои са видими спрямо footer_sidebar_columns.
         for ( $i = 1; $i <= 4; $i++ ) :
-            $hidden = ( $i > $footer_sidebar_columns ) ? ' style="display:none"' : '';
         ?>
-            <div class="footer-sidebar-col footer-sidebar-col-<?php echo esc_attr( $i ); ?>" data-col="<?php echo esc_attr( $i ); ?>"<?php echo $hidden; ?>>
+            <div class="footer-sidebar-col footer-sidebar-col-<?php echo esc_attr( $i ); ?>" data-col="<?php echo esc_attr( $i ); ?>"<?php if ( $i > $footer_sidebar_columns ) : ?> style="display:none"<?php endif; ?>>
                 <?php if ( is_active_sidebar( 'footer-sidebar-' . $i ) ) : ?>
                     <?php dynamic_sidebar( 'footer-sidebar-' . $i ); ?>
                 <?php elseif ( is_customize_preview() ) : ?>

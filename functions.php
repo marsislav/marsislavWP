@@ -179,6 +179,9 @@ require get_template_directory() . '/inc/template-functions.php';
  * Customizer additions.
  */
 require get_template_directory() . '/inc/customizer.php';
+if ( class_exists( 'WooCommerce' ) ) {
+    require get_template_directory() . '/inc/woocommerce.php';
+}
 require get_template_directory() . '/inc/colors-customizer.php';
 
 /**

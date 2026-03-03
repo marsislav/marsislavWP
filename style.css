@@ -1657,3 +1657,193 @@ textarea {
         flex: 0 0 auto;
     }
 }
+/* ================================================
+   WOOCOMMERCE — Sale Badge (% отстъпка)
+   ================================================ */
+
+.marsislav-sale-badge.onsale {
+    background: #e53e3e;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    border-radius: 50px;
+    padding: 4px 10px;
+    min-width: auto;
+    min-height: auto;
+    line-height: 1.4;
+    display: inline-block;
+}
+
+
+/* ================================================
+   WOOCOMMERCE -- Cart Menu Icon & Dropdown
+   ================================================ */
+
+.marsislav-cart-item {
+    position: relative;
+}
+
+.marsislav-cart-link {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0.9rem 1.1rem;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+}
+
+.cart-icon {
+    display: flex;
+    align-items: center;
+}
+
+.cart-count {
+    background: #e53e3e;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    line-height: 1;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    position: absolute;
+    top: 6px;
+    right: 4px;
+}
+
+.marsislav-cart-item:not(.has-items) {
+    display: none;
+}
+
+.marsislav-cart-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    min-width: 300px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+    z-index: 9999;
+    padding: 16px;
+}
+
+.marsislav-cart-item:hover .marsislav-cart-dropdown,
+.marsislav-cart-item:focus-within .marsislav-cart-dropdown {
+    display: block;
+}
+
+.cart-dropdown-items {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 280px;
+    overflow-y: auto;
+    margin-bottom: 14px;
+}
+
+.cart-dropdown-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.cart-item-img img {
+    width: 52px;
+    height: 52px;
+    object-fit: cover;
+    border-radius: 6px;
+    display: block;
+}
+
+.cart-item-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cart-item-name {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: inherit;
+    text-decoration: none;
+    line-height: 1.3;
+}
+
+.cart-item-name:hover {
+    color: var(--color-primary, #2563eb);
+}
+
+.cart-item-qty-price {
+    font-size: 0.82rem;
+    color: #6b7280;
+}
+
+.cart-dropdown-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-top: 1px solid #f0f0f0;
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+}
+
+.cart-total-label {
+    font-weight: 600;
+}
+
+.cart-total-value {
+    font-weight: 700;
+    color: var(--color-primary, #2563eb);
+}
+
+.cart-dropdown-btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    background: #f3f4f6;
+    color: #1f2937;
+    margin-bottom: 6px;
+    transition: background 0.2s ease, color 0.2s ease;
+    box-sizing: border-box;
+}
+
+.cart-dropdown-btn:last-child {
+    margin-bottom: 0;
+}
+
+.cart-dropdown-btn:hover {
+    background: var(--color-primary, #2563eb);
+    color: #fff;
+}
+
+.cart-checkout-btn {
+    background: var(--color-primary, #2563eb);
+    color: #fff;
+}
+
+.cart-checkout-btn:hover {
+    background: #1d4ed8;
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    .marsislav-cart-dropdown {
+        right: -10px;
+        min-width: 260px;
+    }
+}
