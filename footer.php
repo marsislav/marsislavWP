@@ -4,9 +4,9 @@
  *
  * @package marsislav
  */
-$footer_layout          = get_theme_mod( 'footer_layout', 'one-column' );
-$copyright_text         = get_theme_mod( 'footer_copyright_text', sprintf( '&copy; %s %s. All rights reserved.', gmdate('Y'), get_bloginfo('name') ) );
-$footer_col2_text       = get_theme_mod( 'footer_col2_text', '' );
+$footer_layout          = (string) get_theme_mod( 'footer_layout', 'one-column' );
+$copyright_text         = (string) get_theme_mod( 'footer_copyright_text', sprintf( '&copy; %s %s. All rights reserved.', gmdate('Y'), get_bloginfo('name') ) );
+$footer_col2_text       = (string) get_theme_mod( 'footer_col2_text', '' );
 $footer_sidebar_enable  = get_theme_mod( 'footer_sidebar_enable', true );
 $footer_sidebar_columns = (int) get_theme_mod( 'footer_sidebar_columns', 3 );
 $footer_sidebar_columns = max( 1, min( 4, $footer_sidebar_columns ) );

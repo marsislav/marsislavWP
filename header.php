@@ -17,12 +17,12 @@
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 <?php
-$topbar_enabled = get_theme_mod( 'topbar_enable', false );
-$topbar_layout  = get_theme_mod( 'topbar_layout', 'one' );
-$topbar_marquee = get_theme_mod( 'topbar_marquee', false );
-$topbar_text    = get_theme_mod( 'topbar_text', 'Welcome to our website' );
-$topbar_col1    = get_theme_mod( 'topbar_col1_text', '' );
-$topbar_col2    = get_theme_mod( 'topbar_col2_text', '' );
+$topbar_enabled = (bool) get_theme_mod( 'topbar_enable', false );
+$topbar_layout  = (string) get_theme_mod( 'topbar_layout', 'one' );
+$topbar_marquee = (bool) get_theme_mod( 'topbar_marquee', false );
+$topbar_text    = (string) get_theme_mod( 'topbar_text', 'Welcome to our website' );
+$topbar_col1    = (string) get_theme_mod( 'topbar_col1_text', '' );
+$topbar_col2    = (string) get_theme_mod( 'topbar_col2_text', '' );
 $topbar_hide    = $topbar_enabled ? '' : ' style="display:none"';
 ?>
 <div id="site-topbar" class="topbar layout-<?php echo esc_attr( $topbar_layout ); ?>"<?php echo $topbar_hide; ?>>
@@ -30,7 +30,7 @@ $topbar_hide    = $topbar_enabled ? '' : ' style="display:none"';
 
         <?php if ( $topbar_layout === 'two' ) : ?>
             <?php
-            $col1_content = trim( wp_strip_all_tags( $topbar_col1 ?: $topbar_text ) );
+            $col1_content = trim( wp_strip_all_tags( $topbar_col1 ? $topbar_col1 : $topbar_text ) );
             $col2_content = trim( wp_strip_all_tags( $topbar_col2 ) );
             $col1_empty   = empty( $col1_content );
             $col2_empty   = empty( $col2_content );
@@ -41,10 +41,10 @@ $topbar_hide    = $topbar_enabled ? '' : ' style="display:none"';
             <div class="<?php echo esc_attr( $col1_class ); ?>">
                 <?php if ( $topbar_marquee ) : ?>
                     <div class="topbar-marquee">
-                        <span><?php echo wp_kses_post( $topbar_col1 ?: $topbar_text ); ?></span>
+                        <span><?php echo wp_kses_post( $topbar_col1 ? $topbar_col1 : $topbar_text ); ?></span>
                     </div>
                 <?php else : ?>
-                    <div class="topbar-text"><?php echo wp_kses_post( $topbar_col1 ?: $topbar_text ); ?></div>
+                    <div class="topbar-text"><?php echo wp_kses_post( $topbar_col1 ? $topbar_col1 : $topbar_text ); ?></div>
                 <?php endif; ?>
             </div>
             <div class="<?php echo esc_attr( $col2_class ); ?>">
@@ -98,7 +98,7 @@ $topbar_hide    = $topbar_enabled ? '' : ' style="display:none"';
                     <?php
                     $description = get_bloginfo( 'description', 'display' );
                     if ( $description || is_customize_preview() ) : ?>
-                        <p class="site-description"><?php echo $description; ?></p>
+                        <p class="site-description"><?php echo esc_html( $description ); ?></p>
                     <?php endif; ?>
                 </div>
             </div>

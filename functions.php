@@ -241,18 +241,18 @@ function marsislav_footer_customizer( $wp_customize ) {
     $wp_customize->add_section( 'marsislav_footer_section', array(
         'title'    => esc_html__( 'Footer Settings', 'marsislav' ),
         'priority' => 160,
-    ));
+    ) );
 
+    // Show footer menu
     $wp_customize->add_setting( 'show_footer_menu', array(
         'default'           => true,
         'sanitize_callback' => 'marsislav_sanitize_checkbox',
-    ));
-
+    ) );
     $wp_customize->add_control( 'show_footer_menu', array(
-        'label'       => esc_html__( 'Показвай Footer Menu', 'marsislav' ),
-        'section'     => 'marsislav_footer_section',
-        'type'        => 'checkbox',
-    ));
+        'label'   => esc_html__( 'Показвай Footer Menu', 'marsislav' ),
+        'section' => 'marsislav_footer_section',
+        'type'    => 'checkbox',
+    ) );
 }
 add_action( 'customize_register', 'marsislav_footer_customizer' );
 

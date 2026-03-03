@@ -647,72 +647,9 @@ textarea {
 
 /* Navigation
 --------------------------------------------- */
-.main-navigation {
-	display: block;
-	width: 100%;
-}
+/* Old _s navigation block removed */
 
-.main-navigation ul {
-	display: none;
-	list-style: none;
-	margin: 0;
-	padding-left: 0;
-}
 
-.main-navigation ul ul {
-	box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
-	float: left;
-	position: absolute;
-	top: 100%;
-	left: -999em;
-	z-index: 99999;
-}
-
-.main-navigation ul ul ul {
-	left: -999em;
-	top: 0;
-}
-
-.main-navigation ul ul li:hover > ul,
-.main-navigation ul ul li.focus > ul {
-	display: block;
-	left: auto;
-}
-
-.main-navigation ul ul a {
-	width: 200px;
-}
-
-.main-navigation ul li:hover > ul,
-.main-navigation ul li.focus > ul {
-	left: auto;
-}
-
-.main-navigation li {
-	position: relative;
-}
-
-.main-navigation a {
-	display: block;
-	text-decoration: none;
-}
-
-/* Small menu. */
-.menu-toggle,
-.main-navigation.toggled ul {
-	display: block;
-}
-
-@media screen and (min-width: 769px) {
-
-	.menu-toggle {
-		display: none !important;
-	}
-
-	.main-navigation ul {
-		display: flex;
-	}
-}
 
 .site-main .comment-navigation,
 .site-main
@@ -1060,6 +997,10 @@ textarea {
     gap: 0.5rem;
 }
 
+.primary-menu > li {
+    position: relative;
+}
+
 .primary-menu > li > a {
     display: block;
     padding: 0.9rem 1.1rem;
@@ -1228,10 +1169,10 @@ textarea {
 }
 
 /* ================================================
-   MOBILE MENU — Fullscreen Slide Panel
+   MOBILE MENU — Dropdown под хедъра
    ================================================ */
 
-/* ---- Hamburger Button ---- */
+/* ---- Hamburger Button (скрит по подразбиране на десктоп) ---- */
 .menu-toggle {
 	display: none;
 	align-items: center;
@@ -1239,14 +1180,10 @@ textarea {
 	background: none;
 	border: none;
 	cursor: pointer;
-	padding: 10px 4px;
+	padding: 8px 4px;
 	color: inherit;
 	font-family: inherit;
-	font-size: 0.8rem;
-	letter-spacing: 0.12em;
-	text-transform: uppercase;
-	font-weight: 600;
-	z-index: 1001;
+	z-index: 100;
 	position: relative;
 }
 
@@ -1262,8 +1199,8 @@ textarea {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	width: 28px;
-	height: 20px;
+	width: 26px;
+	height: 18px;
 }
 
 .hamburger-lines span {
@@ -1272,195 +1209,141 @@ textarea {
 	width: 100%;
 	background: currentColor;
 	border-radius: 2px;
-	transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1),
-	            opacity 0.3s ease,
-	            width 0.3s ease;
+	transition: transform 0.35s ease, opacity 0.25s ease, width 0.25s ease;
 	transform-origin: center;
 }
 
-/* Animated X on open */
+/* X анимация при отворено меню */
 .main-navigation.toggled .hamburger-lines span:nth-child(1) {
-	transform: translateY(9px) rotate(45deg);
+	transform: translateY(8px) rotate(45deg);
 }
 .main-navigation.toggled .hamburger-lines span:nth-child(2) {
 	opacity: 0;
 	width: 0;
 }
 .main-navigation.toggled .hamburger-lines span:nth-child(3) {
-	transform: translateY(-9px) rotate(-45deg);
+	transform: translateY(-8px) rotate(-45deg);
 }
 
-/* ---- Overlay backdrop ---- */
+/* Overlay — не се използва при dropdown, скрито */
 .mobile-menu-overlay {
-	position: fixed;
-	inset: 0;
-	background: rgba(0, 0, 0, 0.45);
-	backdrop-filter: blur(4px);
-	-webkit-backdrop-filter: blur(4px);
-	opacity: 0;
-	pointer-events: none;
-	transition: opacity 0.4s ease;
-	z-index: 998;
+	display: none;
 }
 
-.mobile-menu-overlay.active {
-	opacity: 1;
-	pointer-events: all;
-}
-
-/* ---- Prevent body scroll when menu open ---- */
-body.menu-open {
-	overflow: hidden;
-}
-
-/* ---- Mobile Styles: breakpoint ≤ 768px ---- */
+/* ---- Mobile: ≤ 768px ---- */
 @media (max-width: 768px) {
 
+	/* Показваме бутона */
 	.menu-toggle {
 		display: flex;
 	}
 
-	/* The nav panel itself */
-	#site-navigation {
-		position: fixed;
-		top: 0;
-		right: 0;
-		width: min(340px, 85vw);
-		height: 100dvh;
-		background: #0f0f0f;
-		color: #f0ece6;
-		z-index: 999;
-		transform: translateX(100%);
-		transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-start;
-		padding: 80px 48px 48px;
-		overflow-y: auto;
-		box-shadow: -8px 0 40px rgba(0,0,0,0.3);
+	/* Хедърът да е relative за dropdown позиционирането */
+	.site-header {
+		position: relative;
 	}
 
-	#site-navigation.toggled {
-		transform: translateX(0);
-	}
-
-	/* Decorative top accent line */
-	#site-navigation::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 48px;
-		right: 48px;
-		height: 2px;
-		background: linear-gradient(90deg, #c8a97e, transparent);
-	}
-
-	/* Menu toggle — inside the nav panel on mobile */
-	#site-navigation .menu-toggle {
-		position: fixed;
-		top: 24px;
-		right: 24px;
-		color: #f0ece6;
-	}
-
-	/* ---- Nav menu list ---- */
-	#site-navigation ul.primary-menu,
-	#site-navigation ul.nav-menu {
-		list-style: none;
-		margin: 0;
-		padding: 0;
+	/* Менюто — скрито, позиционирано под хедъра */
+	#site-navigation .primary-menu,
+	#site-navigation .nav-menu {
 		display: flex;
 		flex-direction: column;
 		gap: 0;
-	}
-
-	#site-navigation ul li {
-		border-bottom: 1px solid rgba(255,255,255,0.07);
+		position: absolute;
+		top: 100%;
+		left: 0;
+		right: 0;
+		background: #fff;
+		z-index: 999;
+		max-height: 0;
 		overflow: hidden;
-		opacity: 0;
-		transform: translateX(24px);
-		transition: opacity 0.45s ease, transform 0.45s ease;
+		transition: max-height 0.4s ease;
+		box-shadow: 0 6px 20px rgba(0,0,0,0.12);
 	}
 
-	#site-navigation ul li.menu-item-visible {
+	/* Отворено меню */
+	#site-navigation .primary-menu.mobile-open,
+	#site-navigation .nav-menu.mobile-open {
+		max-height: 100vh;
+	}
+
+	/* Mobile sub-menu — акордеон с grid */
+	.primary-menu .sub-menu {
+		position: static;
 		opacity: 1;
-		transform: translateX(0);
+		visibility: visible;
+		transform: none;
+		box-shadow: none;
+		border: none;
+		padding: 0;
+		display: grid;
+		grid-template-rows: 0fr;
+		transition: grid-template-rows 0.35s ease;
+		background: rgba(0,0,0,0.03);
+	}
+
+	.primary-menu .sub-menu > * {
+		overflow: hidden;
+	}
+
+	.submenu-open > .sub-menu {
+		grid-template-rows: 1fr;
+	}
+
+	/* Линкове в менюто */
+	#site-navigation ul li {
+		position: relative;
+		border-bottom: 1px solid rgba(0,0,0,0.06);
 	}
 
 	#site-navigation ul li:first-child {
-		border-top: 1px solid rgba(255,255,255,0.07);
+		border-top: 1px solid rgba(0,0,0,0.06);
 	}
 
-	/* Top-level links */
 	#site-navigation ul li > a {
 		display: block;
-		padding: 18px 0;
-		font-size: 1.25rem;
+		padding: 14px 20px;
+		font-size: 1rem;
 		font-weight: 500;
-		letter-spacing: 0.02em;
-		color: #f0ece6;
+		color: inherit;
 		text-decoration: none;
-		position: relative;
-		transition: color 0.25s ease, padding-left 0.3s ease;
+		transition: color 0.2s ease, background 0.2s ease;
 	}
 
-	#site-navigation ul li > a::after {
-		content: '';
-		position: absolute;
-		left: 0;
-		bottom: 0;
-		height: 1px;
-		width: 0;
-		background: #c8a97e;
-		transition: width 0.3s ease;
-	}
-
-	#site-navigation ul li > a:hover {
-		color: #c8a97e;
-		padding-left: 8px;
-	}
-
-	#site-navigation ul li > a:hover::after {
-		width: 40px;
-	}
-
-	/* Current/active item */
+	#site-navigation ul li > a:hover,
 	#site-navigation ul li.current-menu-item > a,
 	#site-navigation ul li.current_page_item > a {
-		color: #c8a97e;
+		color: var(--color-primary, #2563eb);
+		background: rgba(37,99,235,0.05);
 	}
 
-	/* ---- Submenu toggle button ---- */
+	/* ---- Submenu toggle ---- */
 	.submenu-toggle {
 		position: absolute;
 		right: 0;
-		top: 50%;
-		transform: translateY(-50%);
+		top: 0;
+		height: 50px;
+		width: 50px;
 		background: none;
 		border: none;
 		cursor: pointer;
-		color: rgba(240,236,230,0.5);
-		padding: 8px;
+		color: inherit;
 		display: flex;
 		align-items: center;
-		transition: color 0.25s, transform 0.35s cubic-bezier(0.77,0,0.175,1);
-	}
-
-	#site-navigation ul li {
-		position: relative;
+		justify-content: center;
+		transition: transform 0.3s ease;
 	}
 
 	.submenu-open > .submenu-toggle {
-		color: #c8a97e;
-		transform: translateY(-50%) rotate(180deg);
+		transform: rotate(180deg);
 	}
 
-	/* ---- Submenus ---- */
+	/* ---- Submenus (акордеон) ---- */
 	#site-navigation ul ul {
 		display: grid;
 		grid-template-rows: 0fr;
 		transition: grid-template-rows 0.35s ease;
-		padding-left: 16px;
+		background: rgba(0,0,0,0.03);
 	}
 
 	#site-navigation ul ul > * {
@@ -1473,28 +1356,22 @@ body.menu-open {
 
 	#site-navigation ul ul li {
 		border: none;
-		opacity: 1;
-		transform: none;
-		transition: none;
 	}
 
 	#site-navigation ul ul li > a {
-		font-size: 0.95rem;
-		padding: 12px 0;
-		color: rgba(240,236,230,0.65);
+		padding: 11px 20px 11px 36px;
+		font-size: 0.9rem;
+		opacity: 0.75;
 	}
 
 	#site-navigation ul ul li > a:hover {
-		color: #c8a97e;
+		opacity: 1;
+		color: var(--color-primary, #2563eb);
 	}
 }
 
-/* ---- Desktop: hide mobile overlay, show normal nav ---- */
+/* ---- Desktop: само скриваме toggle бутона ---- */
 @media (min-width: 769px) {
-	.mobile-menu-overlay {
-		display: none !important;
-	}
-
 	.menu-toggle {
 		display: none !important;
 	}
