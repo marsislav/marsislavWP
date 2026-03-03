@@ -11,7 +11,7 @@ $footer_sidebar_enable  = get_theme_mod( 'footer_sidebar_enable', true );
 $footer_sidebar_columns = (int) get_theme_mod( 'footer_sidebar_columns', 3 );
 $footer_sidebar_columns = max( 1, min( 4, $footer_sidebar_columns ) );
 
-// Проверяваме дали поне една от 4-те зони е активна
+//We are checking whether at least one of the four zones is active.
 $has_footer_widgets = false;
 for ( $i = 1; $i <= 4; $i++ ) {
     if ( is_active_sidebar( 'footer-sidebar-' . $i ) ) {
