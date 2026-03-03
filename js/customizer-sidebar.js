@@ -8,20 +8,16 @@
         api( key, function( value ) {
             value.bind( function( newVal ) {
                 var $container = $( '#content-sidebar-wrap' );
-                var $sidebar = $( '#secondary' );
 
                 if ( ! $container.length ) return;
 
-                // Сменяме класа за подредба
+                // Сменяме само класа за подредба — CSS-ът се грижи за всичко останало
                 $container.removeClass( 'layout-left layout-right layout-disabled' )
                           .addClass( 'layout-' + newVal );
-
-                // Скриваме или показваме сайдбара веднага без рефреш
-                if ( newVal === 'disabled' ) {
-                    $sidebar.hide();
-                } else {
-                    $sidebar.show();
-                }
+                // Забележка: НЕ използваме $sidebar.hide()/show() защото
+                // това крие #secondary с display:none inline и може да засегне
+                // footer-а и околните елементи. CSS класът layout-disabled
+                // вече скрива sidebar-а коректно.
             } );
         } );
     } );

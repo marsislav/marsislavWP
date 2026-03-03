@@ -1758,22 +1758,24 @@ body.menu-open {
 /* --- Sidebar Layout Engine --- */
 #content-sidebar-wrap {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap; /* Фикс: без nowrap sidebar-ът wrap-ва под main */
     gap: 30px;
     width: 100%;
-    max-width: 1200px; /* Можеш да промениш според дизайна си */
+    max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+    align-items: flex-start; /* Sidebar да не се разтяга на пълна височина */
 }
 
 #primary {
-    flex: 1;
-    min-width: 0; /* Фикс за flexbox */
+    flex: 1 1 0%;
+    min-width: 0; /* Фикс за flexbox overflow */
 }
 
 #secondary {
     width: 300px;
     flex: 0 0 300px;
+    min-width: 0;
 }
 
 /* Позициониране */
@@ -1785,8 +1787,9 @@ body.menu-open {
     display: none !important;
 }
 .layout-disabled #primary {
-    flex: 0 0 100%;
+    flex: 1 1 100%;
     max-width: 100%;
+    width: 100%;
 }
 
 /* Адаптивност */
