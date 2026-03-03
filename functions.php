@@ -356,3 +356,164 @@ function marsislav_register_block_patterns() {
 	);
 }
 add_action( 'init', 'marsislav_register_block_patterns' );
+
+
+/*Top bar */
+
+function marsislav_topbar_customizer($wp_customize) {
+
+    // SECTION
+    $wp_customize->add_section('marsislav_topbar_section', array(
+        'title'    => __('Top Bar Settings', 'marsislav'),
+        'priority' => 30,
+    ));
+
+    // Enable / Disable
+    $wp_customize->add_setting('topbar_enable', array(
+        'default'           => false,
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'wp_validate_boolean'
+    ));
+
+    $wp_customize->add_control('topbar_enable', array(
+        'label'   => __('Enable Top Bar', 'marsislav'),
+        'section' => 'marsislav_topbar_section',
+        'type'    => 'checkbox',
+    ));
+
+    // Layout (1 or 2 columns)
+    $wp_customize->add_setting('topbar_layout', array(
+        'default'   => 'one',
+        'transport' => 'postMessage',
+    ));
+
+    $wp_customize->add_control('topbar_layout', array(
+        'label'   => __('Layout', 'marsislav'),
+        'section' => 'marsislav_topbar_section',
+        'type'    => 'radio',
+        'choices' => array(
+            'one' => '1 Column',
+            'two' => '2 Columns',
+        ),
+    ));
+
+    // Marquee
+    $wp_customize->add_setting('topbar_marquee', array(
+        'default'   => false,
+        'transport' => 'postMessage',
+    ));
+
+    $wp_customize->add_control('topbar_marquee', array(
+        'label'   => __('Enable Marquee Text', 'marsislav'),
+        'section' => 'marsislav_topbar_section',
+        'type'    => 'checkbox',
+    ));
+
+    // Text
+    $wp_customize->add_setting('topbar_text', array(
+        'default'   => 'Welcome to our website',
+        'transport' => 'postMessage',
+    ));
+
+    $wp_customize->add_control('topbar_text', array(
+        'label'   => __('Top Bar Text', 'marsislav'),
+        'section' => 'marsislav_topbar_section',
+        'type'    => 'text',
+    ));
+
+    // Background color
+    $wp_customize->add_setting('topbar_bg_color', array(
+        'default'   => '#000000',
+        'transport' => 'postMessage',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Color_Control(
+        $wp_customize,
+        'topbar_bg_color',
+        array(
+            'label'   => __('Background Color', 'marsislav'),
+            'section' => 'marsislav_topbar_section',
+        )
+    ));
+
+    // Text color
+    $wp_customize->add_setting('topbar_text_color', array(
+        'default'   => '#ffffff',
+        'transport' => 'postMessage',
+    ));
+
+    $wp_customize->add_control(new WP_Customize_Color_Control(
+        $wp_customize,
+        'topbar_text_color',
+        array(
+            'label'   => __('Text Color', 'marsislav'),
+            'section' => 'marsislav_topbar_section',
+        )
+    ));
+
+    // Column 1 text (left, used in 2-column mode)
+    $wp_customize->add_setting('topbar_col1_text', array(
+        'default'           => '',
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'wp_kses_post',
+    ));
+
+    $wp_customize->add_control('topbar_col1_text', array(
+        'label'       => __('Текст Колона 1 (ляво)', 'marsislav'),
+        'description' => __('Показва се в лявата колона при избор на 2 колони. Поддържа HTML.', 'marsislav'),
+        'section'     => 'marsislav_topbar_section',
+        'type'        => 'textarea',
+    ));
+
+    // Column 2 text (right, used in 2-column mode)
+    $wp_customize->add_setting('topbar_col2_text', array(
+        'default'           => '',
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'wp_kses_post',
+    ));
+
+    $wp_customize->add_control('topbar_col2_text', array(
+        'label'       => __('Текст Колона 2 (дясно)', 'marsislav'),
+        'description' => __('Показва се в дясната колона при избор на 2 колони. Поддържа HTML.', 'marsislav'),
+        'section'     => 'marsislav_topbar_section',
+        'type'        => 'textarea',
+    ));
+}
+add_action('customize_register', 'marsislav_topbar_customizer');
+
+/**
+ * Enqueue topbar customizer preview JS
+ */
+function marsislav_topbar_preview_js() {
+    wp_enqueue_script(
+        'marsislav-customizer-topbar',
+        get_template_directory_uri() . '/js/customizer-topbar.js',
+        array( 'customize-preview', 'jquery' ),
+        _S_VERSION,
+        true
+    );
+}
+add_action( 'customize_preview_init', 'marsislav_topbar_preview_js' );
+
+/**
+ * Output inline CSS for topbar colors (frontend + customizer preview)
+ */
+function marsislav_topbar_inline_css() {
+    $bg    = get_theme_mod( 'topbar_bg_color', '#000000' );
+    $color = get_theme_mod( 'topbar_text_color', '#ffffff' );
+    ?>
+    <style id="marsislav-topbar-colors">
+        #site-topbar {
+            background-color: <?php echo esc_attr( $bg ); ?>;
+            color: <?php echo esc_attr( $color ); ?>;
+        }
+        #site-topbar a {
+            color: <?php echo esc_attr( $color ); ?>;
+        }
+        #site-topbar .topbar-marquee span {
+            color: <?php echo esc_attr( $color ); ?>;
+        }
+    </style>
+    <?php
+}
+add_action( 'wp_head', 'marsislav_topbar_inline_css' );
