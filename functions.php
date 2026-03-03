@@ -518,17 +518,18 @@ function marsislav_topbar_inline_css() {
 }
 add_action( 'wp_head', 'marsislav_topbar_inline_css' );
 
+
+
 // =============================================================================
-// SIDEBAR CUSTOMIZER
+// SIDEBAR ENGINE - FINAL MERGED VERSION
 // =============================================================================
 
 /**
- * Register sidebar customizer settings — per-context dropdowns
+ * 1. Регистрация на настройките в Customizer
  */
-function marsislav_sidebar_customizer( $wp_customize ) {
-
+function marsislav_sidebar_settings( $wp_customize ) {
     $wp_customize->add_section( 'marsislav_sidebar_section', array(
-        'title'    => __( 'Sidebar настройки', 'marsislav' ),
+        'title'    => __( 'Sidebar Настройки', 'marsislav' ),
         'priority' => 35,
     ) );
 
@@ -550,7 +551,7 @@ function marsislav_sidebar_customizer( $wp_customize ) {
     foreach ( $contexts as $key => $label ) {
         $wp_customize->add_setting( $key, array(
             'default'           => 'right',
-            'transport'         => 'postMessage',
+            'transport'         => 'postMessage', // Позволява динамична промяна без рефреш
             'sanitize_callback' => 'marsislav_sanitize_sidebar_position',
         ) );
         $wp_customize->add_control( $key, array(
@@ -561,67 +562,67 @@ function marsislav_sidebar_customizer( $wp_customize ) {
         ) );
     }
 }
-add_action( 'customize_register', 'marsislav_sidebar_customizer' );
+add_action( 'customize_register', 'marsislav_sidebar_settings' );
 
 /**
- * Sanitize sidebar position value
+ * 2. Почистване на данните
  */
 function marsislav_sanitize_sidebar_position( $val ) {
     return in_array( $val, array( 'left', 'right', 'disabled' ), true ) ? $val : 'right';
 }
 
 /**
- * Get sidebar position for the current page context
+ * 3. Логика за определяне на позицията (автоматично разпознава къде се намираме)
  */
 function marsislav_get_sidebar_position() {
-    if ( function_exists( 'is_shop' ) && is_shop() )           return get_theme_mod( 'sidebar_shop',    'right' );
-    if ( function_exists( 'is_product' ) && is_product() )     return get_theme_mod( 'sidebar_product', 'right' );
-    if ( is_front_page() && ! is_home() )                      return get_theme_mod( 'sidebar_home',    'right' );
-    if ( is_home() || is_archive() || is_search() )            return get_theme_mod( 'sidebar_blog',    'right' );
-    if ( is_singular( 'post' ) )                               return get_theme_mod( 'sidebar_post',    'right' );
-    if ( is_page() )                                           return get_theme_mod( 'sidebar_page',    'right' );
+    // WooCommerce проверки
+    if ( function_exists( 'is_shop' ) ) {
+        if ( is_shop() || is_product_category() || is_product_tag() ) return get_theme_mod( 'sidebar_shop', 'right' );
+        if ( is_product() ) return get_theme_mod( 'sidebar_product', 'right' );
+    }
+    
+    // Стандартни страници
+    if ( is_front_page() && ! is_home() )          return get_theme_mod( 'sidebar_home', 'right' );
+    if ( is_home() || is_archive() || is_search() ) return get_theme_mod( 'sidebar_blog', 'right' );
+    if ( is_singular( 'post' ) )                    return get_theme_mod( 'sidebar_post', 'right' );
+    if ( is_page() )                                return get_theme_mod( 'sidebar_page', 'right' );
+    
     return 'disabled';
 }
 
 /**
- * Add sidebar body classes for CSS targeting
+ * 4. Добавяне на класове към <body> (полезно за допълнителен CSS)
  */
 function marsislav_sidebar_body_class( $classes ) {
     $position = marsislav_get_sidebar_position();
-    if ( $position !== 'disabled' ) {
-        $classes[] = 'has-sidebar';
-        $classes[] = 'sidebar-' . $position;
-    } else {
+    $classes[] = 'sidebar-' . $position;
+    if ( $position === 'disabled' ) {
         $classes[] = 'no-sidebar';
+    } else {
+        $classes[] = 'has-sidebar';
     }
     return $classes;
 }
 add_filter( 'body_class', 'marsislav_sidebar_body_class' );
 
 /**
- * Enqueue sidebar customizer preview JS
+ * 5. Свързване на JavaScript файла с Customizer Preview
  */
 function marsislav_sidebar_preview_js() {
-    wp_enqueue_script(
-        'marsislav-customizer-sidebar',
-        get_template_directory_uri() . '/js/customizer-sidebar.js',
-        array( 'customize-preview', 'jquery' ),
-        _S_VERSION,
-        true
+    wp_enqueue_script( 
+        'marsislav-customizer-sidebar', 
+        get_template_directory_uri() . '/js/customizer-sidebar.js', 
+        array( 'customize-preview', 'jquery' ), 
+        _S_VERSION, 
+        true 
     );
 
-    // Determine current page context key
-    $ctx_key = 'sidebar_page';
-    if ( function_exists( 'is_shop' ) && is_shop() )        $ctx_key = 'sidebar_shop';
-    elseif ( function_exists( 'is_product' ) && is_product() ) $ctx_key = 'sidebar_product';
-    elseif ( is_front_page() && ! is_home() )               $ctx_key = 'sidebar_home';
-    elseif ( is_home() || is_archive() || is_search() )     $ctx_key = 'sidebar_blog';
-    elseif ( is_singular( 'post' ) )                        $ctx_key = 'sidebar_post';
-    elseif ( is_page() )                                    $ctx_key = 'sidebar_page';
-
-    wp_localize_script( 'marsislav-customizer-sidebar', 'marsislavSidebar', array(
-        'ctxKey'   => $ctx_key,
-        'position' => marsislav_get_sidebar_position(),
+    // Изпращаме списък с всички настройки към JS файла
+    wp_localize_script( 'marsislav-customizer-sidebar', 'marsislavSidebarVars', array(
+        'settings' => array( 
+            'sidebar_blog', 'sidebar_post', 'sidebar_page', 
+            'sidebar_home', 'sidebar_shop', 'sidebar_product' 
+        )
     ) );
 }
 add_action( 'customize_preview_init', 'marsislav_sidebar_preview_js' );

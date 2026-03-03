@@ -1,24 +1,28 @@
-/* global wp, jQuery, marsislavSidebar */
+/**
+ * Dynamic Sidebar Preview
+ */
 ( function( $, api ) {
+    var settings = marsislavSidebarVars.settings;
 
-    api.bind( 'preview-ready', function() {
+    $.each( settings, function( index, key ) {
+        api( key, function( value ) {
+            value.bind( function( newVal ) {
+                var $container = $( '#content-sidebar-wrap' );
+                var $sidebar = $( '#secondary' );
 
-        var ctxKey = marsislavSidebar.ctxKey;
+                if ( ! $container.length ) return;
 
-        function applyLayout( position ) {
-            var $wrap = $( '#content-sidebar-wrap' );
-            if ( ! $wrap.length ) { return; }
-            $wrap
-                .removeClass( 'layout-left layout-right layout-disabled' )
-                .addClass( 'layout-' + position );
-        }
+                // Сменяме класа за подредба
+                $container.removeClass( 'layout-left layout-right layout-disabled' )
+                          .addClass( 'layout-' + newVal );
 
-        api( ctxKey, function( setting ) {
-            setting.bind( function( newVal ) {
-                applyLayout( newVal );
+                // Скриваме или показваме сайдбара веднага без рефреш
+                if ( newVal === 'disabled' ) {
+                    $sidebar.hide();
+                } else {
+                    $sidebar.show();
+                }
             } );
         } );
-
     } );
-
 }( jQuery, wp.customize ) );
