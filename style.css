@@ -1217,6 +1217,66 @@ textarea {
 
 
 /* -----------------------------------------------
+   Footer Sidebar — Widget зони с колони
+----------------------------------------------- */
+.footer-sidebar-area {
+    display: grid;
+    gap: 2rem;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 20px 2rem;
+    box-sizing: border-box;
+}
+
+/* Брой колони */
+.footer-columns-1 { grid-template-columns: 1fr; }
+.footer-columns-2 { grid-template-columns: repeat(2, 1fr); }
+.footer-columns-3 { grid-template-columns: repeat(3, 1fr); }
+.footer-columns-4 { grid-template-columns: repeat(4, 1fr); }
+
+.footer-sidebar-col {
+    min-width: 0;
+}
+
+/* Widget заглавия */
+.footer-widget-title {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+/* Placeholder в Customizer preview */
+.footer-sidebar-placeholder {
+    border: 2px dashed rgba(255,255,255,0.3);
+    border-radius: 4px;
+    padding: 1.5rem;
+    text-align: center;
+    opacity: 0.6;
+    font-size: 0.875rem;
+}
+
+/* Разделител между sidebar и credits */
+.footer-sidebar-area + .site-info {
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Responsive — само мобилен (<=600px) пада на 1 колона */
+@media (max-width: 600px) {
+    .footer-columns-1,
+    .footer-columns-2,
+    .footer-columns-3,
+    .footer-columns-4 {
+        grid-template-columns: 1fr !important;
+    }
+    .footer-sidebar-area {
+        padding: 2rem 16px 1.5rem;
+    }
+}
+
+/* -----------------------------------------------
    Footer - Dynamic Layout
 ----------------------------------------------- */
 .site-footer .site-info {
@@ -1758,22 +1818,24 @@ body.menu-open {
 /* --- Sidebar Layout Engine --- */
 #content-sidebar-wrap {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap; /* Фикс: без nowrap sidebar-ът wrap-ва под main */
     gap: 30px;
     width: 100%;
-    max-width: 1200px; /* Можеш да промениш според дизайна си */
+    max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+    align-items: flex-start; /* Sidebar да не се разтяга на пълна височина */
 }
 
 #primary {
-    flex: 1;
-    min-width: 0; /* Фикс за flexbox */
+    flex: 1 1 0%;
+    min-width: 0; /* Фикс за flexbox overflow */
 }
 
 #secondary {
     width: 300px;
     flex: 0 0 300px;
+    min-width: 0;
 }
 
 /* Позициониране */
@@ -1785,8 +1847,9 @@ body.menu-open {
     display: none !important;
 }
 .layout-disabled #primary {
-    flex: 0 0 100%;
+    flex: 1 1 100%;
     max-width: 100%;
+    width: 100%;
 }
 
 /* Адаптивност */

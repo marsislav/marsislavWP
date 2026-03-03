@@ -626,3 +626,86 @@ function marsislav_sidebar_preview_js() {
     ) );
 }
 add_action( 'customize_preview_init', 'marsislav_sidebar_preview_js' );
+
+
+/* ============================================================
+ * FOOTER SIDEBAR — Регистрация на widget зони (1-4 колони)
+ * ============================================================ */
+function marsislav_register_footer_sidebars() {
+    for ( $i = 1; $i <= 4; $i++ ) {
+        register_sidebar( array(
+            'name'          => sprintf( esc_html__( 'Footer Колона %d', 'marsislav' ), $i ),
+            'id'            => 'footer-sidebar-' . $i,
+            'description'   => sprintf( esc_html__( 'Widgets за Footer колона %d', 'marsislav' ), $i ),
+            'before_widget' => '<div id="%1$s" class="footer-widget %2$s">',
+            'after_widget'  => '</div>',
+            'before_title'  => '<h3 class="footer-widget-title">',
+            'after_title'   => '</h3>',
+        ) );
+    }
+}
+add_action( 'widgets_init', 'marsislav_register_footer_sidebars' );
+
+
+/* ============================================================
+ * FOOTER SIDEBAR — Customizer настройки
+ * ============================================================ */
+function marsislav_footer_sidebar_customizer( $wp_customize ) {
+
+    if ( ! $wp_customize->get_section( 'marsislav_footer_section' ) ) {
+        $wp_customize->add_section( 'marsislav_footer_section', array(
+            'title'    => esc_html__( 'Footer Settings', 'marsislav' ),
+            'priority' => 160,
+        ) );
+    }
+
+    // Включи/изключи footer sidebar
+    $wp_customize->add_setting( 'footer_sidebar_enable', array(
+        'default'           => true,
+        'transport'         => 'postMessage',
+        'sanitize_callback' => function( $v ) { return (bool) $v; },
+    ) );
+    $wp_customize->add_control( 'footer_sidebar_enable', array(
+        'label'    => esc_html__( 'Показвай Footer Sidebar (widget зони)', 'marsislav' ),
+        'section'  => 'marsislav_footer_section',
+        'type'     => 'checkbox',
+        'priority' => 5,
+    ) );
+
+    // Брой колони
+    $wp_customize->add_setting( 'footer_sidebar_columns', array(
+        'default'           => '3',
+        'transport'         => 'postMessage',
+        'sanitize_callback' => function( $v ) {
+            return in_array( (string) $v, array( '1', '2', '3', '4' ), true ) ? $v : '3';
+        },
+    ) );
+    $wp_customize->add_control( 'footer_sidebar_columns', array(
+        'label'   => esc_html__( 'Брой колони в Footer Sidebar', 'marsislav' ),
+        'section' => 'marsislav_footer_section',
+        'type'    => 'select',
+        'choices' => array(
+            '1' => esc_html__( '1 колона', 'marsislav' ),
+            '2' => esc_html__( '2 колони', 'marsislav' ),
+            '3' => esc_html__( '3 колони', 'marsislav' ),
+            '4' => esc_html__( '4 колони', 'marsislav' ),
+        ),
+        'priority' => 6,
+    ) );
+}
+add_action( 'customize_register', 'marsislav_footer_sidebar_customizer' );
+
+
+/* ============================================================
+ * FOOTER SIDEBAR — Customizer Preview JS
+ * ============================================================ */
+function marsislav_footer_sidebar_preview_js() {
+    wp_enqueue_script(
+        'marsislav-customizer-footer-sidebar',
+        get_template_directory_uri() . '/js/customizer-footer-sidebar.js',
+        array( 'customize-preview', 'jquery' ),
+        _S_VERSION,
+        true
+    );
+}
+add_action( 'customize_preview_init', 'marsislav_footer_sidebar_preview_js' );
