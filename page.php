@@ -12,6 +12,7 @@ $sidebar_pos = marsislav_get_sidebar_position();
 <div id="content-sidebar-wrap" class="container-wide layout-<?php echo esc_attr( $sidebar_pos ); ?>">
 
     <main id="primary" class="site-main">
+        <?php do_action( 'marsislav_before_content' ); ?>
         <?php
         while ( have_posts() ) : the_post(); ?>
             <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>

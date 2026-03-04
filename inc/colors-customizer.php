@@ -48,6 +48,11 @@ function marsislav_sanitize_border_radius( $val ) {
     return min( absint( $val ), 100 );
 }
 
+function marsislav_sanitize_anim_style( $val ) {
+    $valid = array( 'fade-up', 'fade', 'fade-left', 'zoom' );
+    return in_array( $val, $valid, true ) ? $val : 'fade-up';
+}
+
 /* ============================================================
  * Register all settings
  * ============================================================ */
@@ -314,6 +319,132 @@ function marsislav_colors_customizer( $wp_customize ) {
             'input_attrs' => array( 'min' => 0, 'max' => 60, 'step' => 1 ),
         ) );
     }
+
+    $priority += 3;
+
+    /* BREADCRUMBS */
+    $wp_customize->add_setting( 'breadcrumbs_enable', array(
+        'default'           => true, 'transport' => 'refresh',
+        'sanitize_callback' => 'marsislav_sanitize_checkbox',
+    ) );
+    $wp_customize->add_control( 'breadcrumbs_enable', array(
+        'label' => esc_html__( '[ Трохи ] Покажи breadcrumbs', 'marsislav' ),
+        'section' => $sec, 'type' => 'checkbox', 'priority' => $priority++,
+    ) );
+    foreach ( array(
+        'breadcrumbs_bg'               => array( esc_html__( '  > Фон', 'marsislav' ),            '#f3f4f6' ),
+        'breadcrumbs_text_color'       => array( esc_html__( '  > Текст', 'marsislav' ),           '#6b7280' ),
+        'breadcrumbs_link_color'       => array( esc_html__( '  > Линкове', 'marsislav' ),         '#2563eb' ),
+        'breadcrumbs_link_hover_color' => array( esc_html__( '  > Линкове hover', 'marsislav' ),   '#1d4ed8' ),
+    ) as $key => $info ) {
+        $wp_customize->add_setting( $key, array( 'default' => $info[1], 'transport' => 'postMessage', 'sanitize_callback' => 'sanitize_hex_color' ) );
+        $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, $key, array( 'label' => $info[0], 'section' => $sec, 'priority' => $priority++ ) ) );
+    }
+
+    $priority += 3;
+
+    /* SCROLL TO TOP */
+    $wp_customize->add_setting( 'scroll_to_top_enable', array(
+        'default'           => true, 'transport' => 'refresh',
+        'sanitize_callback' => 'marsislav_sanitize_checkbox',
+    ) );
+    $wp_customize->add_control( 'scroll_to_top_enable', array(
+        'label' => esc_html__( '[ Scroll Top ] Бутон "Нагоре"', 'marsislav' ),
+        'section' => $sec, 'type' => 'checkbox', 'priority' => $priority++,
+    ) );
+    foreach ( array(
+        'scroll_to_top_bg'       => array( esc_html__( '  > Фон', 'marsislav' ),          '#2563eb' ),
+        'scroll_to_top_color'    => array( esc_html__( '  > Икона', 'marsislav' ),         '#ffffff' ),
+        'scroll_to_top_bg_hover' => array( esc_html__( '  > Фон при hover', 'marsislav' ), '#1d4ed8' ),
+    ) as $key => $info ) {
+        $wp_customize->add_setting( $key, array( 'default' => $info[1], 'transport' => 'postMessage', 'sanitize_callback' => 'sanitize_hex_color' ) );
+        $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, $key, array( 'label' => $info[0], 'section' => $sec, 'priority' => $priority++ ) ) );
+    }
+
+    $priority += 3;
+
+    /* ----------------------------------------------------------
+     * 6. DARK MODE
+     * ---------------------------------------------------------- */
+
+    $wp_customize->add_setting( 'dark_mode_enable', array(
+        'default'           => true,
+        'transport'         => 'refresh',
+        'sanitize_callback' => 'marsislav_sanitize_checkbox',
+    ) );
+    $wp_customize->add_control( 'dark_mode_enable', array(
+        'label'    => esc_html__( '[ Dark Mode ] Покажи бутон за тъмен режим', 'marsislav' ),
+        'section'  => $sec,
+        'type'     => 'checkbox',
+        'priority' => $priority++,
+    ) );
+
+    // Dark mode intensity slider (90-100%)
+    $wp_customize->add_setting( 'dark_mode_intensity', array(
+        'default'           => 92,
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'absint',
+    ) );
+    $wp_customize->add_control( 'dark_mode_intensity', array(
+        'label'       => esc_html__( '  > Степен на затъмняване (%)', 'marsislav' ),
+        'description' => esc_html__( '0% = пълен мрак | 100% = нормално', 'marsislav' ),
+        'section'     => $sec,
+        'type'        => 'range',
+        'priority'    => $priority++,
+        'input_attrs' => array( 'min' => 0, 'max' => 100, 'step' => 5 ),
+    ) );
+
+
+    $priority += 3;
+
+    /* ----------------------------------------------------------
+     * 7. SCROLL ANIMATIONS
+     * ---------------------------------------------------------- */
+
+    $wp_customize->add_setting( 'scroll_animations_enable', array(
+        'default'           => true,
+        'transport'         => 'refresh',
+        'sanitize_callback' => 'marsislav_sanitize_checkbox',
+    ) );
+    $wp_customize->add_control( 'scroll_animations_enable', array(
+        'label'       => esc_html__( '[ Анимации ] Fade-in при скрол', 'marsislav' ),
+        'description' => esc_html__( 'Елементите се появяват плавно при скрол.', 'marsislav' ),
+        'section'     => $sec,
+        'type'        => 'checkbox',
+        'priority'    => $priority++,
+    ) );
+
+    $wp_customize->add_setting( 'scroll_animations_style', array(
+        'default'           => 'fade-up',
+        'transport'         => 'refresh',
+        'sanitize_callback' => 'marsislav_sanitize_anim_style',
+    ) );
+    $wp_customize->add_control( 'scroll_animations_style', array(
+        'label'    => esc_html__( '  > Стил на анимацията', 'marsislav' ),
+        'section'  => $sec,
+        'type'     => 'select',
+        'choices'  => array(
+            'fade-up'   => esc_html__( 'Fade + нагоре (препоръчително)', 'marsislav' ),
+            'fade'      => esc_html__( 'Само fade', 'marsislav' ),
+            'fade-left' => esc_html__( 'Fade + от ляво', 'marsislav' ),
+            'zoom'      => esc_html__( 'Зуум', 'marsislav' ),
+        ),
+        'priority' => $priority++,
+    ) );
+
+    $wp_customize->add_setting( 'scroll_animations_speed', array(
+        'default'           => 500,
+        'transport'         => 'refresh',
+        'sanitize_callback' => 'absint',
+    ) );
+    $wp_customize->add_control( 'scroll_animations_speed', array(
+        'label'       => esc_html__( '  > Скорост (ms)', 'marsislav' ),
+        'description' => esc_html__( 'Препоръчително: 400–700ms', 'marsislav' ),
+        'section'     => $sec,
+        'type'        => 'range',
+        'priority'    => $priority++,
+        'input_attrs' => array( 'min' => 200, 'max' => 1200, 'step' => 100 ),
+    ) );
 }
 add_action( 'customize_register', 'marsislav_colors_customizer' );
 
@@ -440,6 +571,36 @@ function marsislav_dynamic_css() {
             $css .= $map[0] . '{border-radius:' . $val . 'px !important;}';
         }
     }
+
+        // Breadcrumbs colors
+    $bc_bg    = sanitize_hex_color( (string) get_theme_mod( 'breadcrumbs_bg',               '#f3f4f6' ) );
+    $bc_text  = sanitize_hex_color( (string) get_theme_mod( 'breadcrumbs_text_color',       '#6b7280' ) );
+    $bc_link  = sanitize_hex_color( (string) get_theme_mod( 'breadcrumbs_link_color',       '#2563eb' ) );
+    $bc_hover = sanitize_hex_color( (string) get_theme_mod( 'breadcrumbs_link_hover_color', '#1d4ed8' ) );
+    if ( $bc_bg )    $css .= '.marsislav-breadcrumbs{background:' . $bc_bg . ' !important;}';
+    if ( $bc_text )  $css .= '.marsislav-breadcrumbs,.bc-sep,.bc-current{color:' . $bc_text . ' !important;}';
+    if ( $bc_link )  $css .= '.marsislav-breadcrumbs .bc-link{color:' . $bc_link . ' !important;}';
+    if ( $bc_hover ) $css .= '.marsislav-breadcrumbs .bc-link:hover{color:' . $bc_hover . ' !important;}';
+
+    // Scroll to top colors
+    $stt_bg    = sanitize_hex_color( (string) get_theme_mod( 'scroll_to_top_bg',       '#2563eb' ) );
+    $stt_color = sanitize_hex_color( (string) get_theme_mod( 'scroll_to_top_color',    '#ffffff' ) );
+    $stt_hover = sanitize_hex_color( (string) get_theme_mod( 'scroll_to_top_bg_hover', '#1d4ed8' ) );
+    if ( $stt_bg )    $css .= '#marsislav-scroll-top{background:' . $stt_bg . ' !important;}';
+    if ( $stt_color ) $css .= '#marsislav-scroll-top svg{stroke:' . $stt_color . ' !important;}';
+    if ( $stt_hover ) $css .= '#marsislav-scroll-top:hover{background:' . $stt_hover . ' !important;}';
+
+    // Dark mode — overlay alpha (0 = прозрачен, 1 = пълен мрак)
+    $// Dark mode — backgrounds dim, text brightens
+    $dm_intensity = absint( get_theme_mod( 'dark_mode_intensity', 30 ) );
+    $dm_intensity = max( 0, min( 100, $dm_intensity ) );
+    $dm_b = round( $dm_intensity / 100, 2 );
+    $css .= ':root{--dm-b:' . $dm_b . ';}';
+
+    // Scroll animation speed CSS variable
+    $anim_speed = absint( get_theme_mod( 'scroll_animations_speed', 500 ) );
+    $anim_style = marsislav_sanitize_anim_style( (string) get_theme_mod( 'scroll_animations_style', 'fade-up' ) );
+    $css .= ':root{--ms-anim-duration:' . $anim_speed . 'ms;--ms-anim-style:' . esc_attr( $anim_style ) . ';}';
 
     if ( $css ) {
         echo '<style id="marsislav-dynamic-css">' . $css . '</style>' . "\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

@@ -1,39 +1,61 @@
-=== marsislav ===
+=== Marsislav ===
+Contributors: marsislav
+Requires at least: 6.0
+Tested up to: 6.7
+Requires PHP: 7.4
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Contributors: automattic
-Tags: custom-background, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready
-
-Requires at least: 4.5
-Tested up to: 5.4
-Requires PHP: 5.6
-Stable tag: 1.0.0
-License: GNU General Public License v2 or later
-License URI: LICENSE
-
-A starter theme called marsislav.
+A clean, modern and fully customizable WordPress theme with WooCommerce support.
 
 == Description ==
 
-Description
+Marsislav is a flexible, feature-rich WordPress theme built for shops, blogs
+and business sites. Every section can be styled independently through the live
+Customizer with no coding required.
+
+Key Features:
+* WooCommerce ready - cart icon with hover dropdown, sale percent badge
+* Backgrounds per section - solid color, gradient (12 directions), image, transparent
+* Transparency slider 0-100% per section
+* Sticky Header toggle (on/off)
+* Mobile dropdown menu with submenu accordion
+* Breadcrumbs with Schema.org markup (on/off, 4 color options)
+* Scroll-to-top button (on/off, 3 color options)
+* Top bar with text or scrolling marquee
+* Sidebar position left/right/none per post type
+* Footer with 1-4 widget columns
+* Custom colors for text, links, H1-H6, menus, footer
+* Border radius controls for all major elements
+* Translation ready
 
 == Installation ==
 
-1. In your admin panel, go to Appearance > Themes and click the Add New button.
-2. Click Upload Theme and Choose File, then select the theme's .zip file. Click Install Now.
-3. Click Activate to use your new theme right away.
-
-== Frequently Asked Questions ==
-
-= Does this theme support any plugins? =
-
-marsislav includes support for WooCommerce and for Infinite Scroll in Jetpack.
+1. Go to Appearance > Themes > Add New > Upload Theme
+2. Upload marsislav.zip and activate
+3. Go to Appearance > Customize > Design & Colors
 
 == Changelog ==
 
-= 1.0 - May 12 2015 =
+= 1.1.0 =
+* Breadcrumbs with Schema.org markup
+* Scroll-to-top button
+* WooCommerce cart dropdown in navigation
+* Sale percentage badge
+* Per-section background controls
+* Border radius controls
+* Sticky header toggle
+* Opacity slider per section
+
+= 1.0.0 =
 * Initial release
 
 == Credits ==
 
-* Based on Underscores https://underscores.me/, (C) 2012-2020 Automattic, Inc., [GPLv2 or later](https://www.gnu.org/licenses/gpl-2.0.html)
-* normalize.css https://necolas.github.io/normalize.css/, (C) 2012-2018 Nicolas Gallagher and Jonathan Neal, [MIT](https://opensource.org/licenses/MIT)
+Based on Underscores https://underscores.me/
+(C) 2012-2020 Automattic, Inc. License: GPLv2 or later
+
+Normalize.css https://necolas.github.io/normalize.css/
+License: MIT
+
+Icons: Feather Icons https://feathericons.com/ License: MIT

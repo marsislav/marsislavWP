@@ -137,4 +137,11 @@
         $style.text(css);
     }
 
+    // ── Marquee speed ────────────────────────────────────────────────────────
+    wp.customize('topbar_marquee_speed', function (value) {
+        value.bind(function (speed) {
+            $('#site-topbar .topbar-marquee span').css('animation-duration', speed + 's');
+        });
+    });
+
 })(jQuery);

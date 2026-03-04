@@ -11,7 +11,7 @@ $footer_sidebar_enable  = get_theme_mod( 'footer_sidebar_enable', true );
 $footer_sidebar_columns = (int) get_theme_mod( 'footer_sidebar_columns', 3 );
 $footer_sidebar_columns = max( 1, min( 4, $footer_sidebar_columns ) );
 
-//We are checking whether at least one of the four zones is active.
+// Проверяваме дали поне една от 4-те зони е активна
 $has_footer_widgets = false;
 for ( $i = 1; $i <= 4; $i++ ) {
     if ( is_active_sidebar( 'footer-sidebar-' . $i ) ) {
@@ -70,6 +70,18 @@ for ( $i = 1; $i <= 4; $i++ ) {
     </div><!-- #content -->
 
 </div><!-- #page -->
+
+<?php if ( (bool) get_theme_mod( 'scroll_to_top_enable', true ) ) : ?>
+<button id="marsislav-scroll-top" class="marsislav-scroll-top"
+        aria-label="<?php esc_attr_e( 'Обратно нагоре', 'marsislav' ); ?>"
+        title="<?php esc_attr_e( 'Обратно нагоре', 'marsislav' ); ?>">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+         fill="none" stroke="currentColor" stroke-width="2.5"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <polyline points="18 15 12 9 6 15"/>
+    </svg>
+</button>
+<?php endif; ?>
 
 <?php wp_footer(); ?>
 

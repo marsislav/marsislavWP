@@ -1,16 +1,17 @@
 /*!
-Theme Name: marsislav
-Theme URI: http://marsislav.net/marsislav
-Author: marsislav
-Author URI: http://marsislav.net
-Description: A clean, flexible WordPress theme with customizable sidebar layout, footer widgets, top bar, and responsive mobile menu. Built on Underscores.
-Version: 1.0.0
-Tested up to: 6.5
+Theme Name: Marsislav
+Theme URI: https://marsislav.net/theme
+Author: Marsislav
+Author URI: https://marsislav.net
+Description: A clean, modern and fully customizable WordPress theme with WooCommerce support, sticky header, mobile-friendly navigation with dropdown cart, breadcrumbs, scroll-to-top button, flexible footer widgets, top bar, custom backgrounds (solid, gradient, image), border radius controls, and live color customization for every section. Perfect for shops, blogs and business sites.
+Version: 1.1.0
+Tested up to: 6.7
 Requires PHP: 7.4
+Requires at least: 6.0
 License: GNU General Public License v2 or later
-License URI: LICENSE
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: marsislav
-Tags: custom-background, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready
+Tags: custom-background, custom-logo, custom-menu, custom-colors, featured-images, threaded-comments, translation-ready, e-commerce, blog, right-sidebar, left-sidebar, one-column, two-columns, three-columns, footer-widgets, sticky-post, wide-blocks
 
 This theme, like WordPress, is licensed under the GPL.
 Use it to make something cool, have fun, and share what you've learned.
@@ -1602,7 +1603,7 @@ textarea {
 .topbar-marquee span {
     display: inline-block;
     padding-left: 100%;
-    animation: marsislavMarquee 18s linear infinite;
+    animation: marsislavMarquee var(--marquee-speed, 18s) linear infinite;
     color: inherit;
 }
 
@@ -1676,77 +1677,117 @@ textarea {
 }
 
 
+
+/* ================================================
+   WOOCOMMERCE -- Sale Badge
+   ================================================ */
+
+.marsislav-sale-badge.onsale {
+    background: #e53e3e;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    border-radius: 50px;
+    padding: 4px 10px;
+    min-width: auto;
+    min-height: auto;
+    line-height: 1.4;
+    display: inline-block;
+}
+
 /* ================================================
    WOOCOMMERCE -- Cart Menu Icon & Dropdown
    ================================================ */
 
-.marsislav-cart-item {
+/* Cart LI — overflow visible за да се вижда dropdown-ът */
+.primary-menu > .marsislav-cart-item {
     position: relative;
+    overflow: visible;
 }
 
+/* Скриваме при празна количка */
+.marsislav-cart-item:not(.has-items) {
+    display: none;
+}
+
+/* Линкът с иконата */
 .marsislav-cart-link {
-    display: flex;
+    display: flex !important;
     align-items: center;
     gap: 4px;
     padding: 0.9rem 1.1rem;
     text-decoration: none;
     color: inherit;
     position: relative;
+    cursor: pointer;
 }
 
 .cart-icon {
     display: flex;
     align-items: center;
+    line-height: 1;
 }
 
+/* Badge с брой продукти */
 .cart-count {
     background: #e53e3e;
     color: #fff;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     font-weight: 700;
     line-height: 1;
-    min-width: 18px;
-    height: 18px;
+    min-width: 17px;
+    height: 17px;
     border-radius: 50px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     padding: 0 4px;
     position: absolute;
-    top: 6px;
-    right: 4px;
+    top: 5px;
+    right: 2px;
+    pointer-events: none;
 }
 
-.marsislav-cart-item:not(.has-items) {
-    display: none;
-}
-
+/* ---- Dropdown — СКРИТ по подразбиране ---- */
 .marsislav-cart-dropdown {
-    display: none;
     position: absolute;
-    top: 100%;
+    top: calc(100% + 4px);
     right: 0;
     min-width: 300px;
     background: #fff;
     border: 1px solid #e5e7eb;
     border-radius: 12px;
-    box-shadow: 0 12px 32px rgba(0,0,0,0.12);
-    z-index: 9999;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+    z-index: 99999;
     padding: 16px;
+    /* Скрито — НЕ display:none за да работи transition */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(8px);
+    transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s;
 }
 
-.marsislav-cart-item:hover .marsislav-cart-dropdown,
-.marsislav-cart-item:focus-within .marsislav-cart-dropdown {
-    display: block;
+/* ---- Показване само при hover на LI ---- */
+.primary-menu > .marsislav-cart-item:hover > .marsislav-cart-dropdown,
+.primary-menu > .marsislav-cart-item:focus-within > .marsislav-cart-dropdown {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+    transform: translateY(0);
+    transition-delay: 0s;
 }
 
+/* Продукти в dropdown */
 .cart-dropdown-items {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    max-height: 280px;
+    max-height: 260px;
     overflow-y: auto;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
+    scrollbar-width: thin;
 }
 
 .cart-dropdown-item {
@@ -1761,13 +1802,15 @@ textarea {
     object-fit: cover;
     border-radius: 6px;
     display: block;
+    flex-shrink: 0;
 }
 
 .cart-item-details {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 3px;
+    min-width: 0;
 }
 
 .cart-item-name {
@@ -1776,6 +1819,10 @@ textarea {
     color: inherit;
     text-decoration: none;
     line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
 }
 
 .cart-item-name:hover {
@@ -1787,23 +1834,32 @@ textarea {
     color: #6b7280;
 }
 
+/* Footer с обща сума */
 .cart-dropdown-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 0;
+    padding: 10px 0;
     border-top: 1px solid #f0f0f0;
+    margin-bottom: 10px;
     font-size: 0.9rem;
-    margin-bottom: 12px;
 }
 
 .cart-total-label {
     font-weight: 600;
+    color: #374151;
 }
 
 .cart-total-value {
     font-weight: 700;
     color: var(--color-primary, #2563eb);
+}
+
+/* Бутони */
+.cart-dropdown-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
 .cart-dropdown-btn {
@@ -1812,18 +1868,13 @@ textarea {
     text-align: center;
     padding: 9px 16px;
     border-radius: 8px;
-    font-size: 0.88rem;
+    font-size: 0.85rem;
     font-weight: 600;
     text-decoration: none;
     background: #f3f4f6;
     color: #1f2937;
-    margin-bottom: 6px;
-    transition: background 0.2s ease, color 0.2s ease;
+    transition: background 0.15s, color 0.15s;
     box-sizing: border-box;
-}
-
-.cart-dropdown-btn:last-child {
-    margin-bottom: 0;
 }
 
 .cart-dropdown-btn:hover {
@@ -1843,7 +1894,189 @@ textarea {
 
 @media (max-width: 768px) {
     .marsislav-cart-dropdown {
-        right: -10px;
-        min-width: 260px;
+        right: 0;
+        min-width: min(300px, calc(100vw - 32px));
+    }
+}
+
+
+/* ================================================
+   BREADCRUMBS — Трохи за навигация
+   ================================================ */
+
+.marsislav-breadcrumbs {
+    width: 100%;
+    background: #f3f4f6;
+    padding: 10px 0;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.bc-list {
+    list-style: none;
+    margin: 0;
+    padding: 0 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bc-item {
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+.bc-link {
+    color: #2563eb;
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.bc-link:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+.bc-sep {
+    color: #9ca3af;
+    padding: 0 6px;
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.bc-current {
+    color: #6b7280;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
+    display: inline-block;
+}
+
+@media (max-width: 600px) {
+    .bc-list {
+        padding: 0 1rem;
+    }
+    .bc-current {
+        max-width: 160px;
+    }
+}
+
+/* ================================================
+   SCROLL TO TOP — Бутон нагоре
+   ================================================ */
+
+.marsislav-scroll-top {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 9990;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    transition: background 0.2s ease, transform 0.2s ease, opacity 0.3s ease, visibility 0.3s ease;
+    /* Скрит по подразбиране */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(12px);
+}
+
+.marsislav-scroll-top:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+}
+
+.marsislav-scroll-top.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.marsislav-scroll-top svg {
+    display: block;
+    flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+    .marsislav-scroll-top {
+        bottom: 16px;
+        right: 16px;
+        width: 40px;
+        height: 40px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+/* ================================================
+   DARK MODE TOGGLE BUTTON
+   ================================================ */
+
+.marsislav-dark-toggle {
+    display: flex; align-items: center; justify-content: center;
+    width: 38px; height: 38px; border-radius: 50%;
+    background: transparent; border: 1px solid rgba(255,255,255,0.2);
+    color: inherit; cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, transform 0.25s;
+    flex-shrink: 0; padding: 0; margin-left: 8px;
+}
+.marsislav-dark-toggle:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.4);
+    transform: rotate(22deg);
+}
+.marsislav-dark-toggle .dm-icon       { display: flex; align-items: center; }
+.marsislav-dark-toggle .dm-icon--moon { display: flex; }
+.marsislav-dark-toggle .dm-icon--sun  { display: none; }
+.dark-mode .marsislav-dark-toggle .dm-icon--moon { display: none; }
+.dark-mode .marsislav-dark-toggle .dm-icon--sun  { display: flex; }
+
+/* ================================================
+   DARK MODE — grayscale на всичко
+   ================================================ */
+
+html.dark-mode {
+    filter: grayscale(1);
+    transition: filter 0.3s ease;
+}
+
+/* ================================================
+   SCROLL ANIMATIONS
+   ================================================ */
+
+.ms-will-animate { opacity: 0; transform: translateY(22px); transition: none; }
+body.ms-anim-fade      .ms-will-animate { transform: none; }
+body.ms-anim-fade-left .ms-will-animate { transform: translateX(-22px); }
+body.ms-anim-zoom      .ms-will-animate { transform: scale(0.95); }
+.ms-animated {
+    opacity: 1 !important; transform: none !important;
+    transition:
+        opacity var(--ms-anim-duration, 500ms) cubic-bezier(0.22, 1, 0.36, 1),
+        transform var(--ms-anim-duration, 500ms) cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+    .ms-will-animate, .ms-animated {
+        opacity: 1 !important; transform: none !important; transition: none !important;
     }
 }

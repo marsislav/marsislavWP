@@ -192,4 +192,15 @@
         } );
     } );
 
+    /* -------------------------------------------------------
+     * Dark mode intensity — live preview
+     * ------------------------------------------------------- */
+
+    api( 'dark_mode_intensity', function( value ) {
+        value.bind( function( newVal ) {
+            var b = ( parseInt( newVal, 10 ) / 100 ).toFixed(2);
+            setStyle( 'dark_mode_intensity', ':root{--dm-b:' + b + ';}' );
+        } );
+    } );
+
 }( jQuery, wp.customize ) );

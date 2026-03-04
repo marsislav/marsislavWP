@@ -154,6 +154,21 @@ function marsislav_scripts() {
 
 	wp_enqueue_script( 'marsislav-navigation', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true );
 
+	// Scroll to top бутон (само ако е включен)
+	if ( (bool) get_theme_mod( 'scroll_to_top_enable', true ) ) {
+		wp_enqueue_script( 'marsislav-scroll-top', get_template_directory_uri() . '/js/scroll-to-top.js', array(), _S_VERSION, true );
+	}
+
+	// Dark Mode — зарежда се в <head> за да няма flash
+	if ( (bool) get_theme_mod( 'dark_mode_enable', true ) ) {
+		wp_enqueue_script( 'marsislav-dark-mode', get_template_directory_uri() . '/js/dark-mode.js', array(), _S_VERSION, false );
+	}
+
+	// Scroll Animations
+	if ( (bool) get_theme_mod( 'scroll_animations_enable', true ) ) {
+		wp_enqueue_script( 'marsislav-scroll-anim', get_template_directory_uri() . '/js/scroll-animations.js', array(), _S_VERSION, true );
+	}
+
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
@@ -179,6 +194,7 @@ require get_template_directory() . '/inc/template-functions.php';
  * Customizer additions.
  */
 require get_template_directory() . '/inc/customizer.php';
+require get_template_directory() . '/inc/breadcrumbs.php';
 if ( class_exists( 'WooCommerce' ) ) {
     require get_template_directory() . '/inc/woocommerce.php';
 }
@@ -415,6 +431,19 @@ function marsislav_topbar_customizer($wp_customize) {
         'type'    => 'checkbox',
     ));
 
+    $wp_customize->add_setting('topbar_marquee_speed', array(
+        'default'           => 18,
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'absint',
+    ));
+    $wp_customize->add_control('topbar_marquee_speed', array(
+        'label'       => __('Marquee Speed (seconds)', 'marsislav'),
+        'description' => __('По-малко = по-бързо. Препоръчително: 8-30s.', 'marsislav'),
+        'section'     => 'marsislav_topbar_section',
+        'type'        => 'range',
+        'input_attrs' => array( 'min' => 3, 'max' => 60, 'step' => 1 ),
+    ));
+
     // Text
     $wp_customize->add_setting('topbar_text', array(
         'default'           => 'Welcome to our website',
@@ -510,6 +539,8 @@ add_action( 'customize_preview_init', 'marsislav_topbar_preview_js' );
 function marsislav_topbar_inline_css() {
     $bg    = get_theme_mod( 'topbar_bg_color', '#000000' );
     $color = get_theme_mod( 'topbar_text_color', '#ffffff' );
+    $speed = absint( get_theme_mod( 'topbar_marquee_speed', 18 ) );
+    $speed = max( 3, min( 60, $speed ) );
     ?>
     <style id="marsislav-topbar-colors">
         #site-topbar {
@@ -521,6 +552,7 @@ function marsislav_topbar_inline_css() {
         }
         #site-topbar .topbar-marquee span {
             color: <?php echo esc_attr( $color ); ?>;
+            animation-duration: <?php echo esc_attr( $speed ); ?>s;
         }
     </style>
     <?php
