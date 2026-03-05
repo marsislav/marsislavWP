@@ -16,8 +16,7 @@ Tags: custom-background, custom-logo, custom-menu, custom-colors, featured-image
 This theme, like WordPress, is licensed under the GPL.
 Use it to make something cool, have fun, and share what you've learned.
 
-marsislav is based on Underscores https://underscores.me/, (C) 2012-2020 Automattic, Inc.
-Underscores is distributed under the terms of the GNU GPL v2 or later.
+marsislav is distributed under the terms of the GNU GPL v2 or later.
 
 Normalizing styles have been helped along thanks to the fine work of
 Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
@@ -916,8 +915,8 @@ textarea {
    ===================================== */
 
 :root {
-    --color-primary:   #2563eb;     /* main blue – доверие */
-    --color-accent:    #10b981;     /* green – промоции, свежест */
+    --color-primary:   #2563eb;     
+    --color-accent:    #10b981;     
     --color-dark:      #1f2937;
     --color-gray:      #4b5563;
     --color-light:     #f3f4f6;
@@ -1069,7 +1068,7 @@ textarea {
 
 
 /* -----------------------------------------------
-   Footer Sidebar — Widget зони с колони
+   Footer Sidebar — Widget zones
 ----------------------------------------------- */
 .footer-sidebar-area {
     display: grid;
@@ -1081,7 +1080,7 @@ textarea {
     box-sizing: border-box;
 }
 
-/* Брой колони */
+/* Number of columns */
 .footer-columns-1 { grid-template-columns: 1fr; }
 .footer-columns-2 { grid-template-columns: repeat(2, 1fr); }
 .footer-columns-3 { grid-template-columns: repeat(3, 1fr); }
@@ -1091,7 +1090,7 @@ textarea {
     min-width: 0;
 }
 
-/* Widget заглавия */
+/* Widget titles */
 .footer-widget-title {
     font-size: 1rem;
     font-weight: 700;
@@ -1100,7 +1099,7 @@ textarea {
     margin-bottom: 1rem;
 }
 
-/* Placeholder в Customizer preview */
+/* Placeholder -  Customizer preview */
 .footer-sidebar-placeholder {
     border: 2px dashed rgba(255,255,255,0.3);
     border-radius: 4px;
@@ -1110,12 +1109,12 @@ textarea {
     font-size: 0.875rem;
 }
 
-/* Разделител между sidebar и credits */
+/* Separator between sidebar and credits */
 .footer-sidebar-area + .site-info {
     border-top: 1px solid rgba(255,255,255,0.1);
 }
 
-/* Responsive — само мобилен (<=600px) пада на 1 колона */
+/* Responsive — (<=600px) on one column */
 @media (max-width: 600px) {
     .footer-columns-1,
     .footer-columns-2,
@@ -1170,10 +1169,10 @@ textarea {
 }
 
 /* ================================================
-   MOBILE MENU — Dropdown под хедъра
+   MOBILE MENU — Dropdown under header with hamburger toggle
    ================================================ */
 
-/* ---- Hamburger Button (скрит по подразбиране на десктоп) ---- */
+/* ---- Hamburger Button  ---- */
 .menu-toggle {
 	display: none;
 	align-items: center;
@@ -1214,7 +1213,7 @@ textarea {
 	transform-origin: center;
 }
 
-/* X анимация при отворено меню */
+/* X animation on mobile menu */
 .main-navigation.toggled .hamburger-lines span:nth-child(1) {
 	transform: translateY(8px) rotate(45deg);
 }
@@ -1226,7 +1225,7 @@ textarea {
 	transform: translateY(-8px) rotate(-45deg);
 }
 
-/* Overlay — не се използва при dropdown, скрито */
+
 .mobile-menu-overlay {
 	display: none;
 }
@@ -1234,17 +1233,14 @@ textarea {
 /* ---- Mobile: ≤ 768px ---- */
 @media (max-width: 768px) {
 
-	/* Показваме бутона */
 	.menu-toggle {
 		display: flex;
 	}
 
-	/* Хедърът да е relative за dropdown позиционирането */
-	.site-header {
+		.site-header {
 		position: relative;
 	}
 
-	/* Менюто — скрито, позиционирано под хедъра */
 	#site-navigation .primary-menu,
 	#site-navigation .nav-menu {
 		display: flex;
@@ -1262,13 +1258,11 @@ textarea {
 		box-shadow: 0 6px 20px rgba(0,0,0,0.12);
 	}
 
-	/* Отворено меню */
 	#site-navigation .primary-menu.mobile-open,
 	#site-navigation .nav-menu.mobile-open {
 		max-height: 100vh;
 	}
 
-	/* Mobile sub-menu — акордеон с grid */
 	.primary-menu .sub-menu {
 		position: static;
 		opacity: 1;
@@ -1290,8 +1284,7 @@ textarea {
 	.submenu-open > .sub-menu {
 		grid-template-rows: 1fr;
 	}
-
-	/* Линкове в менюто */
+	/* Main menu items */
 	#site-navigation ul li {
 		position: relative;
 		border-bottom: 1px solid rgba(0,0,0,0.06);
@@ -1339,7 +1332,7 @@ textarea {
 		transform: rotate(180deg);
 	}
 
-	/* ---- Submenus (акордеон) ---- */
+	/* ---- Submenus (accordeon) ---- */
 	#site-navigation ul ul {
 		display: grid;
 		grid-template-rows: 0fr;
@@ -1371,7 +1364,7 @@ textarea {
 	}
 }
 
-/* ---- Desktop: само скриваме toggle бутона ---- */
+/* ---- Desktop: hide toggle button ---- */
 @media (min-width: 769px) {
 	.menu-toggle {
 		display: none !important;
@@ -1614,31 +1607,35 @@ textarea {
 /* --- Sidebar Layout Engine --- */
 #content-sidebar-wrap {
     display: flex;
-    flex-wrap: nowrap; /* Фикс: без nowrap sidebar-ът wrap-ва под main */
+    flex-wrap: nowrap; 
     gap: 30px;
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    align-items: flex-start; /* Sidebar да не се разтяга на пълна височина */
+    align-items: flex-start; 
 }
 
 #primary {
     flex: 1 1 0%;
-    min-width: 0; /* Фикс за flexbox overflow */
+    min-width: 0; /* Fix - flexbox overflow */
+	word-wrap: break-word;
 }
 
 #secondary {
     width: 300px;
     flex: 0 0 300px;
     min-width: 0;
+	padding: 15px; 
+	word-wrap: break-word;
+
 }
 
-/* Позициониране */
+/* Positioning */
 .layout-right { flex-direction: row; }
 .layout-left  { flex-direction: row-reverse; }
 
-/* Full Width състояние */
+/* Full Width */
 .layout-disabled #secondary {
     display: none !important;
 }
@@ -1659,7 +1656,7 @@ textarea {
     }
 }
 /* ================================================
-   WOOCOMMERCE — Sale Badge (% отстъпка)
+   WOOCOMMERCE — Sale Badge (% discount)
    ================================================ */
 
 .marsislav-sale-badge.onsale {
@@ -1700,18 +1697,18 @@ textarea {
    WOOCOMMERCE -- Cart Menu Icon & Dropdown
    ================================================ */
 
-/* Cart LI — overflow visible за да се вижда dropdown-ът */
+/* Cart LI — overflow visible  */
 .primary-menu > .marsislav-cart-item {
     position: relative;
     overflow: visible;
 }
 
-/* Скриваме при празна количка */
+/* hide on empty basket */
 .marsislav-cart-item:not(.has-items) {
     display: none;
 }
 
-/* Линкът с иконата */
+
 .marsislav-cart-link {
     display: flex !important;
     align-items: center;
@@ -1729,7 +1726,7 @@ textarea {
     line-height: 1;
 }
 
-/* Badge с брой продукти */
+ 
 .cart-count {
     background: #e53e3e;
     color: #fff;
@@ -1749,7 +1746,7 @@ textarea {
     pointer-events: none;
 }
 
-/* ---- Dropdown — СКРИТ по подразбиране ---- */
+ 
 .marsislav-cart-dropdown {
     position: absolute;
     top: calc(100% + 4px);
@@ -1761,7 +1758,6 @@ textarea {
     box-shadow: 0 12px 32px rgba(0,0,0,0.15);
     z-index: 99999;
     padding: 16px;
-    /* Скрито — НЕ display:none за да работи transition */
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
@@ -1769,7 +1765,6 @@ textarea {
     transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s;
 }
 
-/* ---- Показване само при hover на LI ---- */
 .primary-menu > .marsislav-cart-item:hover > .marsislav-cart-dropdown,
 .primary-menu > .marsislav-cart-item:focus-within > .marsislav-cart-dropdown {
     opacity: 1;
@@ -1779,7 +1774,7 @@ textarea {
     transition-delay: 0s;
 }
 
-/* Продукти в dropdown */
+/* products in dropdown */
 .cart-dropdown-items {
     display: flex;
     flex-direction: column;
@@ -1834,7 +1829,7 @@ textarea {
     color: #6b7280;
 }
 
-/* Footer с обща сума */
+/* Footer with total price */
 .cart-dropdown-footer {
     display: flex;
     justify-content: space-between;
@@ -1855,8 +1850,7 @@ textarea {
     color: var(--color-primary, #2563eb);
 }
 
-/* Бутони */
-.cart-dropdown-actions {
+ .cart-dropdown-actions {
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -1901,7 +1895,7 @@ textarea {
 
 
 /* ================================================
-   BREADCRUMBS — Трохи за навигация
+   BREADCRUMBS 
    ================================================ */
 
 .marsislav-breadcrumbs {
@@ -1989,7 +1983,6 @@ textarea {
     justify-content: center;
     box-shadow: 0 4px 16px rgba(0,0,0,0.18);
     transition: background 0.2s ease, transform 0.2s ease, opacity 0.3s ease, visibility 0.3s ease;
-    /* Скрит по подразбиране */
     opacity: 0;
     visibility: hidden;
     transform: translateY(12px);
@@ -2053,7 +2046,7 @@ textarea {
 .dark-mode .marsislav-dark-toggle .dm-icon--sun  { display: flex; }
 
 /* ================================================
-   DARK MODE — grayscale на всичко
+   DARK MODE — grayscale 
    ================================================ */
 
 html.dark-mode {
