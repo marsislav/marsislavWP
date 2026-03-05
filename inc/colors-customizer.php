@@ -63,7 +63,7 @@ function marsislav_colors_customizer( $wp_customize ) {
     $priority = 10;
 
     $wp_customize->add_section( $sec, array(
-        'title'    => esc_html__( 'Дизайн & Цветове', 'marsislav' ),
+        'title'    => esc_html__( 'Design & colors', 'marsislav' ),
         'priority' => 140,
     ) );
 
@@ -77,7 +77,7 @@ function marsislav_colors_customizer( $wp_customize ) {
         'sanitize_callback' => 'marsislav_sanitize_checkbox',
     ) );
     $wp_customize->add_control( 'header_sticky', array(
-        'label'    => esc_html__( 'Sticky Header (залепен при скрол)', 'marsislav' ),
+        'label'    => esc_html__( 'Sticky Header', 'marsislav' ),
         'section'  => $sec,
         'type'     => 'checkbox',
         'priority' => $priority++,
@@ -86,25 +86,25 @@ function marsislav_colors_customizer( $wp_customize ) {
     $priority += 3;
 
     /* ----------------------------------------------------------
-     * 1. ФОНОВЕ — всяка зона
+     * 1. Backgrounds
      * ---------------------------------------------------------- */
 
     $areas = array(
-        'global'         => esc_html__( 'Глобален фон', 'marsislav' ),
-        'header'         => esc_html__( 'Хедър', 'marsislav' ),
-        'content'        => esc_html__( 'Основна част', 'marsislav' ),
-        'sidebar'        => esc_html__( 'Сайдбар', 'marsislav' ),
+        'global'         => esc_html__( 'Global background', 'marsislav' ),
+        'header'         => esc_html__( 'Header', 'marsislav' ),
+        'content'        => esc_html__( 'Main section', 'marsislav' ),
+        'sidebar'        => esc_html__( 'Sidebar', 'marsislav' ),
         'footer_widgets' => esc_html__( 'Footer Widget Area', 'marsislav' ),
         'footer'         => esc_html__( 'Footer', 'marsislav' ),
-        'copyright'      => esc_html__( 'Copyright лента', 'marsislav' ),
+        'copyright'      => esc_html__( 'Copyright line', 'marsislav' ),
     );
 
     $gradient_choices = array(
-        'to bottom'       => esc_html__( 'Отгоре надолу', 'marsislav' ),
-        'to top'          => esc_html__( 'Отдолу нагоре', 'marsislav' ),
-        'to right'        => esc_html__( 'Отляво надясно', 'marsislav' ),
-        'to left'         => esc_html__( 'Отдясно наляво', 'marsislav' ),
-        'to bottom right' => esc_html__( 'Диагонал долу-дясно', 'marsislav' ),
+        'to bottom'       => esc_html__( 'Up to down', 'marsislav' ),
+        'to top'          => esc_html__( 'Down to up', 'marsislav' ),
+        'to right'        => esc_html__( 'Left - right', 'marsislav' ),
+        'to left'         => esc_html__( 'Right - left', 'marsislav' ),
+        'to bottom right' => esc_html__( 'Radial:  down-right', 'marsislav' ),
         'to bottom left'  => esc_html__( 'Диагонал долу-ляво', 'marsislav' ),
         'to top right'    => esc_html__( 'Диагонал горе-дясно', 'marsislav' ),
         'to top left'     => esc_html__( 'Диагонал горе-ляво', 'marsislav' ),
