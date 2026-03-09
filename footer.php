@@ -11,7 +11,7 @@ $footer_sidebar_enable  = get_theme_mod( 'footer_sidebar_enable', true );
 $footer_sidebar_columns = (int) get_theme_mod( 'footer_sidebar_columns', 3 );
 $footer_sidebar_columns = max( 1, min( 4, $footer_sidebar_columns ) );
 
-// Проверяваме дали поне една от 4-те зони е активна
+// Check if at least one of the 4 widget areas is active
 $has_footer_widgets = false;
 for ( $i = 1; $i <= 4; $i++ ) {
     if ( is_active_sidebar( 'footer-sidebar-' . $i ) ) {
@@ -29,8 +29,8 @@ for ( $i = 1; $i <= 4; $i++ ) {
          data-columns="<?php echo esc_attr( $footer_sidebar_columns ); ?>">
 
         <?php
-        // Рендираме ВИНАГИ всичките 4 колони в HTML-а.
-        // CSS и JS управляват кои са видими спрямо footer_sidebar_columns.
+        // Always render all 4 columns in HTML.
+        // CSS and JS control which ones are visible based on footer_sidebar_columns.
         for ( $i = 1; $i <= 4; $i++ ) :
         ?>
             <div class="footer-sidebar-col footer-sidebar-col-<?php echo esc_attr( $i ); ?>" data-col="<?php echo esc_attr( $i ); ?>"<?php if ( $i > $footer_sidebar_columns ) : ?> style="display:none"<?php endif; ?>>
@@ -38,7 +38,7 @@ for ( $i = 1; $i <= 4; $i++ ) {
                     <?php dynamic_sidebar( 'footer-sidebar-' . $i ); ?>
                 <?php elseif ( is_customize_preview() ) : ?>
                     <div class="footer-sidebar-placeholder">
-                        <p><?php printf( esc_html__( 'Footer Колона %d — добави widget', 'marsislav' ), $i ); ?></p>
+                        <p><?php printf( esc_html__( 'Footer Column %d — add widget', 'marsislav' ), $i ); ?></p>
                     </div>
                 <?php endif; ?>
             </div>
@@ -73,8 +73,8 @@ for ( $i = 1; $i <= 4; $i++ ) {
 
 <?php if ( (bool) get_theme_mod( 'scroll_to_top_enable', true ) ) : ?>
 <button id="marsislav-scroll-top" class="marsislav-scroll-top"
-        aria-label="<?php esc_attr_e( 'Обратно нагоре', 'marsislav' ); ?>"
-        title="<?php esc_attr_e( 'Обратно нагоре', 'marsislav' ); ?>">
+        aria-label="<?php esc_attr_e( 'Back to top', 'marsislav' ); ?>"
+        title="<?php esc_attr_e( 'Back to top', 'marsislav' ); ?>">
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
          fill="none" stroke="currentColor" stroke-width="2.5"
          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">

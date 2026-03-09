@@ -49,7 +49,8 @@ function marsislav_setup() {
 	// This theme uses wp_nav_menu() in one location.
 	register_nav_menus(
 		array(
-			'menu-1' => esc_html__( 'Primary', 'marsislav' ),
+			'menu-1'      => esc_html__( 'Primary', 'marsislav' ),
+			'footer-menu' => esc_html__( 'Footer Menu', 'marsislav' ),
 		)
 	);
 
@@ -121,7 +122,7 @@ add_action( 'after_setup_theme', 'marsislav_setup' );
  * @global int $content_width
  */
 function marsislav_content_width() {
-	$GLOBALS['content_width'] = apply_filters( 'marsislav_content_width', 1100 );
+	$GLOBALS['content_width'] = apply_filters( 'marsislav_content_width', 1400 );
 }
 add_action( 'after_setup_theme', 'marsislav_content_width', 0 );
 
@@ -131,17 +132,25 @@ add_action( 'after_setup_theme', 'marsislav_content_width', 0 );
  * @link https://developer.wordpress.org/themes/functionality/sidebars/#registering-a-sidebar
  */
 function marsislav_widgets_init() {
-	register_sidebar(
-		array(
-			'name'          => esc_html__( 'Sidebar', 'marsislav' ),
-			'id'            => 'sidebar-1',
-			'description'   => esc_html__( 'Add widgets here.', 'marsislav' ),
+	$sidebars = array(
+		'sidebar-blog'    => __( 'Sidebar – Blog / Archive', 'marsislav' ),
+		'sidebar-post'    => __( 'Sidebar – Single Post', 'marsislav' ),
+		'sidebar-page'    => __( 'Sidebar – Page', 'marsislav' ),
+		'sidebar-shop'    => __( 'Sidebar – Shop (WooCommerce)', 'marsislav' ),
+		'sidebar-product' => __( 'Sidebar – Product Page', 'marsislav' ),
+	);
+
+	foreach ( $sidebars as $id => $name ) {
+		register_sidebar( array(
+			'name'          => $name,
+			'id'            => $id,
+			'description'   => sprintf( __( 'Widgets for: %s', 'marsislav' ), $name ),
 			'before_widget' => '<section id="%1$s" class="widget %2$s">',
 			'after_widget'  => '</section>',
 			'before_title'  => '<h2 class="widget-title">',
 			'after_title'   => '</h2>',
-		)
-	);
+		) );
+	}
 }
 add_action( 'widgets_init', 'marsislav_widgets_init' );
 
@@ -154,19 +163,14 @@ function marsislav_scripts() {
 
 	wp_enqueue_script( 'marsislav-navigation', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true );
 
-	// Scroll to top бутон (само ако е включен)
+	// Scroll to top button (only if enabled)
 	if ( (bool) get_theme_mod( 'scroll_to_top_enable', true ) ) {
 		wp_enqueue_script( 'marsislav-scroll-top', get_template_directory_uri() . '/js/scroll-to-top.js', array(), _S_VERSION, true );
 	}
 
-	// Dark Mode — зарежда се в <head> за да няма flash
+	// Dark Mode — loaded in <head> to prevent flash
 	if ( (bool) get_theme_mod( 'dark_mode_enable', true ) ) {
 		wp_enqueue_script( 'marsislav-dark-mode', get_template_directory_uri() . '/js/dark-mode.js', array(), _S_VERSION, false );
-	}
-
-	// Scroll Animations
-	if ( (bool) get_theme_mod( 'scroll_animations_enable', true ) ) {
-		wp_enqueue_script( 'marsislav-scroll-anim', get_template_directory_uri() . '/js/scroll-animations.js', array(), _S_VERSION, true );
 	}
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
@@ -206,40 +210,15 @@ require get_template_directory() . '/inc/colors-customizer.php';
 if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
-///////////Miro
 function marsislav_header_scripts() {
+    // Scroll class added to header — navigation.js handles mobile menu toggle
     ?>
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const header = document.querySelector('.site-header');
-        let lastScroll = 0;
-
-        window.addEventListener('scroll', () => {
-            const currentScroll = window.pageYOffset;
-            if (currentScroll > 80) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-            lastScroll = currentScroll;
-        });
-
-        // Mobile menu toggle
-        const toggle = document.querySelector('.menu-toggle');
-        const menu = document.querySelector('#primary-menu');
-
-        toggle?.addEventListener('click', () => {
-            const expanded = toggle.getAttribute('aria-expanded') === 'true';
-            toggle.setAttribute('aria-expanded', !expanded);
-            document.querySelector('.main-navigation').classList.toggle('toggled');
-        });
-
-        // Close on outside click (optional)
-        document.addEventListener('click', e => {
-            if (!menu?.contains(e.target) && !toggle?.contains(e.target)) {
-                toggle?.setAttribute('aria-expanded', 'false');
-                document.querySelector('.main-navigation')?.classList.remove('toggled');
-            }
+    document.addEventListener('DOMContentLoaded', function() {
+        var header = document.querySelector('.site-header');
+        if ( ! header ) return;
+        window.addEventListener('scroll', function() {
+            header.classList.toggle('scrolled', window.pageYOffset > 80);
         });
     });
     </script>
@@ -247,20 +226,15 @@ function marsislav_header_scripts() {
 }
 add_action('wp_footer', 'marsislav_header_scripts');
 
-// Регистрация на менюта
-function marsislav_register_menus() {
-    register_nav_menus( array(
-        'menu-1'      => esc_html__( 'Primary Menu', 'marsislav' ),
-        'footer-menu' => esc_html__( 'Footer Menu',   'marsislav' ),
-    ) );
-}
-add_action( 'after_setup_theme', 'marsislav_register_menus' );
+// Menu registration is handled in marsislav_setup() above
 
-// Customizer – footer toggle
+// Customizer – footer menu & credits toggle
 function marsislav_footer_customizer( $wp_customize ) {
-    $wp_customize->add_section( 'marsislav_footer_section', array(
-        'title'    => esc_html__( 'Footer Settings', 'marsislav' ),
-        'priority' => 160,
+    // ── Section: Menu & Credits (inside Footer panel) ───────────────────
+    $wp_customize->add_section( 'marsislav_footer_menu_section', array(
+        'title'    => esc_html__( 'Menu & Credits', 'marsislav' ),
+        'panel'    => 'marsislav_footer_panel',
+        'priority' => 20,
     ) );
 
     // Show footer menu
@@ -269,45 +243,35 @@ function marsislav_footer_customizer( $wp_customize ) {
         'sanitize_callback' => 'marsislav_sanitize_checkbox',
     ) );
     $wp_customize->add_control( 'show_footer_menu', array(
-        'label'   => esc_html__( 'Показвай Footer Menu', 'marsislav' ),
-        'section' => 'marsislav_footer_section',
+        'label'   => esc_html__( 'Show Footer Menu', 'marsislav' ),
+        'section' => 'marsislav_footer_menu_section',
         'type'    => 'checkbox',
+        'priority' => 10,
     ) );
 }
 add_action( 'customize_register', 'marsislav_footer_customizer' );
 
-/*
- * Customizer - Footer Credits Fields
- */
 function marsislav_footer_credits_customizer( $wp_customize ) {
 
-    // Уверете се, че секцията съществува (ако вече имаш marsislav_footer_section)
-    if ( ! $wp_customize->get_section( 'marsislav_footer_section' ) ) {
-        $wp_customize->add_section( 'marsislav_footer_section', array(
-            'title'       => esc_html__( 'Footer Settings', 'marsislav' ),
-            'priority'    => 160,
-            'description' => esc_html__( 'Customize footer credits and visibility.', 'marsislav' ),
-        ) );
-    }
-
-    // Поле 1: Powered by / лява част
+    // Field 1: Powered by / left side
     $wp_customize->add_setting( 'footer_powered_text', array(
         'default'           => esc_html__( 'Proudly powered by %s', 'marsislav' ),
-        'sanitize_callback' => 'wp_kses_post',          // позволява HTML (линкове, strong и т.н.)
+        'sanitize_callback' => 'wp_kses_post',          // allows HTML (links, strong, etc.)
         'transport'         => 'refresh',
     ) );
 
     $wp_customize->add_control( 'footer_powered_text', array(
         'label'       => esc_html__( 'Powered by text (left part)', 'marsislav' ),
-        'description' => esc_html__( 'Може да използвате %s за името на CMS. Пример: Proudly powered by %s', 'marsislav' ),
-        'section'     => 'marsislav_footer_section',
+        'description' => esc_html__( 'You can use %s for the CMS name. Example: Proudly powered by %s', 'marsislav' ),
+        'section'     => 'marsislav_footer_menu_section',
         'type'        => 'textarea',
+        'priority'    => 20,
         'input_attrs' => array(
             'rows' => 3,
         ),
     ) );
 
-    // Поле 2: Theme credits / дясна част
+    // Field 2: Theme credits / right side
     $wp_customize->add_setting( 'footer_credits_text', array(
         'default'           => esc_html__( 'Theme: %1$s by %2$s.', 'marsislav' ),
         'sanitize_callback' => 'wp_kses_post',
@@ -316,15 +280,16 @@ function marsislav_footer_credits_customizer( $wp_customize ) {
 
     $wp_customize->add_control( 'footer_credits_text', array(
         'label'       => esc_html__( 'Theme credits (right part)', 'marsislav' ),
-        'description' => esc_html__( 'Може да използвате %1$s за името на темата и %2$s за автора/линк. Пример: Theme: %1$s by %2$s.', 'marsislav' ),
-        'section'     => 'marsislav_footer_section',
+        'description' => esc_html__( 'You can use %1$s for the theme name and %2$s for the author/link. Example: Theme: %1$s by %2$s.', 'marsislav' ),
+        'section'     => 'marsislav_footer_menu_section',
         'type'        => 'textarea',
+        'priority'    => 30,
         'input_attrs' => array(
             'rows' => 3,
         ),
     ) );
 
-    // Опция за показване на credits изобщо (в случай че искаш да скриеш всичко)
+    // Option to toggle footer credits
     $wp_customize->add_setting( 'show_footer_credits', array(
         'default'           => true,
         'sanitize_callback' => 'marsislav_sanitize_checkbox',
@@ -332,9 +297,10 @@ function marsislav_footer_credits_customizer( $wp_customize ) {
     ) );
 
     $wp_customize->add_control( 'show_footer_credits', array(
-        'label'       => esc_html__( 'Показвай footer credits', 'marsislav' ),
-        'section'     => 'marsislav_footer_section',
+        'label'       => esc_html__( 'Show Footer Credits', 'marsislav' ),
+        'section'     => 'marsislav_footer_menu_section',
         'type'        => 'checkbox',
+        'priority'    => 40,
     ) );
 }
 add_action( 'customize_register', 'marsislav_footer_credits_customizer' );
@@ -378,14 +344,13 @@ function marsislav_register_block_patterns() {
 add_action( 'init', 'marsislav_register_block_patterns' );
 
 
-/*Top bar */
-
 function marsislav_topbar_customizer($wp_customize) {
 
-    // SECTION
+    // ── Section: Top Bar (inside Header panel) ───────────────────────────
     $wp_customize->add_section('marsislav_topbar_section', array(
-        'title'    => __('Top Bar Settings', 'marsislav'),
-        'priority' => 30,
+        'title'    => __( 'Top Bar', 'marsislav' ),
+        'panel'    => 'marsislav_header_panel',
+        'priority' => 10,
     ));
 
     // Enable / Disable
@@ -438,7 +403,7 @@ function marsislav_topbar_customizer($wp_customize) {
     ));
     $wp_customize->add_control('topbar_marquee_speed', array(
         'label'       => __('Marquee Speed (seconds)', 'marsislav'),
-        'description' => __('По-малко = по-бързо. Препоръчително: 8-30s.', 'marsislav'),
+        'description' => __('Lower = faster. Recommended: 8–30s.', 'marsislav'),
         'section'     => 'marsislav_topbar_section',
         'type'        => 'range',
         'input_attrs' => array( 'min' => 3, 'max' => 60, 'step' => 1 ),
@@ -459,7 +424,7 @@ function marsislav_topbar_customizer($wp_customize) {
 
     // Background color
     $wp_customize->add_setting('topbar_bg_color', array(
-        'default'           => '#000000',
+        'default'           => '#1f2937',
         'transport'         => 'postMessage',
         'sanitize_callback' => 'sanitize_hex_color',
     ));
@@ -497,8 +462,8 @@ function marsislav_topbar_customizer($wp_customize) {
     ));
 
     $wp_customize->add_control('topbar_col1_text', array(
-        'label'       => __('Текст Колона 1 (ляво)', 'marsislav'),
-        'description' => __('Показва се в лявата колона при избор на 2 колони. Поддържа HTML.', 'marsislav'),
+        'label'       => __('Column 1 Text (left)', 'marsislav'),
+        'description' => __('Shown in left column when 2 columns is selected. Supports HTML.', 'marsislav'),
         'section'     => 'marsislav_topbar_section',
         'type'        => 'textarea',
     ));
@@ -511,8 +476,8 @@ function marsislav_topbar_customizer($wp_customize) {
     ));
 
     $wp_customize->add_control('topbar_col2_text', array(
-        'label'       => __('Текст Колона 2 (дясно)', 'marsislav'),
-        'description' => __('Показва се в дясната колона при избор на 2 колони. Поддържа HTML.', 'marsislav'),
+        'label'       => __('Column 2 Text (right)', 'marsislav'),
+        'description' => __('Shown in right column when 2 columns is selected. Supports HTML.', 'marsislav'),
         'section'     => 'marsislav_topbar_section',
         'type'        => 'textarea',
     ));
@@ -537,7 +502,7 @@ add_action( 'customize_preview_init', 'marsislav_topbar_preview_js' );
  * Output inline CSS for topbar colors (frontend + customizer preview)
  */
 function marsislav_topbar_inline_css() {
-    $bg    = get_theme_mod( 'topbar_bg_color', '#000000' );
+    $bg    = get_theme_mod( 'topbar_bg_color', '#1f2937' );
     $color = get_theme_mod( 'topbar_text_color', '#ffffff' );
     $speed = absint( get_theme_mod( 'topbar_marquee_speed', 18 ) );
     $speed = max( 3, min( 60, $speed ) );
@@ -562,51 +527,114 @@ add_action( 'wp_head', 'marsislav_topbar_inline_css' );
 
 
 // =============================================================================
-// SIDEBAR ENGINE - FINAL MERGED VERSION
+// Sidebar Engine — widget area registration and Customizer integration
 // =============================================================================
 
 /**
- * 1. Регистрация на настройките в Customizer
+ * Helper – available sidebar choices for a given context.
+ * Returns sidebar-id => label pairs, always including 'disabled'.
  */
-function marsislav_sidebar_settings( $wp_customize ) {
-    $wp_customize->add_section( 'marsislav_sidebar_section', array(
-        'title'    => __( 'Sidebar Настройки', 'marsislav' ),
-        'priority' => 35,
-    ) );
-
+function marsislav_sidebar_choices_for( $context ) {
     $choices = array(
-        'right'    => __( 'Дясно', 'marsislav' ),
-        'left'     => __( 'Ляво', 'marsislav' ),
-        'disabled' => __( 'Изключен (Full Width)', 'marsislav' ),
+        'disabled' => __( 'Disabled (Full Width)', 'marsislav' ),
     );
+
+    // Map context to its "own" sidebar first, then offer the rest.
+    $all = array(
+        'sidebar-blog'    => __( 'Blog Sidebar', 'marsislav' ),
+        'sidebar-post'    => __( 'Post Sidebar', 'marsislav' ),
+        'sidebar-page'    => __( 'Page Sidebar', 'marsislav' ),
+        'sidebar-shop'    => __( 'Shop Sidebar', 'marsislav' ),
+        'sidebar-product' => __( 'Product Sidebar', 'marsislav' ),
+    );
+
+    return array_merge( $choices, $all );
+}
+
+function marsislav_sidebar_settings( $wp_customize ) {
+
+    $position_choices = array(
+        'right'    => __( 'Right', 'marsislav' ),
+        'left'     => __( 'Left', 'marsislav' ),
+        'disabled' => __( 'Disabled (Full Width)', 'marsislav' ),
+    );
+
+    $sidebar_widget_choices = marsislav_sidebar_choices_for( '' );
+
+    // =========================================================
+    // Panel structure:
+    //
+    //   Sidebar (panel)
+    //   ├── Sidebar Design          ← priority 10  (added via colors-customizer.php)
+    //   ├── Position: Blog          ← priority 30
+    //   ├── Position: Single Post   ← priority 40
+    //   ├── Position: Page          ← priority 50
+    //   ├── Position: Home Page     ← priority 60
+    //   ├── Position: Shop          ← priority 70
+    //   └── Position: Product Page  ← priority 80
+    //
+    // Each 'Position:' section has two controls:
+    //   • Position    (left | right | disabled)
+    //   • Widget Area (which sidebar widget area to render)
+    // =========================================================
 
     $contexts = array(
-        'sidebar_blog'    => __( 'Блог / Архив', 'marsislav' ),
-        'sidebar_post'    => __( 'Пост', 'marsislav' ),
-        'sidebar_page'    => __( 'Страница', 'marsislav' ),
-        'sidebar_home'    => __( 'Начална страница', 'marsislav' ),
-        'sidebar_shop'    => __( 'Магазин (WooCommerce)', 'marsislav' ),
-        'sidebar_product' => __( 'Продуктова страница', 'marsislav' ),
+        // ctx_key => [ section title, position default, sidebar-id default, priority ]
+        'blog'    => array( __( 'Position: Blog / Archive',    'marsislav' ), 'right',    'sidebar-blog',    30 ),
+        'post'    => array( __( 'Position: Single Post',        'marsislav' ), 'right',    'sidebar-post',    40 ),
+        'page'    => array( __( 'Position: Page',               'marsislav' ), 'disabled', 'sidebar-page',    50 ),
+        'home'    => array( __( 'Position: Home Page',          'marsislav' ), 'disabled', 'sidebar-blog',    60 ),
+        'shop'    => array( __( 'Position: Shop (WooCommerce)', 'marsislav' ), 'right',    'sidebar-shop',    70 ),
+        'product' => array( __( 'Position: Product Page',       'marsislav' ), 'disabled', 'sidebar-product', 80 ),
     );
 
-    foreach ( $contexts as $key => $label ) {
-        $wp_customize->add_setting( $key, array(
-            'default'           => 'right',
-            'transport'         => 'postMessage', // Позволява динамична промяна без рефреш
+    foreach ( $contexts as $ctx => $config ) {
+        list( $title, $pos_default, $id_default, $priority ) = $config;
+
+        $section_id  = 'marsislav_sidebar_section_' . $ctx;
+        $pos_key     = 'sidebar_pos_' . $ctx;
+        $sidebar_key = 'sidebar_id_' . $ctx;
+
+        /* ---- Section ---- */
+        $wp_customize->add_section( $section_id, array(
+            'title'    => $title,
+            'panel'    => 'marsislav_sidebar_panel',
+            'priority' => $priority,
+        ) );
+
+        /* ---- Position ---- */
+        $wp_customize->add_setting( $pos_key, array(
+            'default'           => $pos_default,
+            'transport'         => 'postMessage',
             'sanitize_callback' => 'marsislav_sanitize_sidebar_position',
         ) );
-        $wp_customize->add_control( $key, array(
-            'label'   => $label,
-            'section' => 'marsislav_sidebar_section',
-            'type'    => 'select',
-            'choices' => $choices,
+        $wp_customize->add_control( $pos_key, array(
+            'label'    => __( 'Position', 'marsislav' ),
+            'section'  => $section_id,
+            'type'     => 'select',
+            'choices'  => $position_choices,
+            'priority' => 10,
+        ) );
+
+        /* ---- Widget Area ---- */
+        $wp_customize->add_setting( $sidebar_key, array(
+            'default'           => $id_default,
+            'transport'         => 'refresh',
+            'sanitize_callback' => 'marsislav_sanitize_sidebar_id',
+        ) );
+        $wp_customize->add_control( $sidebar_key, array(
+            'label'    => __( 'Widget Area', 'marsislav' ),
+            'section'  => $section_id,
+            'type'     => 'select',
+            'choices'  => $sidebar_widget_choices,
+            'priority' => 20,
         ) );
     }
 }
 add_action( 'customize_register', 'marsislav_sidebar_settings' );
 
 /**
- * 2. Почистване на данните
+ * Sanitize helper callbacks.
  */
 /**
  * Sanitize checkbox / boolean values.
@@ -633,27 +661,51 @@ function marsislav_sanitize_sidebar_position( $val ) {
     return in_array( $val, array( 'left', 'right', 'disabled' ), true ) ? $val : 'right';
 }
 
+function marsislav_sanitize_sidebar_id( $val ) {
+    $valid = array( 'disabled', 'sidebar-blog', 'sidebar-post', 'sidebar-page', 'sidebar-shop', 'sidebar-product' );
+    return in_array( $val, $valid, true ) ? $val : 'sidebar-blog';
+}
+
 /**
- * 3. Логика за определяне на позицията (автоматично разпознава къде се намираме)
+ * 3. Determine sidebar position (auto-detects current context)
  */
 function marsislav_get_sidebar_position() {
-    // WooCommerce проверки
+    // WooCommerce checks
     if ( function_exists( 'is_shop' ) ) {
-        if ( is_shop() || is_product_category() || is_product_tag() ) return get_theme_mod( 'sidebar_shop', 'right' );
-        if ( is_product() ) return get_theme_mod( 'sidebar_product', 'right' );
+        if ( is_shop() || is_product_category() || is_product_tag() ) return get_theme_mod( 'sidebar_pos_shop', 'right' );
+        if ( is_product() ) return get_theme_mod( 'sidebar_pos_product', 'disabled' );
     }
     
-    // Стандартни страници
-    if ( is_front_page() && ! is_home() )          return get_theme_mod( 'sidebar_home', 'right' );
-    if ( is_home() || is_archive() || is_search() ) return get_theme_mod( 'sidebar_blog', 'right' );
-    if ( is_singular( 'post' ) )                    return get_theme_mod( 'sidebar_post', 'right' );
-    if ( is_page() )                                return get_theme_mod( 'sidebar_page', 'right' );
+    // Standard pages
+    if ( is_front_page() && ! is_home() )           return get_theme_mod( 'sidebar_pos_home', 'disabled' );
+    if ( is_home() || is_archive() || is_search() )  return get_theme_mod( 'sidebar_pos_blog', 'right' );
+    if ( is_singular( 'post' ) )                     return get_theme_mod( 'sidebar_pos_post', 'right' );
+    if ( is_page() )                                 return get_theme_mod( 'sidebar_pos_page', 'disabled' );
     
     return 'disabled';
 }
 
 /**
- * 4. Добавяне на класове към <body> (полезно за допълнителен CSS)
+ * 3b. Determine which sidebar widget area to display for the current context.
+ */
+function marsislav_get_sidebar_id() {
+    // WooCommerce checks
+    if ( function_exists( 'is_shop' ) ) {
+        if ( is_shop() || is_product_category() || is_product_tag() ) return get_theme_mod( 'sidebar_id_shop', 'sidebar-shop' );
+        if ( is_product() ) return get_theme_mod( 'sidebar_id_product', 'sidebar-product' );
+    }
+
+    // Standard pages
+    if ( is_front_page() && ! is_home() )           return get_theme_mod( 'sidebar_id_home', 'sidebar-blog' );
+    if ( is_home() || is_archive() || is_search() )  return get_theme_mod( 'sidebar_id_blog', 'sidebar-blog' );
+    if ( is_singular( 'post' ) )                     return get_theme_mod( 'sidebar_id_post', 'sidebar-post' );
+    if ( is_page() )                                 return get_theme_mod( 'sidebar_id_page', 'sidebar-page' );
+
+    return 'sidebar-blog';
+}
+
+/**
+ * Add sidebar-related body classes for CSS targeting.
  */
 function marsislav_sidebar_body_class( $classes ) {
     $position = marsislav_get_sidebar_position();
@@ -668,7 +720,7 @@ function marsislav_sidebar_body_class( $classes ) {
 add_filter( 'body_class', 'marsislav_sidebar_body_class' );
 
 /**
- * 5. Свързване на JavaScript файла с Customizer Preview
+ * Enqueue Customizer preview JS for live sidebar updates.
  */
 function marsislav_sidebar_preview_js() {
     wp_enqueue_script( 
@@ -679,26 +731,24 @@ function marsislav_sidebar_preview_js() {
         true 
     );
 
-    // Изпращаме списък с всички настройки към JS файла
+    // Send all settings to the JS file
     wp_localize_script( 'marsislav-customizer-sidebar', 'marsislavSidebarVars', array(
         'settings' => array( 
-            'sidebar_blog', 'sidebar_post', 'sidebar_page', 
-            'sidebar_home', 'sidebar_shop', 'sidebar_product' 
+            'sidebar_pos_blog', 'sidebar_pos_post', 'sidebar_pos_page', 
+            'sidebar_pos_home', 'sidebar_pos_shop', 'sidebar_pos_product' 
         )
     ) );
 }
 add_action( 'customize_preview_init', 'marsislav_sidebar_preview_js' );
 
 
-/* ============================================================
- * FOOTER SIDEBAR — Регистрация на widget зони (1-4 колони)
- * ============================================================ */
+/* ── Footer Widget Areas — register sidebar areas (1–4 columns) ─── */
 function marsislav_register_footer_sidebars() {
     for ( $i = 1; $i <= 4; $i++ ) {
         register_sidebar( array(
-            'name'          => sprintf( esc_html__( 'Footer Колона %d', 'marsislav' ), $i ),
+            'name'          => sprintf( esc_html__( 'Footer Column %d', 'marsislav' ), $i ),
             'id'            => 'footer-sidebar-' . $i,
-            'description'   => sprintf( esc_html__( 'Widgets за Footer колона %d', 'marsislav' ), $i ),
+            'description'   => sprintf( esc_html__( 'Widgets for Footer column %d', 'marsislav' ), $i ),
             'before_widget' => '<div id="%1$s" class="footer-widget %2$s">',
             'after_widget'  => '</div>',
             'before_title'  => '<h3 class="footer-widget-title">',
@@ -709,46 +759,44 @@ function marsislav_register_footer_sidebars() {
 add_action( 'widgets_init', 'marsislav_register_footer_sidebars' );
 
 
-/* ============================================================
- * FOOTER SIDEBAR — Customizer настройки
- * ============================================================ */
+/* ── Footer Widget Areas — Customizer settings ──────────────────── */
 function marsislav_footer_sidebar_customizer( $wp_customize ) {
 
-    if ( ! $wp_customize->get_section( 'marsislav_footer_section' ) ) {
-        $wp_customize->add_section( 'marsislav_footer_section', array(
-            'title'    => esc_html__( 'Footer Settings', 'marsislav' ),
-            'priority' => 160,
-        ) );
-    }
+    // ── Section: Widget Areas (inside Footer panel) ──────────────────────
+    $wp_customize->add_section( 'marsislav_footer_widgets_section', array(
+        'title'    => esc_html__( 'Widget Areas', 'marsislav' ),
+        'panel'    => 'marsislav_footer_panel',
+        'priority' => 30,
+    ) );
 
-    // Включи/изключи footer sidebar
+    // Enable/disable footer sidebar
     $wp_customize->add_setting( 'footer_sidebar_enable', array(
         'default'           => true,
         'transport'         => 'postMessage',
         'sanitize_callback' => 'marsislav_sanitize_checkbox',
     ) );
     $wp_customize->add_control( 'footer_sidebar_enable', array(
-        'label'    => esc_html__( 'Показвай Footer Sidebar (widget зони)', 'marsislav' ),
-        'section'  => 'marsislav_footer_section',
+        'label'    => esc_html__( 'Show Footer Widget Areas', 'marsislav' ),
+        'section'  => 'marsislav_footer_widgets_section',
         'type'     => 'checkbox',
         'priority' => 5,
     ) );
 
-    // Брой колони
+    // Number of columns
     $wp_customize->add_setting( 'footer_sidebar_columns', array(
         'default'           => '3',
         'transport'         => 'postMessage',
         'sanitize_callback' => 'marsislav_sanitize_footer_columns',
     ) );
     $wp_customize->add_control( 'footer_sidebar_columns', array(
-        'label'   => esc_html__( 'Брой колони в Footer Sidebar', 'marsislav' ),
-        'section' => 'marsislav_footer_section',
+        'label'   => esc_html__( 'Number of Columns', 'marsislav' ),
+        'section' => 'marsislav_footer_widgets_section',
         'type'    => 'select',
         'choices' => array(
-            '1' => esc_html__( '1 колона', 'marsislav' ),
-            '2' => esc_html__( '2 колони', 'marsislav' ),
-            '3' => esc_html__( '3 колони', 'marsislav' ),
-            '4' => esc_html__( '4 колони', 'marsislav' ),
+            '1' => esc_html__( '1 Column', 'marsislav' ),
+            '2' => esc_html__( '2 Columns', 'marsislav' ),
+            '3' => esc_html__( '3 Columns', 'marsislav' ),
+            '4' => esc_html__( '4 Columns', 'marsislav' ),
         ),
         'priority' => 6,
     ) );
@@ -756,9 +804,7 @@ function marsislav_footer_sidebar_customizer( $wp_customize ) {
 add_action( 'customize_register', 'marsislav_footer_sidebar_customizer' );
 
 
-/* ============================================================
- * FOOTER SIDEBAR — Customizer Preview JS
- * ============================================================ */
+/* ── Footer Widget Areas — Customizer preview JS ────────────────── */
 function marsislav_footer_sidebar_preview_js() {
     wp_enqueue_script(
         'marsislav-customizer-footer-sidebar',

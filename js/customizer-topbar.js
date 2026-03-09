@@ -1,7 +1,7 @@
 /* global wp, jQuery */
 /**
  * Topbar Live Preview — marsislav theme
- * Всички промени са динамични (postMessage)
+ * All changes are live (postMessage)
  */
 (function ($) {
 

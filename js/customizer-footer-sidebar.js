@@ -1,12 +1,12 @@
 /**
  * Footer Sidebar — Dynamic Customizer Preview
- * Всичките 4 колони са винаги в DOM-а.
- * CSS класът footer-columns-X контролира grid layout-а.
- * JS само показва/скрива колоните над избрания брой.
+ * All 4 columns are always in the DOM.
+ * The CSS class footer-columns-X controls the grid layout.
+ * JS only shows/hides columns beyond the selected count.
  */
 ( function( $, api ) {
 
-    // --- Брой колони ---
+    // --- Column count ---
     api( 'footer_sidebar_columns', function( value ) {
         value.bind( function( newVal ) {
             var $area = $( '#footer-sidebar-area' );
@@ -14,12 +14,12 @@
 
             var cols = parseInt( newVal, 10 ) || 3;
 
-            // Обновяваме CSS класа за grid
+            // Update the CSS class for the grid
             $area.removeClass( 'footer-columns-1 footer-columns-2 footer-columns-3 footer-columns-4' )
                  .addClass( 'footer-columns-' + cols )
                  .attr( 'data-columns', cols );
 
-            // Показваме/скриваме колоните по data-col атрибут
+            // Show/hide columns by data-col attribute
             $area.find( '.footer-sidebar-col' ).each( function() {
                 var colIndex = parseInt( $( this ).attr( 'data-col' ), 10 );
                 if ( colIndex <= cols ) {
@@ -31,7 +31,7 @@
         } );
     } );
 
-    // --- Включи/изключи footer sidebar ---
+    // --- Enable/disable footer sidebar ---
     api( 'footer_sidebar_enable', function( value ) {
         value.bind( function( newVal ) {
             if ( newVal ) {

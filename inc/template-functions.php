@@ -16,12 +16,8 @@ function marsislav_body_classes( $classes ) {
 	if ( ! is_singular() ) {
 		$classes[] = 'hfeed';
 	}
-
-	// Adds a class of no-sidebar when there is no sidebar present.
-	if ( ! is_active_sidebar( 'sidebar-1' ) ) {
-		$classes[] = 'no-sidebar';
-	}
-
+	// Note: no-sidebar / has-sidebar / sidebar-left / sidebar-right
+	// are handled by marsislav_sidebar_body_class() in functions.php
 	return $classes;
 }
 add_filter( 'body_class', 'marsislav_body_classes' );

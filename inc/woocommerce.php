@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 if ( ! class_exists( 'WooCommerce' ) ) return;
 
 /* ============================================================
- * Helper — SVG на количката (едно място)
+ * Helper — Cart SVG icon
  * ============================================================ */
 
 function marsislav_cart_svg() {
@@ -23,7 +23,7 @@ function marsislav_cart_svg() {
 }
 
 /* ============================================================
- * Helper — позволени тагове за цени (WC HTML)
+ * Helper — allowed tags for prices (WC HTML)
  * ============================================================ */
 
 function marsislav_price_kses( $html ) {
@@ -38,7 +38,7 @@ function marsislav_price_kses( $html ) {
 }
 
 /* ============================================================
- * Процент отстъпка вместо "On sale"
+ * Percentage discount instead of "On sale"
  * ============================================================ */
 
 function marsislav_sale_flash( $html, $post, $product ) {
@@ -80,7 +80,7 @@ add_filter( 'woocommerce_sale_flash', 'marsislav_sale_flash', 10, 3 );
 
 
 /* ============================================================
- * Количка icon в навигацията
+ * Cart icon in navigation
  * ============================================================ */
 
 function marsislav_cart_nav_item( $items, $args ) {
@@ -97,7 +97,7 @@ function marsislav_cart_nav_item( $items, $args ) {
 
     $items .= '<li class="menu-item marsislav-cart-item' . ( $count > 0 ? ' has-items' : '' ) . '">'
             .   '<a href="' . esc_url( $cart_url ) . '" class="marsislav-cart-link" '
-            .       'aria-label="' . esc_attr__( 'Количка', 'marsislav' ) . '">'
+            .       'aria-label="' . esc_attr__( 'Cart', 'marsislav' ) . '">'
             .     '<span class="cart-icon">' . marsislav_cart_svg() . '</span>'
             .     $badge
             .   '</a>'
@@ -151,18 +151,18 @@ function marsislav_build_cart_dropdown() {
 
     $total = marsislav_price_kses( WC()->cart->get_cart_total() );
 
-    return '<div class="marsislav-cart-dropdown" role="dialog" aria-label="' . esc_attr__( 'Съдържание на количката', 'marsislav' ) . '">'
+    return '<div class="marsislav-cart-dropdown" role="dialog" aria-label="' . esc_attr__( 'Cart Contents', 'marsislav' ) . '">'
          .   '<div class="cart-dropdown-items">' . $items_html . '</div>'
          .   '<div class="cart-dropdown-footer">'
-         .     '<span class="cart-total-label">' . esc_html__( 'Общо:', 'marsislav' ) . '</span>'
+         .     '<span class="cart-total-label">' . esc_html__( 'Total:', 'marsislav' ) . '</span>'
          .     '<span class="cart-total-value">' . $total . '</span>'
          .   '</div>'
          .   '<div class="cart-dropdown-actions">'
          .     '<a href="' . esc_url( wc_get_cart_url() ) . '" class="cart-dropdown-btn">'
-         .       esc_html__( 'Виж количката', 'marsislav' )
+         .       esc_html__( 'View Cart', 'marsislav' )
          .     '</a>'
          .     '<a href="' . esc_url( wc_get_checkout_url() ) . '" class="cart-dropdown-btn cart-checkout-btn">'
-         .       esc_html__( 'Плати', 'marsislav' )
+         .       esc_html__( 'Checkout', 'marsislav' )
          .     '</a>'
          .   '</div>'
          . '</div>';
@@ -170,8 +170,8 @@ function marsislav_build_cart_dropdown() {
 
 
 /* ============================================================
- * AJAX fragment — обновява при добавяне без reload
- * Selector е .marsislav-cart-item (целият <li>)
+ * AJAX fragment — updates on add-to-cart without reload
+ * Selector is .marsislav-cart-item (entire <li>)
  * ============================================================ */
 
 function marsislav_cart_fragments( $fragments ) {
@@ -185,9 +185,12 @@ function marsislav_cart_fragments( $fragments ) {
     ob_start();
     echo '<li class="menu-item marsislav-cart-item' . ( $count > 0 ? ' has-items' : '' ) . '">';
     echo '<a href="' . esc_url( $cart_url ) . '" class="marsislav-cart-link" '
-       . 'aria-label="' . esc_attr__( 'Количка', 'marsislav' ) . '">';
+       . 'aria-label="' . esc_attr__( 'Cart', 'marsislav' ) . '">';
     echo '<span class="cart-icon">' . marsislav_cart_svg() . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-    echo $badge; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+    echo wp_kses(
+        $badge,
+        array( 'span' => array( 'class' => array() ) )
+    );
     echo '</a>';
     echo marsislav_build_cart_dropdown(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     echo '</li>';

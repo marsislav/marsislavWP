@@ -16,9 +16,9 @@ $sidebar_pos = marsislav_get_sidebar_position();
         <?php
         while ( have_posts() ) : the_post(); ?>
             <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-                <?php if ( ! is_front_page() ) : ?>
-                    <header class="entry-header">
-                        <?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
+                <?php if ( ! is_front_page() && (bool) get_theme_mod( 'show_title_page', true ) ) : ?>
+                    <header class="entry-header page-entry-header">
+                        <?php the_title( '<h1 class="entry-title page-title-h1">', '</h1>' ); ?>
                     </header>
                 <?php endif; ?>
                 <div class="entry-content">
@@ -35,9 +35,9 @@ $sidebar_pos = marsislav_get_sidebar_position();
         endwhile; ?>
     </main>
 
-    <?php if ( is_active_sidebar( 'sidebar-1' ) ) : ?>
+    <?php if ( marsislav_get_sidebar_position() !== 'disabled' && is_active_sidebar( marsislav_get_sidebar_id() ) ) : ?>
         <aside id="secondary" class="widget-area sidebar-column">
-            <?php dynamic_sidebar( 'sidebar-1' ); ?>
+            <?php dynamic_sidebar( marsislav_get_sidebar_id() ); ?>
         </aside>
     <?php endif; ?>
 

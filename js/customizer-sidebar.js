@@ -11,13 +11,13 @@
 
                 if ( ! $container.length ) return;
 
-                // Сменяме само класа за подредба — CSS-ът се грижи за всичко останало
+                // Only change the layout class — CSS handles the rest
                 $container.removeClass( 'layout-left layout-right layout-disabled' )
                           .addClass( 'layout-' + newVal );
-                // Забележка: НЕ използваме $sidebar.hide()/show() защото
-                // това крие #secondary с display:none inline и може да засегне
-                // footer-а и околните елементи. CSS класът layout-disabled
-                // вече скрива sidebar-а коректно.
+                // Note: do NOT use $sidebar.hide()/show() because
+                // it hides #secondary with inline display:none and may affect
+                // the footer and surrounding elements. The CSS class layout-disabled
+                // already hides the sidebar correctly.
             } );
         } );
     } );

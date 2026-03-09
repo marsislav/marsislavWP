@@ -1,7 +1,7 @@
 /**
  * Dark Mode — filter-based approach
- * Потъмнява ВСИЧКО: солидни цветове, градиенти, изображения.
- * Текстът остава четим чрез selective invert.
+ * Darkens EVERYTHING: solid colors, gradients, images.
+ * Text stays readable via selective invert.
  * @package marsislav
  */
 ( function () {
@@ -35,7 +35,7 @@
         }
     }
 
-    /* Прилагаме ВЕДНАГА — преди paint, без flash */
+    /* Apply IMMEDIATELY — before paint, no flash */
     if ( getInitialMode() ) {
         html.classList.add( CLASS );
     }

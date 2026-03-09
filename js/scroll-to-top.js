@@ -17,7 +17,7 @@
     }
 
     window.addEventListener( 'scroll', onScroll, { passive: true } );
-    onScroll(); // Проверка при зареждане
+    onScroll(); // Check on page load
 
     btn.addEventListener( 'click', function () {
         window.scrollTo( { top: 0, behavior: 'smooth' } );
