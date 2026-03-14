@@ -1661,7 +1661,7 @@ textarea {
     width: 100%;
 }
 
-/* Адаптивност */
+/* Responsive */
 @media (max-width: 920px) {
     #content-sidebar-wrap {
         flex-direction: column !important;
@@ -1979,7 +1979,7 @@ textarea {
 }
 
 /* ================================================
-   SCROLL TO TOP — Бутон нагоре
+   SCROLL TO TOP
    ================================================ */
 
 .marsislav-scroll-top {
@@ -2060,6 +2060,85 @@ textarea {
 .marsislav-dark-toggle .dm-icon--sun  { display: none; }
 .dark-mode .marsislav-dark-toggle .dm-icon--moon { display: none; }
 .dark-mode .marsislav-dark-toggle .dm-icon--sun  { display: flex; }
+
+/* ================================================
+   HEADER SEARCH TOGGLE & OVERLAY
+   ================================================ */
+
+.marsislav-search-toggle {
+    display: flex; align-items: center; justify-content: center;
+    width: 38px; height: 38px; border-radius: 50%;
+    background: transparent; border: 1px solid rgba(255,255,255,0.2);
+    color: inherit; cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    flex-shrink: 0; padding: 0; margin-left: 8px;
+}
+.marsislav-search-toggle:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.4);
+    transform: scale(1.1);
+}
+
+/* Overlay backdrop */
+.marsislav-search-overlay {
+    position: fixed; inset: 0; z-index: 99999;
+    background: rgba(0,0,0,0.55);
+    display: flex; align-items: flex-start; justify-content: center;
+    padding-top: 100px;
+    animation: marsislav-overlay-in 0.2s ease;
+}
+.marsislav-search-overlay[hidden] { display: none; }
+
+@keyframes marsislav-overlay-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.marsislav-search-overlay__inner {
+    position: relative;
+    background: var(--color-bg, #fff);
+    border-radius: 12px;
+    padding: 24px 28px;
+    width: min(640px, 92vw);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    animation: marsislav-overlay-slide 0.2s ease;
+}
+
+@keyframes marsislav-overlay-slide {
+    from { transform: translateY(-16px); opacity: 0; }
+    to   { transform: translateY(0);     opacity: 1; }
+}
+
+.marsislav-search-overlay__inner .search-form {
+    display: flex; gap: 8px;
+}
+.marsislav-search-overlay__inner .search-field {
+    flex: 1; font-size: 1.1rem;
+    padding: 10px 14px; border-radius: 8px;
+    border: 1px solid var(--color-border, #ddd);
+    background: var(--color-input-bg, #f5f5f5);
+    color: var(--color-text, #111);
+}
+.marsislav-search-overlay__inner .search-submit {
+    padding: 10px 20px; border-radius: 8px;
+    background: var(--color-accent, #333);
+    color: #fff; border: none; cursor: pointer;
+    font-size: 0.95rem;
+    transition: opacity 0.15s;
+}
+.marsislav-search-overlay__inner .search-submit:hover { opacity: 0.8; }
+
+.marsislav-search-overlay__close {
+    position: absolute; top: 10px; right: 12px;
+    background: none; border: none; cursor: pointer;
+    color: var(--color-text-muted, #666); padding: 6px;
+    border-radius: 50%; display: flex; align-items: center;
+    transition: color 0.15s, background 0.15s;
+}
+.marsislav-search-overlay__close:hover {
+    color: var(--color-text, #111);
+    background: rgba(0,0,0,0.08);
+}
 
 /* ================================================
    DARK MODE — grayscale 

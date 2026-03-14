@@ -176,6 +176,11 @@ function marsislav_scripts() {
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
+
+	// Header Search Overlay
+	if ( (bool) get_theme_mod( 'header_show_search', true ) ) {
+		wp_enqueue_script( 'marsislav-search-overlay', get_template_directory_uri() . '/js/search-overlay.js', array(), _S_VERSION, true );
+	}
 }
 add_action( 'wp_enqueue_scripts', 'marsislav_scripts' );
 
@@ -203,6 +208,7 @@ if ( class_exists( 'WooCommerce' ) ) {
     require get_template_directory() . '/inc/woocommerce.php';
 }
 require get_template_directory() . '/inc/colors-customizer.php';
+require get_template_directory() . '/inc/blog-customizer.php';
 
 /**
  * Load Jetpack compatibility file.

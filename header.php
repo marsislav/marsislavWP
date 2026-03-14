@@ -138,6 +138,22 @@ $topbar_col2    = (string) get_theme_mod( 'topbar_col2_text', '' );
             </button>
             <?php endif; ?>
 
+            <?php if ( (bool) get_theme_mod( 'header_show_search', true ) ) : ?>
+            <button class="marsislav-search-toggle"
+                    aria-expanded="false"
+                    aria-label="<?php esc_attr_e( 'Toggle Search', 'marsislav' ); ?>">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </button>
+            <div class="marsislav-search-overlay" id="marsislav-search-overlay" hidden>
+                <div class="marsislav-search-overlay__inner">
+                    <?php get_search_form(); ?>
+                    <button class="marsislav-search-overlay__close" aria-label="<?php esc_attr_e( 'Close Search', 'marsislav' ); ?>">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                </div>
+            </div>
+            <?php endif; ?>
+
         </div><!-- .header-inner -->
     </header><!-- #masthead -->
 

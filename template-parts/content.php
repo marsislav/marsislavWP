@@ -7,9 +7,14 @@
  * @package marsislav
  */
 
-$has_thumb = has_post_thumbnail();
-$categories = get_the_category();
-$is_singular = is_singular();
+$has_thumb       = has_post_thumbnail();
+$categories      = get_the_category();
+$is_singular     = is_singular();
+
+// Blog Meta visibility settings
+$show_category = (bool) get_theme_mod( 'blog_show_category', true );
+$show_author   = (bool) get_theme_mod( 'blog_show_author',   true );
+$show_date     = (bool) get_theme_mod( 'blog_show_date',     true );
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'post-card' . ( $has_thumb ? ' has-thumbnail' : ' no-thumbnail' ) ); ?>>
@@ -19,7 +24,7 @@ $is_singular = is_singular();
             <a href="<?php the_permalink(); ?>" tabindex="-1" aria-hidden="true">
                 <?php the_post_thumbnail( 'large' ); ?>
             </a>
-            <?php if ( $categories ) : ?>
+            <?php if ( $categories && $show_category ) : ?>
                 <span class="post-card__category">
                     <a href="<?php echo esc_url( get_category_link( $categories[0]->term_id ) ); ?>">
                         <?php echo esc_html( $categories[0]->name ); ?>
@@ -34,7 +39,7 @@ $is_singular = is_singular();
         <header class="post-card__header">
 
             <?php if ( $is_singular ) : ?>
-                <?php if ( $categories ) : ?>
+                <?php if ( $categories && $show_category ) : ?>
                     <div class="post-card__cats">
                         <?php foreach ( $categories as $cat ) : ?>
                             <a class="post-card__cat-link" href="<?php echo esc_url( get_category_link( $cat->term_id ) ); ?>">
@@ -45,7 +50,7 @@ $is_singular = is_singular();
                 <?php endif; ?>
                 <?php the_title( '<h1 class="post-card__title entry-title">', '</h1>' ); ?>
             <?php else : ?>
-                <?php if ( $categories && ! $has_thumb ) : ?>
+                <?php if ( $categories && ! $has_thumb && $show_category ) : ?>
                     <span class="post-card__cat-inline">
                         <a href="<?php echo esc_url( get_category_link( $categories[0]->term_id ) ); ?>">
                             <?php echo esc_html( $categories[0]->name ); ?>
@@ -57,17 +62,23 @@ $is_singular = is_singular();
 
             <?php if ( 'post' === get_post_type() ) : ?>
                 <div class="post-card__meta entry-meta">
+                    <?php if ( $show_date ) : ?>
                     <span class="post-card__date">
                         <time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>">
                             <?php echo esc_html( get_the_date() ); ?>
                         </time>
                     </span>
+                    <?php endif; ?>
+                    <?php if ( $show_date && $show_author ) : ?>
                     <span class="post-card__sep" aria-hidden="true">&middot;</span>
+                    <?php endif; ?>
+                    <?php if ( $show_author ) : ?>
                     <span class="post-card__author">
                         <a href="<?php echo esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ); ?>">
                             <?php the_author(); ?>
                         </a>
                     </span>
+                    <?php endif; ?>
                     <?php if ( ! $is_singular && has_excerpt() ) : ?>
                         <span class="post-card__sep" aria-hidden="true">&middot;</span>
                         <span class="post-card__readtime">

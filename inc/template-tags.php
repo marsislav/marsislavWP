@@ -75,6 +75,7 @@ if ( ! function_exists( 'marsislav_entry_footer' ) ) :
 		}
 
 		if ( ! is_single() && ! post_password_required() && ( comments_open() || get_comments_number() ) ) {
+		if ( (bool) get_theme_mod( 'blog_show_comments', true ) ) {
 			echo '<span class="comments-link">';
 			comments_popup_link(
 				sprintf(
@@ -92,6 +93,7 @@ if ( ! function_exists( 'marsislav_entry_footer' ) ) :
 			);
 			echo '</span>';
 		}
+	}
 
 		edit_post_link(
 			sprintf(
