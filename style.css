@@ -642,6 +642,9 @@ textarea {
 /* Old _s navigation block removed */
 
 
+nav#site-navigation ul li {
+	list-style-type:none!important;
+}
 
 .site-main .comment-navigation,
 .site-main
