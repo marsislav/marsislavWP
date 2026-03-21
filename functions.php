@@ -78,6 +78,10 @@ function marsislav_setup() {
 	add_theme_support( 'responsive-embeds' );
 	add_theme_support( 'align-wide' );
 	add_theme_support( 'editor-content-width', 760 );
+	add_theme_support('editor-styles');
+	add_theme_support('custom-spacing');
+add_theme_support('custom-line-height');
+add_theme_support('custom-units');
 
 	// Editor styling so the block editor matches the front end.
 	add_editor_style( 'style.css' );
