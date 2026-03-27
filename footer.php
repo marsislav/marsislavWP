@@ -49,15 +49,17 @@ for ( $i = 1; $i <= 4; $i++ ) {
 
 	<div class="site-info">
 		<?php if ( 'two-column' === $footer_layout ) : ?>
-			<div class="footer-col footer-col-1">
-				<div class="footer-copyright">
-					<?php echo wp_kses_post( $copyright_text ); ?>
-				</div>
-			</div>
-			<div class="footer-col footer-col-2">
-				<div class="footer-col2-content">
-					<?php echo wp_kses_post( $footer_col2_text ); ?>
-				</div>
+			<div class="info-content">	
+				<div class="footer-col footer-col-1">
+						<div class="footer-copyright">
+							<?php echo wp_kses_post( $copyright_text ); ?>
+						</div>
+					</div>
+					<div class="footer-col footer-col-2">
+						<div class="footer-col2-content">
+							<?php echo wp_kses_post( $footer_col2_text ); ?>
+						</div>
+					</div>
 			</div>
 		<?php else : ?>
 			<div class="footer-copyright">
