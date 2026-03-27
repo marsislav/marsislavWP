@@ -78,10 +78,10 @@ function marsislav_setup() {
 	add_theme_support( 'responsive-embeds' );
 	add_theme_support( 'align-wide' );
 	add_theme_support( 'editor-content-width', 760 );
-	add_theme_support('editor-styles');
-	add_theme_support('custom-spacing');
-add_theme_support('custom-line-height');
-add_theme_support('custom-units');
+	add_theme_support( 'editor-styles' );
+	add_theme_support( 'custom-spacing' );
+	add_theme_support( 'custom-line-height' );
+	add_theme_support( 'custom-units' );
 
 	// Editor styling so the block editor matches the front end.
 	add_editor_style( 'style.css' );
@@ -256,24 +256,6 @@ add_action( 'init', 'marsislav_register_block_patterns' );
 // =============================================================================
 
 /**
- * Helper — build the widget-area choices dropdown.
- * Always includes 'disabled' (Full Width) as the first option.
- *
- * @param  string $context Unused; kept for API compatibility.
- * @return array  $id => $label pairs.
- */
-function marsislav_sidebar_choices_for( $context ) {
-	return array(
-		'disabled'        => __( 'Disabled (Full Width)', 'marsislav' ),
-		'sidebar-blog'    => __( 'Blog Sidebar',          'marsislav' ),
-		'sidebar-post'    => __( 'Post Sidebar',          'marsislav' ),
-		'sidebar-page'    => __( 'Page Sidebar',          'marsislav' ),
-		'sidebar-shop'    => __( 'Shop Sidebar',          'marsislav' ),
-		'sidebar-product' => __( 'Product Sidebar',       'marsislav' ),
-	);
-}
-
-/**
  * Determine the sidebar position for the current page context.
  *
  * @return string 'left' | 'right' | 'disabled'
@@ -337,31 +319,6 @@ function marsislav_sidebar_body_class( $classes ) {
 }
 add_filter( 'body_class', 'marsislav_sidebar_body_class' );
 
-/**
- * Enqueue Customizer preview JS for live sidebar updates.
- */
-function marsislav_sidebar_preview_js() {
-	wp_enqueue_script(
-		'marsislav-customizer-sidebar',
-		get_template_directory_uri() . '/js/customizer-sidebar.js',
-		array( 'customize-preview', 'jquery' ),
-		_S_VERSION,
-		true
-	);
-
-	wp_localize_script( 'marsislav-customizer-sidebar', 'marsislavSidebarVars', array(
-		'settings' => array(
-			'sidebar_pos_blog',
-			'sidebar_pos_post',
-			'sidebar_pos_page',
-			'sidebar_pos_home',
-			'sidebar_pos_shop',
-			'sidebar_pos_product',
-		),
-	) );
-}
-add_action( 'customize_preview_init', 'marsislav_sidebar_preview_js' );
-
 
 // =============================================================================
 // 6. REQUIRED FILES
@@ -373,7 +330,6 @@ require get_template_directory() . '/inc/template-functions.php';
 require get_template_directory() . '/inc/customizer.php';
 require get_template_directory() . '/inc/breadcrumbs.php';
 require get_template_directory() . '/inc/colors-customizer.php';
-require get_template_directory() . '/inc/blog-customizer.php';
 
 if ( class_exists( 'WooCommerce' ) ) {
 	require get_template_directory() . '/inc/woocommerce.php';
