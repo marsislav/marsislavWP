@@ -84,6 +84,19 @@ for ( $i = 1; $i <= 4; $i++ ) {
     </svg>
 </button>
 <?php endif; ?>
+<script>
+//responsive tables
+
+const table = document.querySelector('table');
+const headers = [...table.querySelectorAll('thead th')].map(th => th.textContent.trim());
+
+table.querySelectorAll('tbody tr').forEach(row => {
+  row.querySelectorAll('td').forEach((td, i) => {
+    td.setAttribute('data-label', headers[i] ?? '');
+  });
+});
+
+</script>
 
 <?php wp_footer(); ?>
 

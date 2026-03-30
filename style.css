@@ -522,6 +522,35 @@ table {
 	width: 100%;
 }
 
+
+
+@media (max-width: 960px) {
+  table, thead, tbody, th, td, tr { display: block; }
+
+  thead tr { position: absolute; top: -9999px; left: -9999px; }
+
+  tr { border: 1px solid #ccc; margin-bottom: 1rem; }
+
+  td {
+    display: flex;          /* вместо position: relative + padding-left */
+    gap: 1rem;
+    border-bottom: 1px solid #eee;
+    padding: 8px 12px;
+  }
+
+  td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    min-width: 80px;        /* фиксирана ширина за лейбъла */
+    flex-shrink: 0;         /* не се свива */
+  }
+  
+  td, th {
+      flex-direction: column;
+      
+  }
+}
+
 /* Links
 --------------------------------------------- */
 a {
@@ -3176,4 +3205,3 @@ nav.single-post-nav {
     flex-wrap: nowrap;
     align-items: center;
 }
-
