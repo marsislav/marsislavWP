@@ -330,6 +330,7 @@ require get_template_directory() . '/inc/template-functions.php';
 require get_template_directory() . '/inc/customizer.php';
 require get_template_directory() . '/inc/breadcrumbs.php';
 require get_template_directory() . '/inc/colors-customizer.php';
+require get_template_directory() . '/inc/table-customizer.php';
 
 if ( class_exists( 'WooCommerce' ) ) {
 	require get_template_directory() . '/inc/woocommerce.php';
