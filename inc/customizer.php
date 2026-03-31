@@ -607,6 +607,62 @@ function marsislav_footer_customizer( $wp_customize ) {
 		),
 		'priority' => 6,
 	) );
+
+	// ── Footer Waves Section ──────────────────────────────────────────────────
+	$wp_customize->add_section( 'marsislav_footer_waves_section', array(
+		'title'    => esc_html__( 'Footer Waves', 'marsislav' ),
+		'panel'    => 'marsislav_footer_panel',
+		'priority' => 40,
+	) );
+
+	// Enable/disable waves
+	$wp_customize->add_setting( 'footer_waves_enable', array(
+		'default'           => false,
+		'transport'         => 'postMessage',
+		'sanitize_callback' => 'marsislav_sanitize_checkbox',
+	) );
+	$wp_customize->add_control( 'footer_waves_enable', array(
+		'label'    => esc_html__( 'Enable Footer Waves', 'marsislav' ),
+		'section'  => 'marsislav_footer_waves_section',
+		'type'     => 'checkbox',
+		'priority' => 10,
+	) );
+
+	// Wave color 1
+	$wp_customize->add_setting( 'footer_wave_color1', array(
+		'default'           => '#1e90ff',
+		'transport'         => 'postMessage',
+		'sanitize_callback' => 'sanitize_hex_color',
+	) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'footer_wave_color1', array(
+		'label'    => esc_html__( 'Wave Color 1', 'marsislav' ),
+		'section'  => 'marsislav_footer_waves_section',
+		'priority' => 20,
+	) ) );
+
+	// Wave color 2
+	$wp_customize->add_setting( 'footer_wave_color2', array(
+		'default'           => '#3aa0ff',
+		'transport'         => 'postMessage',
+		'sanitize_callback' => 'sanitize_hex_color',
+	) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'footer_wave_color2', array(
+		'label'    => esc_html__( 'Wave Color 2', 'marsislav' ),
+		'section'  => 'marsislav_footer_waves_section',
+		'priority' => 30,
+	) ) );
+
+	// Wave color 3
+	$wp_customize->add_setting( 'footer_wave_color3', array(
+		'default'           => '#63b3ff',
+		'transport'         => 'postMessage',
+		'sanitize_callback' => 'sanitize_hex_color',
+	) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'footer_wave_color3', array(
+		'label'    => esc_html__( 'Wave Color 3', 'marsislav' ),
+		'section'  => 'marsislav_footer_waves_section',
+		'priority' => 40,
+	) ) );
 }
 add_action( 'customize_register', 'marsislav_footer_customizer' );
 
@@ -793,3 +849,14 @@ function marsislav_footer_sidebar_preview_js() {
 	);
 }
 add_action( 'customize_preview_init', 'marsislav_footer_sidebar_preview_js' );
+
+function marsislav_footer_waves_preview_js() {
+	wp_enqueue_script(
+		'marsislav-customizer-footer-waves',
+		get_template_directory_uri() . '/js/customizer-footer-waves.js',
+		array( 'customize-preview', 'jquery' ),
+		_S_VERSION,
+		true
+	);
+}
+add_action( 'customize_preview_init', 'marsislav_footer_waves_preview_js' );
