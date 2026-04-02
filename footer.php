@@ -138,6 +138,7 @@ $wave_color3  = sanitize_hex_color( get_theme_mod( 'footer_wave_color3', '#63b3f
 })();
 </script>
 
+
 <?php wp_footer(); ?>
 
 </body>

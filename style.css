@@ -1151,6 +1151,7 @@ nav#site-navigation ul li {
 .info-content {
 	max-width:1400px; 
 	width:100%;
+	display:flex;
 	margin:0 auto;
 	
 }
@@ -1727,6 +1728,57 @@ body.is-menu-sidebar {
     0%   { transform: translateX(0); }
     100% { transform: translateX(-100%); }
 }
+/* --- Topbar Responsive --- */
+
+@media (max-width: 600px) {
+    #site-topbar {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .topbar-inner {
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .layout-two .topbar-inner {
+        justify-content: center;
+    }
+
+    .topbar-col,
+    .topbar-col-1,
+    .topbar-col-2 {
+        flex: 0 0 100%;
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .topbar-col-2 {
+        text-align: center;
+    }
+
+    .topbar-col-full {
+        text-align: center;
+    }
+
+    .topbar-marquee {
+        width: 100%;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 768px) {
+    #site-topbar {
+        padding: 7px 16px;
+        font-size: 13px;
+    }
+
+    .topbar-inner {
+        gap: 8px;
+    }
+}
+
 /* --- Sidebar Layout Engine --- */
 #content-sidebar-wrap {
     display: flex;
