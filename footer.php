@@ -27,7 +27,7 @@ $wave_color1  = sanitize_hex_color( get_theme_mod( 'footer_wave_color1', '#1e90f
 $wave_color2  = sanitize_hex_color( get_theme_mod( 'footer_wave_color2', '#3aa0ff' ) ) ?: '#3aa0ff';
 $wave_color3  = sanitize_hex_color( get_theme_mod( 'footer_wave_color3', '#63b3ff' ) ) ?: '#63b3ff';
 ?>
-<footer id="colophon" class="site-footer footer-<?php echo esc_attr( $footer_layout ); ?><?php echo $waves_enable ? ' has-waves' : ''; ?>">
+<footer id='colophon' class='site-footer footer-<?php echo esc_attr( $footer_layout ); ?><?php echo esc_attr( $waves_enable ? ' has-waves' : '' ); ?>'>
 
     <?php if ( $waves_enable ) : ?>
     <div class="footer-waves" aria-hidden="true">

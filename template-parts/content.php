@@ -85,7 +85,7 @@ $show_date     = (bool) get_theme_mod( 'blog_show_date',     true );
                             <?php
                             $word_count = str_word_count( strip_tags( get_the_content() ) );
                             $minutes    = max( 1, round( $word_count / 200 ) );
-                            echo $minutes . ' ' . esc_html__( 'min read', 'marsislav' );
+                            echo esc_html( $minutes ) . ' ' . esc_html__( 'min read', 'marsislav' );
                             ?>
                         </span>
                     <?php endif; ?>

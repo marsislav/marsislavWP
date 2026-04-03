@@ -1,52 +1,67 @@
 <?php
 /**
- * The template for displaying search results pages
- *
- * @link https://developer.wordpress.org/themes/basics/template-hierarchy/#search-result
- *
+ * Search results template
  * @package marsislav
  */
 
 get_header();
+
+$sidebar_pos = marsislav_get_sidebar_position();
 ?>
 
-	<main id="primary" class="site-main">
+<div id="content-sidebar-wrap" class="container-wide layout-<?php echo esc_attr( $sidebar_pos ); ?>">
 
-		<?php if ( have_posts() ) : ?>
+    <main id="primary" class="site-main">
+        <?php do_action( 'marsislav_before_content' ); ?>
 
-			<header class="page-header">
-				<h1 class="page-title">
-					<?php
-					/* translators: %s: search query. */
-					printf( esc_html__( 'Search Results for: %s', 'marsislav' ), '<span>' . get_search_query() . '</span>' );
-					?>
-				</h1>
-			</header><!-- .page-header -->
+        <?php if ( have_posts() ) : ?>
 
-			<?php
-			/* Start the Loop */
-			while ( have_posts() ) :
-				the_post();
+            <header class="page-entry-header search-entry-header">
+                <h1 class="entry-title page-title-h1">
+                    <?php
+                    printf(
+                        esc_html__( 'Search Results for: %s', 'marsislav' ),
+                        '<span>' . esc_html( get_search_query() ) . '</span>'
+                    );
+                    ?>
+                </h1>
+            </header>
 
-				/**
-				 * Run the loop for the search to output the results.
-				 * If you want to overload this in a child theme then include a file
-				 * called content-search.php and that will be used instead.
-				 */
-				get_template_part( 'template-parts/content', 'search' );
+            <?php while ( have_posts() ) : the_post(); ?>
+                
+                <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+                    
+                    <header class="entry-header">
+                        <?php the_title( '<h2 class="entry-title"><a href="' . esc_url( get_permalink() ) . '">', '</a></h2>' ); ?>
+                    </header>
 
-			endwhile;
+                    <div class="entry-content">
+                        <?php the_excerpt(); ?>
+                    </div>
 
-			the_posts_navigation();
+                </article>
 
-		else :
+            <?php endwhile; ?>
 
-			get_template_part( 'template-parts/content', 'none' );
+            <?php the_posts_navigation(); ?>
 
-		endif;
-		?>
+        <?php else : ?>
 
-	</main><!-- #main -->
+            <article class="no-results">
+                <h2><?php esc_html_e( 'Nothing found', 'marsislav' ); ?></h2>
+                <p><?php esc_html_e( 'Sorry, no results matched your search.', 'marsislav' ); ?></p>
+            </article>
 
-<?php
-get_footer();
+        <?php endif; ?>
+
+    </main>
+
+    <?php if ( $sidebar_pos !== 'disabled' && is_active_sidebar( marsislav_get_sidebar_id() ) ) : ?>
+        <aside id="secondary" class="widget-area sidebar-column">
+            <?php dynamic_sidebar( marsislav_get_sidebar_id() ); ?>
+        </aside>
+    <?php endif; ?>
+
+</div>
+
+<?php get_footer(); ?>

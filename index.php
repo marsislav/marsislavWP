@@ -32,7 +32,7 @@ $sidebar_pos = marsislav_get_sidebar_position();
                 while ( have_posts() ) : the_post();
                     $post_count++;
                     ?>
-                    <div class="post-card-wrapper <?php echo $post_count === 1 ? 'post-card-featured' : ''; ?>">
+                    <div class='post-card-wrapper <?php echo esc_attr( $post_count === 1 ? 'post-card-featured' : '' ); ?>'>
                         <?php get_template_part( 'template-parts/content', get_post_type() ); ?>
                     </div>
                 <?php endwhile; ?>
