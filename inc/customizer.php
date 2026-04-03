@@ -1158,10 +1158,10 @@ function marsislav_footer_customizer( $wp_customize ) {
 		'section'  => 'marsislav_footer_widgets_section',
 		'type'     => 'select',
 		'choices'  => array(
-			'1' => __( '1 colomn',  'marsislav' ),
-			'2' => __( '2 colomns',  'marsislav' ),
-			'3' => __( '3 colomns',  'marsislav' ),
-			'4' => __( '4 colomns',  'marsislav' ),
+			'1' => __( '1 column',  'marsislav' ),
+			'2' => __( '2 columns',  'marsislav' ),
+			'3' => __( '3 columns',  'marsislav' ),
+			'4' => __( '4 columns',  'marsislav' ),
 		),
 		'priority' => 6,
 	) );
