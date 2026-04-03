@@ -37,6 +37,25 @@ Key Features:
 
 == Changelog ==
 
+= 1.4.0 =
+* Reset button
+* Transparent background
+* Translations
+* Customize mobile menu
+* Customize submenus
+* Fixed bugs
+
+= 1.3.0 =
+* Footer wavesShadows
+* Fixed bugs in customizer
+* Fixed CSS bugs
+* Code refactoring
+
+= 1.2.0 =
+* Shadows
+* Borders
+* Border-radius
+
 = 1.1.0 =
 * Breadcrumbs with Schema.org markup
 * Scroll-to-top button

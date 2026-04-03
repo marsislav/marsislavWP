@@ -32,18 +32,18 @@ $wave_color3  = sanitize_hex_color( get_theme_mod( 'footer_wave_color3', '#63b3f
     <?php if ( $waves_enable ) : ?>
     <div class="footer-waves" aria-hidden="true">
         <div class="footer-wave footer-wave-1">
-            <svg viewBox="0 0 2400 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0,30 C150,80 350,0 600,30 C850,60 1050,20 1200,30 C1350,40 1550,0 1800,30 C2050,60 2250,20 2400,30 L2400,100 L0,100 Z" fill="<?php echo esc_attr( $wave_color1 ); ?>"></path>
+            <svg viewBox="0 0 2400 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,24 C150,64 350,0 600,24 C850,48 1050,16 1200,24 C1350,32 1550,0 1800,24 C2050,48 2250,16 2400,24 L2400,80 L0,80 Z" fill="<?php echo esc_attr( $wave_color1 ); ?>"></path>
             </svg>
         </div>
         <div class="footer-wave footer-wave-2">
-            <svg viewBox="0 0 2400 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0,40 C200,0 400,80 600,40 C800,0 1000,80 1200,40 C1400,0 1600,80 1800,40 C2000,0 2200,80 2400,40 L2400,100 L0,100 Z" fill="<?php echo esc_attr( $wave_color2 ); ?>"></path>
+            <svg viewBox="0 0 2400 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,32 C200,0 400,64 600,32 C800,0 1000,64 1200,32 C1400,0 1600,64 1800,32 C2000,0 2200,64 2400,32 L2400,80 L0,80 Z" fill="<?php echo esc_attr( $wave_color2 ); ?>"></path>
             </svg>
         </div>
         <div class="footer-wave footer-wave-3">
-            <svg viewBox="0 0 2400 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0,50 C150,100 350,20 600,50 C850,80 1050,30 1200,50 C1350,70 1550,20 1800,50 C2050,80 2250,30 2400,50 L2400,100 L0,100 Z" fill="<?php echo esc_attr( $wave_color3 ); ?>"></path>
+            <svg viewBox="0 0 2400 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,40 C150,80 350,16 600,40 C850,64 1050,24 1200,40 C1350,56 1550,16 1800,40 C2050,64 2250,24 2400,40 L2400,80 L0,80 Z" fill="<?php echo esc_attr( $wave_color3 ); ?>"></path>
             </svg>
         </div>
     </div>
@@ -137,8 +137,6 @@ $wave_color3  = sanitize_hex_color( get_theme_mod( 'footer_wave_color3', '#63b3f
 	});
 })();
 </script>
-
-
 <?php wp_footer(); ?>
 
 </body>
