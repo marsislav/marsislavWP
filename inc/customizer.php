@@ -1,14 +1,14 @@
 <?php
 /**
- * Marsislav Theme Customizer — единен файл за всички настройки
+ * Marsislav Theme Customizer 
  *
- * Съдържа:
- *  1.  Санитизиращи функции
- *  2.  Помощни функции (регистрация на контроли)
- *  3.  Панели и секции
- *  4.  Настройки и контроли (Header, Sidebar, Content, Footer, Design)
- *  5.  Генериране на CSS (wp_head)
- *  6.  Зареждане на Preview JS
+ * Content:
+ *  1.  Sanitazing functions
+ *  2.  Helper functions
+ *  3.  Panels and sections
+ *  4.  Settings and controls (Header, Sidebar, Content, Footer, Design)
+ *  5.  Dynamic css generator CSS (wp_head)
+ *  6.  Live Preview JS
  *
  * @package marsislav
  */
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 
 // =============================================================================
-// 1. САНИТИЗИРАЩИ ФУНКЦИИ
+// 1. Sanitazing funcions
 // =============================================================================
 
 /** Checkbox / bool */
@@ -25,18 +25,18 @@ function marsislav_sanitize_checkbox( $val ) {
 	return (bool) $val;
 }
 
-/** Hex цвят или празен стринг */
+/** Hex color or empty string */
 function marsislav_sanitize_hex_color_blank( $color ) {
 	if ( '' === $color ) return '';
 	return sanitize_hex_color( $color );
 }
 
-/** Тип фон: solid | gradient | image | transparent */
+/** Background: solid | gradient | image | transparent */
 function marsislav_sanitize_bg_type( $val ) {
 	return in_array( $val, array( 'solid', 'gradient', 'image', 'transparent' ), true ) ? $val : 'solid';
 }
 
-/** Посока на градиент */
+/** Gradient direction */
 function marsislav_sanitize_gradient_dir( $val ) {
 	$valid = array(
 		'to bottom', 'to top', 'to right', 'to left',
@@ -46,68 +46,68 @@ function marsislav_sanitize_gradient_dir( $val ) {
 	return in_array( $val, $valid, true ) ? $val : 'to bottom';
 }
 
-/** Повторение на фонова снимка */
+/** Repeat of Background image */
 function marsislav_sanitize_bg_repeat( $val ) {
 	$valid = array( 'no-repeat', 'repeat', 'repeat-x', 'repeat-y' );
 	return in_array( $val, $valid, true ) ? $val : 'no-repeat';
 }
 
-/** Размер на фонова снимка */
+/** Size of Background image */
 function marsislav_sanitize_bg_size( $val ) {
 	$valid = array( 'cover', 'contain', 'auto' );
 	return in_array( $val, $valid, true ) ? $val : 'cover';
 }
 
-/** Непрозрачност 0–100 */
+/** Transparency 0–100 */
 function marsislav_sanitize_opacity( $val ) {
 	$val = floatval( $val );
 	return ( $val >= 0 && $val <= 100 ) ? $val : 100;
 }
 
-/** Граничен радиус 0–200 */
+/** Border-radius 0–200 */
 function marsislav_sanitize_border_radius( $val ) {
 	return min( absint( $val ), 200 );
 }
 
-/** Граничен радиус на един ъгъл (или празен) */
+/** Border-radius on one side (or empry) */
 function marsislav_sanitize_radius_corner( $val ) {
 	if ( '' === $val || null === $val ) return '';
 	return min( absint( $val ), 200 );
 }
 
-/** Тип сянка */
+/** Type of shadow */
 function marsislav_sanitize_shadow_type( $val ) {
 	return in_array( $val, array( 'none', 'outset', 'inset' ), true ) ? $val : 'none';
 }
 
-/** Стил на рамка */
+/** Border style */
 function marsislav_sanitize_border_style( $val ) {
 	$valid = array( 'none', 'solid', 'dashed', 'dotted', 'double', 'groove', 'ridge', 'inset', 'outset' );
 	return in_array( $val, $valid, true ) ? $val : 'none';
 }
 
-/** Layout на footer bar */
+/** Layout of footer bar */
 function marsislav_sanitize_footer_layout( $value ) {
 	$valid = array( 'one-column', 'two-column' );
 	return in_array( $value, $valid, true ) ? $value : 'one-column';
 }
 
-/** Layout на top bar */
+/** Layout of top bar */
 function marsislav_sanitize_topbar_layout( $val ) {
 	return in_array( $val, array( 'one', 'two' ), true ) ? $val : 'one';
 }
 
-/** Колони на footer widget area */
+/** Columns of footer widget area */
 function marsislav_sanitize_footer_columns( $val ) {
 	return in_array( (string) $val, array( '1', '2', '3', '4' ), true ) ? $val : '3';
 }
 
-/** Позиция на sidebar */
+/** Sidebar positions*/
 function marsislav_sanitize_sidebar_position( $val ) {
 	return in_array( $val, array( 'left', 'right', 'disabled' ), true ) ? $val : 'right';
 }
 
-/** ID на sidebar widget area */
+/** ID of sidebar widget area */
 function marsislav_sanitize_sidebar_id( $val ) {
 	$valid = array_keys( marsislav_sidebar_choices_for( '' ) );
 	return in_array( $val, $valid, true ) ? $val : 'sidebar-blog';
@@ -115,12 +115,12 @@ function marsislav_sanitize_sidebar_id( $val ) {
 
 
 // =============================================================================
-// 2. ПОМОЩНИ ФУНКЦИИ ЗА РЕГИСТРАЦИЯ НА КОНТРОЛИ
+// 2. Helper functions for control registration
 // =============================================================================
 
 /**
- * Регистрира контроли за фон (Background Type, Color, Gradient, Image).
- * Поддържа и опция "Transparent" за всеки елемент.
+ * Registers controls for background (Background Type, Color, Gradient, Image).
+ * Also supports a "Transparent" option for each element.
  */
 function marsislav_register_bg_controls( $wp_customize, $section, $area, $priority_start = 10 ) {
 	$p = $priority_start;
@@ -140,121 +140,121 @@ function marsislav_register_bg_controls( $wp_customize, $section, $area, $priori
 		'315deg'          => '315°',
 	);
 
-	// Тип фон (включително Transparent)
+	// Background type (including Transparent)
 	$wp_customize->add_setting( 'bg_' . $area . '_type', array(
 		'default'           => 'solid',
 		'transport'         => 'postMessage',
 		'sanitize_callback' => 'marsislav_sanitize_bg_type',
 	) );
 	$wp_customize->add_control( 'bg_' . $area . '_type', array(
-		'label'    => __( 'Тип фон', 'marsislav' ),
+		'label'    => __( 'Background type', 'marsislav' ),
 		'section'  => $section,
 		'type'     => 'select',
 		'priority' => $p++,
 		'choices'  => array(
-			'solid'       => __( 'Плътен цвят',   'marsislav' ),
-			'gradient'    => __( 'Градиент',       'marsislav' ),
-			'image'       => __( 'Снимка',         'marsislav' ),
-			'transparent' => __( 'Прозрачен',      'marsislav' ),
+			'solid'       => __( 'Solid color',   'marsislav' ),
+			'gradient'    => __( 'Gradient',       'marsislav' ),
+			'image'       => __( 'Image',         'marsislav' ),
+			'transparent' => __( 'Transparent',      'marsislav' ),
 		),
 	) );
 
-	// Плътен цвят
+	// Solid color
 	$wp_customize->add_setting( 'bg_' . $area . '_color', array(
 		'default'           => '',
 		'transport'         => 'postMessage',
 		'sanitize_callback' => 'marsislav_sanitize_hex_color_blank',
 	) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'bg_' . $area . '_color', array(
-		'label'    => __( 'Цвят', 'marsislav' ),
+		'label'    => __( 'Background color', 'marsislav' ),
 		'section'  => $section,
 		'priority' => $p++,
 	) ) );
 
-	// Градиент — цвят 1
+	// Gradient  color 1
 	$wp_customize->add_setting( 'bg_' . $area . '_grad1', array(
 		'default'           => '#ffffff',
 		'transport'         => 'postMessage',
 		'sanitize_callback' => 'sanitize_hex_color',
 	) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'bg_' . $area . '_grad1', array(
-		'label'    => __( 'Градиент — Цвят 1', 'marsislav' ),
+		'label'    => __( 'Gradient  color 1', 'marsislav' ),
 		'section'  => $section,
 		'priority' => $p++,
 	) ) );
 
-	// Градиент — цвят 2
+	// Gradient  color 2
 	$wp_customize->add_setting( 'bg_' . $area . '_grad2', array(
 		'default'           => '#eeeeee',
 		'transport'         => 'postMessage',
 		'sanitize_callback' => 'sanitize_hex_color',
 	) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'bg_' . $area . '_grad2', array(
-		'label'    => __( 'Градиент — Цвят 2', 'marsislav' ),
+		'label'    => __( 'Gradient  color 2', 'marsislav' ),
 		'section'  => $section,
 		'priority' => $p++,
 	) ) );
 
-	// Посока на градиент
+	// Gradient direction
 	$wp_customize->add_setting( 'bg_' . $area . '_grad_dir', array(
 		'default'           => 'to bottom',
 		'transport'         => 'postMessage',
 		'sanitize_callback' => 'marsislav_sanitize_gradient_dir',
 	) );
 	$wp_customize->add_control( 'bg_' . $area . '_grad_dir', array(
-		'label'    => __( 'Посока на градиент', 'marsislav' ),
+		'label'    => __( 'Gradient direction', 'marsislav' ),
 		'section'  => $section,
 		'type'     => 'select',
 		'priority' => $p++,
 		'choices'  => $gradient_choices,
 	) );
 
-	// Фонова снимка
+	// Background image
 	$wp_customize->add_setting( 'bg_' . $area . '_image', array(
 		'default'           => '',
 		'transport'         => 'postMessage',
 		'sanitize_callback' => 'esc_url_raw',
 	) );
 	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'bg_' . $area . '_image', array(
-		'label'    => __( 'Фонова снимка', 'marsislav' ),
+		'label'    => __( 'Background image', 'marsislav' ),
 		'section'  => $section,
 		'priority' => $p++,
 	) ) );
 
-	// Повторение на снимката
+	// Background image repeat
 	$wp_customize->add_setting( 'bg_' . $area . '_repeat', array(
 		'default'           => 'no-repeat',
 		'transport'         => 'postMessage',
 		'sanitize_callback' => 'marsislav_sanitize_bg_repeat',
 	) );
 	$wp_customize->add_control( 'bg_' . $area . '_repeat', array(
-		'label'    => __( 'Повторение на снимката', 'marsislav' ),
+		'label'    => __( 'Background image repeat', 'marsislav' ),
 		'section'  => $section,
 		'type'     => 'select',
 		'priority' => $p++,
 		'choices'  => array(
-			'no-repeat' => __( 'Без повторение',      'marsislav' ),
-			'repeat'    => __( 'Повторение (X и Y)',   'marsislav' ),
-			'repeat-x'  => __( 'Хоризонтално',        'marsislav' ),
-			'repeat-y'  => __( 'Вертикално',          'marsislav' ),
+			'no-repeat' => __( 'No repeat',      'marsislav' ),
+			'repeat'    => __( 'Repeat (X & Y)',   'marsislav' ),
+			'repeat-x'  => __( 'Horizontal',        'marsislav' ),
+			'repeat-y'  => __( 'Vertical',          'marsislav' ),
 		),
 	) );
 
-	// Размер на снимката
+	// Size of background image
 	$wp_customize->add_setting( 'bg_' . $area . '_size', array(
 		'default'           => 'cover',
 		'transport'         => 'postMessage',
 		'sanitize_callback' => 'marsislav_sanitize_bg_size',
 	) );
 	$wp_customize->add_control( 'bg_' . $area . '_size', array(
-		'label'    => __( 'Размер на снимката', 'marsislav' ),
+		'label'    => __( 'Size of background image', 'marsislav' ),
 		'section'  => $section,
 		'type'     => 'select',
 		'priority' => $p++,
 		'choices'  => array(
-			'cover'   => __( 'Cover (запълва)',  'marsislav' ),
-			'contain' => __( 'Contain (вписва)', 'marsislav' ),
-			'auto'    => __( 'Оригинален размер','marsislav' ),
+			'cover'   => __( 'Cover',  'marsislav' ),
+			'contain' => __( 'Contain', 'marsislav' ),
+			'auto'    => __( 'Original size','marsislav' ),
 		),
 	) );
 
@@ -262,7 +262,7 @@ function marsislav_register_bg_controls( $wp_customize, $section, $area, $priori
 }
 
 /**
- * Регистрира контроли за граничен радиус (global + 4 ъгъла).
+ * Registers border radius controls (global + 4 corners).
  */
 function marsislav_register_radius_controls( $wp_customize, $section, $key, $default_global = 0, $priority_start = 200 ) {
 	$p = $priority_start;
@@ -273,8 +273,8 @@ function marsislav_register_radius_controls( $wp_customize, $section, $key, $def
 		'sanitize_callback' => 'marsislav_sanitize_border_radius',
 	) );
 	$wp_customize->add_control( $key, array(
-		'label'       => __( 'Граничен радиус — Global (px)', 'marsislav' ),
-		'description' => __( 'Прилага се към 4-те ъгъла. Замени индивидуално по-долу.', 'marsislav' ),
+		'label'       => __( 'Border radius — Global (px)', 'marsislav' ),
+		'description' => __( 'Applied to all 4 corners. Replace individually below.', 'marsislav' ),
 		'section'     => $section,
 		'type'        => 'range',
 		'priority'    => $p++,
@@ -282,10 +282,10 @@ function marsislav_register_radius_controls( $wp_customize, $section, $key, $def
 	) );
 
 	$corners = array(
-		'_tl' => __( 'Горе-ляво (px)',  'marsislav' ),
-		'_tr' => __( 'Горе-дясно (px)', 'marsislav' ),
-		'_br' => __( 'Долу-дясно (px)', 'marsislav' ),
-		'_bl' => __( 'Долу-ляво (px)',  'marsislav' ),
+		'_tl' => __( 'Up-left (px)',  'marsislav' ),
+		'_tr' => __( 'Up-right (px)', 'marsislav' ),
+		'_br' => __( 'Down-right (px)', 'marsislav' ),
+		'_bl' => __( 'Down-left (px)',  'marsislav' ),
 	);
 
 	foreach ( $corners as $suffix => $label ) {
@@ -307,7 +307,7 @@ function marsislav_register_radius_controls( $wp_customize, $section, $key, $def
 }
 
 /**
- * Регистрира контроли за box-shadow.
+ * Registers box-shadow controls.
  */
 function marsislav_register_shadow_controls( $wp_customize, $section, $key, $priority_start = 310 ) {
 	$p = $priority_start;
@@ -318,19 +318,19 @@ function marsislav_register_shadow_controls( $wp_customize, $section, $key, $pri
 		'sanitize_callback' => 'marsislav_sanitize_shadow_type',
 	) );
 	$wp_customize->add_control( $key . '_shadow_type', array(
-		'label'    => __( 'Сянка — Тип', 'marsislav' ),
+		'label'    => __( 'Shadow — type', 'marsislav' ),
 		'section'  => $section,
 		'type'     => 'select',
 		'priority' => $p++,
 		'choices'  => array(
-			'none'   => __( 'Без сянка',      'marsislav' ),
-			'outset' => __( 'Outset (нормал)', 'marsislav' ),
-			'inset'  => __( 'Inset (вътрешна)','marsislav' ),
+			'none'   => __( 'Without shadow',      'marsislav' ),
+			'outset' => __( 'Outset (normal)', 'marsislav' ),
+			'inset'  => __( 'Inset (internal)','marsislav' ),
 		),
 	) );
 
 	$shadow_fields = array(
-		$key . '_shadow_color'   => array( __( 'Цвят на сянката', 'marsislav' ),     'WP_Customize_Color_Control', 'sanitize_hex_color', '#000000' ),
+		$key . '_shadow_color'   => array( __( 'Shadow color', 'marsislav' ),     'WP_Customize_Color_Control', 'sanitize_hex_color', '#000000' ),
 	);
 
 	$wp_customize->add_setting( $key . '_shadow_color', array(
@@ -339,13 +339,13 @@ function marsislav_register_shadow_controls( $wp_customize, $section, $key, $pri
 		'sanitize_callback' => 'marsislav_sanitize_hex_color_blank',
 	) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, $key . '_shadow_color', array(
-		'label'    => __( 'Цвят на сянката', 'marsislav' ),
+		'label'    => __( 'Shadow color', 'marsislav' ),
 		'section'  => $section,
 		'priority' => $p++,
 	) ) );
 
 	$numeric = array(
-		$key . '_shadow_opacity' => array( __( 'Непрозрачност (%)',   'marsislav' ), 20,  0,  100, 1 ),
+		$key . '_shadow_opacity' => array( __( 'Opacity (%)',   'marsislav' ), 20,  0,  100, 1 ),
 		$key . '_shadow_x'       => array( __( 'Offset X (px)',        'marsislav' ), 0, -50,  50, 1 ),
 		$key . '_shadow_y'       => array( __( 'Offset Y (px)',        'marsislav' ), 4, -50,  50, 1 ),
 		$key . '_shadow_blur'    => array( __( 'Blur (px)',            'marsislav' ), 8,   0, 100, 1 ),
@@ -371,7 +371,7 @@ function marsislav_register_shadow_controls( $wp_customize, $section, $key, $pri
 }
 
 /**
- * Регистрира контроли за рамка (border).
+ * Controllers for borders.
  */
 function marsislav_register_border_controls( $wp_customize, $section, $key, $priority_start = 440 ) {
 	$p = $priority_start;
@@ -382,12 +382,12 @@ function marsislav_register_border_controls( $wp_customize, $section, $key, $pri
 		'sanitize_callback' => 'marsislav_sanitize_border_style',
 	) );
 	$wp_customize->add_control( $key . '_border_style', array(
-		'label'    => __( 'Стил на рамка', 'marsislav' ),
+		'label'    => __( 'Border style', 'marsislav' ),
 		'section'  => $section,
 		'type'     => 'select',
 		'priority' => $p++,
 		'choices'  => array(
-			'none'   => __( 'Без', 'marsislav' ),
+			'none'   => __( 'Without', 'marsislav' ),
 			'solid'  => 'Solid',
 			'dashed' => 'Dashed',
 			'dotted' => 'Dotted',
@@ -401,7 +401,7 @@ function marsislav_register_border_controls( $wp_customize, $section, $key, $pri
 		'sanitize_callback' => 'sanitize_hex_color',
 	) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, $key . '_border_color', array(
-		'label'    => __( 'Цвят на рамка', 'marsislav' ),
+		'label'    => __( 'Border color', 'marsislav' ),
 		'section'  => $section,
 		'priority' => $p++,
 	) ) );
@@ -412,7 +412,7 @@ function marsislav_register_border_controls( $wp_customize, $section, $key, $pri
 		'sanitize_callback' => 'absint',
 	) );
 	$wp_customize->add_control( $key . '_border_width', array(
-		'label'       => __( 'Ширина (px)', 'marsislav' ),
+		'label'       => __( 'Width (px)', 'marsislav' ),
 		'section'     => $section,
 		'type'        => 'range',
 		'priority'    => $p++,
@@ -420,10 +420,10 @@ function marsislav_register_border_controls( $wp_customize, $section, $key, $pri
 	) );
 
 	foreach ( array(
-		'_border_top'    => __( 'Горна ширина (px)',  'marsislav' ),
-		'_border_right'  => __( 'Дясна ширина (px)',  'marsislav' ),
-		'_border_bottom' => __( 'Долна ширина (px)',  'marsislav' ),
-		'_border_left'   => __( 'Лява ширина (px)',   'marsislav' ),
+		'_border_top'    => __( 'Top width (px)',  'marsislav' ),
+		'_border_right'  => __( 'Right width (px)',  'marsislav' ),
+		'_border_bottom' => __( 'Bottom width (px)',  'marsislav' ),
+		'_border_left'   => __( 'Left width (px)',   'marsislav' ),
 	) as $suffix => $label ) {
 		$wp_customize->add_setting( $key . $suffix, array(
 			'default'           => '',
@@ -443,35 +443,35 @@ function marsislav_register_border_controls( $wp_customize, $section, $key, $pri
 }
 
 /**
- * Регистрира контроли за типография (цвят на текст, линкове, заглавия).
+ * Registers typography controls (text color, links, headings).
  */
 function marsislav_register_typography_controls( $wp_customize, $section, $elem_key, $priority_start = 550 ) {
 	$p   = $priority_start;
 	$pre = 'typo_' . $elem_key . '_';
 
-	// Разделителен label
+	// Separator label
 	$wp_customize->add_setting( 'marsislav_heading_typo_' . $elem_key, array(
 		'default'           => '',
 		'transport'         => 'postMessage',
 		'sanitize_callback' => '__return_empty_string',
 	) );
 	$wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'marsislav_heading_typo_' . $elem_key, array(
-		'label'    => '— ' . __( 'ТИПОГРАФИЯ', 'marsislav' ) . ' —',
+		'label'    => '— ' . __( 'TYPOGRAPHY', 'marsislav' ) . ' —',
 		'section'  => $section,
 		'type'     => 'hidden',
 		'priority' => $p++,
 	) ) );
 
 	$controls = array(
-		$pre . 'text'       => __( 'Цвят на текст',        'marsislav' ),
-		$pre . 'link'       => __( 'Цвят на линкове',      'marsislav' ),
-		$pre . 'link_hover' => __( 'Цвят на линкове (hover)', 'marsislav' ),
-		$pre . 'h1'         => __( 'H1 цвят',              'marsislav' ),
-		$pre . 'h2'         => __( 'H2 цвят',              'marsislav' ),
-		$pre . 'h3'         => __( 'H3 цвят',              'marsislav' ),
-		$pre . 'h4'         => __( 'H4 цвят',              'marsislav' ),
-		$pre . 'h5'         => __( 'H5 цвят',              'marsislav' ),
-		$pre . 'h6'         => __( 'H6 цвят',              'marsislav' ),
+		$pre . 'text'       => __( 'Color of text',        'marsislav' ),
+		$pre . 'link'       => __( 'Color of links',      'marsislav' ),
+		$pre . 'link_hover' => __( 'Color of links (hover)', 'marsislav' ),
+		$pre . 'h1'         => __( 'H1 color',              'marsislav' ),
+		$pre . 'h2'         => __( 'H2 color',              'marsislav' ),
+		$pre . 'h3'         => __( 'H3 color',              'marsislav' ),
+		$pre . 'h4'         => __( 'H4 color',              'marsislav' ),
+		$pre . 'h5'         => __( 'H5 color',              'marsislav' ),
+		$pre . 'h6'         => __( 'H6 color',              'marsislav' ),
 	);
 
 	foreach ( $controls as $key => $label ) {
@@ -491,11 +491,11 @@ function marsislav_register_typography_controls( $wp_customize, $section, $elem_
 }
 
 /**
- * Помощна: списък на sidebar widget areas.
+ * Helper: list of sidebar widget areas.
  */
 function marsislav_sidebar_choices_for( $context ) {
 	return array(
-		'disabled'        => __( 'Изключен (Full Width)', 'marsislav' ),
+		'disabled'        => __( 'Off (Full Width)', 'marsislav' ),
 		'sidebar-blog'    => __( 'Blog Sidebar',          'marsislav' ),
 		'sidebar-post'    => __( 'Post Sidebar',          'marsislav' ),
 		'sidebar-page'    => __( 'Page Sidebar',          'marsislav' ),
@@ -506,41 +506,41 @@ function marsislav_sidebar_choices_for( $context ) {
 
 
 // =============================================================================
-// 3. ПАНЕЛИ
+// 3. Panels
 // =============================================================================
 
 function marsislav_customize_register( $wp_customize ) {
 
-	// Core транспорт
+	// Core transport
 	$wp_customize->get_setting( 'blogname' )->transport         = 'postMessage';
 	$wp_customize->get_setting( 'blogdescription' )->transport  = 'postMessage';
 	$wp_customize->get_setting( 'header_textcolor' )->transport = 'postMessage';
 
-	// Панел: Header (приоритет 25)
+	// Panel: Header (priority 25)
 	$wp_customize->add_panel( 'marsislav_header_panel', array(
 		'title'    => __( 'Header', 'marsislav' ),
 		'priority' => 25,
 	) );
 
-	// Панел: Sidebar (приоритет 35)
+	// Panel: Sidebar (priority 35)
 	$wp_customize->add_panel( 'marsislav_sidebar_panel', array(
 		'title'    => __( 'Sidebar', 'marsislav' ),
 		'priority' => 35,
 	) );
 
-	// Панел: Main Content (приоритет 40)
+	// Panel: Main Content (priority 40)
 	$wp_customize->add_panel( 'marsislav_content_panel', array(
 		'title'    => __( 'Main Content', 'marsislav' ),
 		'priority' => 40,
 	) );
 
-	// Панел: Footer (приоритет 45)
+	// Panel: Footer (priority 45)
 	$wp_customize->add_panel( 'marsislav_footer_panel', array(
 		'title'    => __( 'Footer', 'marsislav' ),
 		'priority' => 45,
 	) );
 
-	// Панел: Theme Design (приоритет 140)
+	// Panel: Theme Design (priority 140)
 	$wp_customize->add_panel( 'marsislav_design_panel', array(
 		'title'    => __( 'Theme Design', 'marsislav' ),
 		'priority' => 140,
@@ -562,14 +562,14 @@ add_action( 'customize_register', 'marsislav_customize_register' );
 
 
 // =============================================================================
-// 4A. HEADER PANEL — СЕКЦИИ И НАСТРОЙКИ
+// 4A. HEADER PANEL — SECTIONS AND SETTINGS
 // =============================================================================
 
 function marsislav_header_customizer( $wp_customize ) {
 
 	// ── General Settings (priority 5) ────────────────────────────────────────
 	$wp_customize->add_section( 'marsislav_sec_general', array(
-		'title'    => __( 'Общи настройки', 'marsislav' ),
+		'title'    => __( 'General settings', 'marsislav' ),
 		'panel'    => 'marsislav_header_panel',
 		'priority' => 5,
 	) );
@@ -580,12 +580,12 @@ function marsislav_header_customizer( $wp_customize ) {
 		'sanitize_callback' => 'marsislav_sanitize_checkbox',
 	) );
 	$wp_customize->add_control( 'header_sticky', array(
-		'label'   => __( 'Залепен header (sticky)', 'marsislav' ),
+		'label'   => __( 'Sticky header', 'marsislav' ),
 		'section' => 'marsislav_sec_general',
 		'type'    => 'checkbox',
 	) );
 
-	// ── Header Design — фон, radius, сянка, рамка (priority 8) ──────────────
+	// ── Header Design — background, radius, shadow, border (priority 8) ──────────────
 	$wp_customize->add_section( 'marsislav_elem_header', array(
 		'title'    => __( 'Header Design', 'marsislav' ),
 		'panel'    => 'marsislav_header_panel',
@@ -610,7 +610,7 @@ function marsislav_header_customizer( $wp_customize ) {
 		'sanitize_callback' => 'wp_validate_boolean',
 	) );
 	$wp_customize->add_control( 'topbar_enable', array(
-		'label'   => __( 'Включи Top Bar', 'marsislav' ),
+		'label'   => __( 'Enable Top Bar', 'marsislav' ),
 		'section' => 'marsislav_topbar_section',
 		'type'    => 'checkbox',
 	) );
@@ -621,12 +621,12 @@ function marsislav_header_customizer( $wp_customize ) {
 		'sanitize_callback' => 'marsislav_sanitize_topbar_layout',
 	) );
 	$wp_customize->add_control( 'topbar_layout', array(
-		'label'   => __( 'Оформление', 'marsislav' ),
+		'label'   => __( 'Layout', 'marsislav' ),
 		'section' => 'marsislav_topbar_section',
 		'type'    => 'radio',
 		'choices' => array(
-			'one' => __( '1 колона',  'marsislav' ),
-			'two' => __( '2 колони',  'marsislav' ),
+			'one' => __( '1 column',  'marsislav' ),
+			'two' => __( '2 columns',  'marsislav' ),
 		),
 	) );
 
@@ -636,7 +636,7 @@ function marsislav_header_customizer( $wp_customize ) {
 		'sanitize_callback' => 'wp_validate_boolean',
 	) );
 	$wp_customize->add_control( 'topbar_marquee', array(
-		'label'   => __( 'Бягащ текст (marquee)', 'marsislav' ),
+		'label'   => __( 'Marquee text', 'marsislav' ),
 		'section' => 'marsislav_topbar_section',
 		'type'    => 'checkbox',
 	) );
@@ -647,8 +647,8 @@ function marsislav_header_customizer( $wp_customize ) {
 		'sanitize_callback' => 'absint',
 	) );
 	$wp_customize->add_control( 'topbar_marquee_speed', array(
-		'label'       => __( 'Скорост на marquee (секунди)', 'marsislav' ),
-		'description' => __( 'По-малко = по-бързо. Препоръчано: 8–30s.', 'marsislav' ),
+		'label'       => __( 'Speed of marquee text (seconds)', 'marsislav' ),
+		'description' => __( 'Less = faster. Recommended: 8–30s.', 'marsislav' ),
 		'section'     => 'marsislav_topbar_section',
 		'type'        => 'range',
 		'input_attrs' => array( 'min' => 3, 'max' => 60, 'step' => 1 ),
@@ -660,7 +660,7 @@ function marsislav_header_customizer( $wp_customize ) {
 		'sanitize_callback' => 'wp_kses_post',
 	) );
 	$wp_customize->add_control( 'topbar_text', array(
-		'label'   => __( 'Текст (1 колона)', 'marsislav' ),
+		'label'   => __( 'Text (1 column)', 'marsislav' ),
 		'section' => 'marsislav_topbar_section',
 		'type'    => 'text',
 	) );
@@ -671,7 +671,7 @@ function marsislav_header_customizer( $wp_customize ) {
 		'sanitize_callback' => 'sanitize_hex_color',
 	) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'topbar_bg_color', array(
-		'label'   => __( 'Фон', 'marsislav' ),
+		'label'   => __( 'Background', 'marsislav' ),
 		'section' => 'marsislav_topbar_section',
 	) ) );
 
@@ -681,7 +681,7 @@ function marsislav_header_customizer( $wp_customize ) {
 		'sanitize_callback' => 'sanitize_hex_color',
 	) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'topbar_text_color', array(
-		'label'   => __( 'Цвят на текст', 'marsislav' ),
+		'label'   => __( 'Text color', 'marsislav' ),
 		'section' => 'marsislav_topbar_section',
 	) ) );
 
@@ -691,8 +691,8 @@ function marsislav_header_customizer( $wp_customize ) {
 		'sanitize_callback' => 'wp_kses_post',
 	) );
 	$wp_customize->add_control( 'topbar_col1_text', array(
-		'label'       => __( 'Колона 1 (ляво) — 2 колони', 'marsislav' ),
-		'description' => __( 'Показва се при избор на 2 колони. Поддържа HTML.', 'marsislav' ),
+		'label'       => __( 'Column 1 (left) — 2 columns', 'marsislav' ),
+		'description' => __( 'Displayed when selecting 2 columns. Supports HTML.', 'marsislav' ),
 		'section'     => 'marsislav_topbar_section',
 		'type'        => 'textarea',
 	) );
@@ -703,8 +703,8 @@ function marsislav_header_customizer( $wp_customize ) {
 		'sanitize_callback' => 'wp_kses_post',
 	) );
 	$wp_customize->add_control( 'topbar_col2_text', array(
-		'label'       => __( 'Колона 2 (дясно) — 2 колони', 'marsislav' ),
-		'description' => __( 'Показва се при избор на 2 колони. Поддържа HTML.', 'marsislav' ),
+		'label'       => __( 'Column 2 (right) — 2 columns', 'marsislav' ),
+		'description' => __( 'Displayed when selecting 2 columns. Supports HTML.', 'marsislav' ),
 		'section'     => 'marsislav_topbar_section',
 		'type'        => 'textarea',
 	) );
@@ -716,135 +716,135 @@ function marsislav_header_customizer( $wp_customize ) {
 		'priority' => 60,
 	) );
 
-	// Фон на мобилното меню
+	// Mobile menu background
 	$wp_customize->add_setting( 'mobile_menu_bg_color', array(
 		'default'           => '',
 		'sanitize_callback' => 'marsislav_sanitize_hex_color_blank',
 		'transport'         => 'postMessage',
 	) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'mobile_menu_bg_color', array(
-		'label'       => __( 'Фон на менюто', 'marsislav' ),
-		'description' => __( 'Фон на страничния панел при мобилни.', 'marsislav' ),
+		'label'       => __( 'Menu background', 'marsislav' ),
+		'description' => __( 'Background of the sidebar panel on mobile..', 'marsislav' ),
 		'section'     => 'marsislav_mobile_menu_section',
 	) ) );
 
-	// Цвят на текст
+	// Text color
 	$wp_customize->add_setting( 'mobile_menu_text_color', array(
 		'default'           => '',
 		'sanitize_callback' => 'marsislav_sanitize_hex_color_blank',
 		'transport'         => 'postMessage',
 	) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'mobile_menu_text_color', array(
-		'label'   => __( 'Цвят на линкове', 'marsislav' ),
+		'label'   => __( 'Links color', 'marsislav' ),
 		'section' => 'marsislav_mobile_menu_section',
 	) ) );
 
-	// Hover цвят на линковете
+	// Link color on hover 
 	$wp_customize->add_setting( 'mobile_menu_text_hover_color', array(
 		'default'           => '',
 		'sanitize_callback' => 'marsislav_sanitize_hex_color_blank',
 		'transport'         => 'postMessage',
 	) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'mobile_menu_text_hover_color', array(
-		'label'   => __( 'Цвят на линкове (hover)', 'marsislav' ),
+		'label'   => __( 'Link color (hover)', 'marsislav' ),
 		'section' => 'marsislav_mobile_menu_section',
 	) ) );
 
-	// Цвят на иконата (hamburger)
+	// Color of hamburger icon
 	$wp_customize->add_setting( 'mobile_menu_icon_color', array(
 		'default'           => '',
 		'sanitize_callback' => 'marsislav_sanitize_hex_color_blank',
 		'transport'         => 'postMessage',
 	) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'mobile_menu_icon_color', array(
-		'label'       => __( 'Цвят на hamburger бутона', 'marsislav' ),
-		'description' => __( 'Цветът на трите линии и надписа "Menu".', 'marsislav' ),
+		'label'       => __( 'Color of hamburger icon', 'marsislav' ),
+		'description' => __( 'The color of the three lines and the “Menu” label.', 'marsislav' ),
 		'section'     => 'marsislav_mobile_menu_section',
 	) ) );
 
-	// ── Подменюта (priority 65) ───────────────────────────────────────────────
+	// ── Dropdown menus (priority 65) ───────────────────────────────────────────────
 	$wp_customize->add_section( 'marsislav_submenu_section', array(
-		'title'    => __( 'Подменюта (Submenu)', 'marsislav' ),
+		'title'    => __( 'Submenus', 'marsislav' ),
 		'panel'    => 'marsislav_header_panel',
 		'priority' => 65,
 	) );
 
-	// Фон на дропдаун подменютата (desktop)
+	// Dropdown menus  (desktop)
 	$wp_customize->add_setting( 'submenu_bg_color', array(
 		'default'           => '',
 		'sanitize_callback' => 'marsislav_sanitize_hex_color_blank',
 		'transport'         => 'postMessage',
 	) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'submenu_bg_color', array(
-		'label'       => __( 'Фон на подменю (desktop)', 'marsislav' ),
+		'label'       => __( 'Dropdown menus background (desktop)', 'marsislav' ),
 		'section'     => 'marsislav_submenu_section',
 	) ) );
 
-	// Цвят на линкове в подменю
+	// Link color for dropdown menus
 	$wp_customize->add_setting( 'submenu_text_color', array(
 		'default'           => '',
 		'sanitize_callback' => 'marsislav_sanitize_hex_color_blank',
 		'transport'         => 'postMessage',
 	) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'submenu_text_color', array(
-		'label'   => __( 'Цвят на линкове в подменю', 'marsislav' ),
+		'label'   => __( 'Link color for dropdown menus', 'marsislav' ),
 		'section' => 'marsislav_submenu_section',
 	) ) );
 
-	// Hover цвят в подменю
+	// Link color for dropdown menus
 	$wp_customize->add_setting( 'submenu_text_hover_color', array(
 		'default'           => '',
 		'sanitize_callback' => 'marsislav_sanitize_hex_color_blank',
 		'transport'         => 'postMessage',
 	) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'submenu_text_hover_color', array(
-		'label'   => __( 'Цвят на линкове — hover', 'marsislav' ),
+		'label'   => __( 'Link color for dropdown menus — hover', 'marsislav' ),
 		'section' => 'marsislav_submenu_section',
 	) ) );
 
-	// Фон при hover
+	// Background on hover
 	$wp_customize->add_setting( 'submenu_bg_hover_color', array(
 		'default'           => '',
 		'sanitize_callback' => 'marsislav_sanitize_hex_color_blank',
 		'transport'         => 'postMessage',
 	) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'submenu_bg_hover_color', array(
-		'label'   => __( 'Фон при hover', 'marsislav' ),
+		'label'   => __( 'Background color for dropdown menus on hover', 'marsislav' ),
 		'section' => 'marsislav_submenu_section',
 	) ) );
 
-	// Рамка на подменютата
+	// Dropdown menus border
 	$wp_customize->add_setting( 'submenu_border_color', array(
 		'default'           => '',
 		'sanitize_callback' => 'marsislav_sanitize_hex_color_blank',
 		'transport'         => 'postMessage',
 	) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'submenu_border_color', array(
-		'label'   => __( 'Цвят на рамката', 'marsislav' ),
+		'label'   => __( 'Border color', 'marsislav' ),
 		'section' => 'marsislav_submenu_section',
 	) ) );
 
-	// Border radius на подменютата
+	// Dropdown menus border radius
 	$wp_customize->add_setting( 'submenu_border_radius', array(
 		'default'           => 6,
 		'transport'         => 'postMessage',
 		'sanitize_callback' => 'marsislav_sanitize_border_radius',
 	) );
 	$wp_customize->add_control( 'submenu_border_radius', array(
-		'label'       => __( 'Граничен радиус (px)', 'marsislav' ),
+		'label'       => __( 'Border radius (px)', 'marsislav' ),
 		'section'     => 'marsislav_submenu_section',
 		'type'        => 'range',
 		'input_attrs' => array( 'min' => 0, 'max' => 30, 'step' => 1 ),
 	) );
 
-	// Фон на мобилните подменюта
+	// Background of the mobile submenus.
 	$wp_customize->add_setting( 'mobile_submenu_bg_color', array(
 		'default'           => '',
 		'sanitize_callback' => 'marsislav_sanitize_hex_color_blank',
 		'transport'         => 'postMessage',
 	) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'mobile_submenu_bg_color', array(
-		'label'       => __( 'Фон на подменю (mobile)', 'marsislav' ),
+		'label'       => __( 'Background of the submenu (mobile)', 'marsislav' ),
 		'section'     => 'marsislav_submenu_section',
 	) ) );
 
@@ -861,8 +861,8 @@ function marsislav_header_customizer( $wp_customize ) {
 		'transport'         => 'postMessage',
 	) );
 	$wp_customize->add_control( 'header_show_search', array(
-		'label'       => __( 'Покажи иконата за търсене', 'marsislav' ),
-		'description' => __( 'Показва иконата за търсене до навигацията.', 'marsislav' ),
+		'label'       => __( 'Show search icon', 'marsislav' ),
+		'description' => __( 'Displays the search icon next to the navigation.', 'marsislav' ),
 		'section'     => 'marsislav_header_search_section',
 		'type'        => 'checkbox',
 	) );
@@ -871,20 +871,20 @@ add_action( 'customize_register', 'marsislav_header_customizer', 15 );
 
 
 // =============================================================================
-// 4B. SIDEBAR PANEL — ПОЗИЦИИ
+// 4B. SIDEBAR PANEL — POSITIONS
 // =============================================================================
 
 function marsislav_sidebar_settings( $wp_customize ) {
 
 	$position_choices = array(
-		'right'    => __( 'Дясно',                  'marsislav' ),
-		'left'     => __( 'Ляво',                   'marsislav' ),
-		'disabled' => __( 'Изключен (Full Width)',   'marsislav' ),
+		'right'    => __( 'Right',                  'marsislav' ),
+		'left'     => __( 'Left',                   'marsislav' ),
+		'disabled' => __( 'Off (Full Width)',   'marsislav' ),
 	);
 
 	$sidebar_widget_choices = marsislav_sidebar_choices_for( '' );
 
-	// Sidebar Design секция (фон, radius и т.н.)
+	// Sidebar Design section (background, radius, etc.)
 	$wp_customize->add_section( 'marsislav_elem_sidebar', array(
 		'title'    => __( 'Sidebar Design', 'marsislav' ),
 		'panel'    => 'marsislav_sidebar_panel',
@@ -897,12 +897,12 @@ function marsislav_sidebar_settings( $wp_customize ) {
 	marsislav_register_typography_controls( $wp_customize, 'marsislav_elem_sidebar', 'sidebar', 550 );
 
 	$contexts = array(
-		'blog'    => array( __( 'Позиция: Blog / Archive',    'marsislav' ), 'right',    'sidebar-blog',    30 ),
-		'post'    => array( __( 'Позиция: Single Post',       'marsislav' ), 'right',    'sidebar-post',    40 ),
-		'page'    => array( __( 'Позиция: Page',              'marsislav' ), 'disabled', 'sidebar-page',    50 ),
-		'home'    => array( __( 'Позиция: Home Page',         'marsislav' ), 'disabled', 'sidebar-blog',    60 ),
-		'shop'    => array( __( 'Позиция: Shop (WooCommerce)','marsislav' ), 'right',    'sidebar-shop',    70 ),
-		'product' => array( __( 'Позиция: Product Page',      'marsislav' ), 'disabled', 'sidebar-product', 80 ),
+		'blog'    => array( __( 'Position: Blog / Archive',    'marsislav' ), 'right',    'sidebar-blog',    30 ),
+		'post'    => array( __( 'Position: Single Post',       'marsislav' ), 'right',    'sidebar-post',    40 ),
+		'page'    => array( __( 'Position: Page',              'marsislav' ), 'disabled', 'sidebar-page',    50 ),
+		'home'    => array( __( 'Position: Home Page',         'marsislav' ), 'disabled', 'sidebar-blog',    60 ),
+		'shop'    => array( __( 'Position: Shop (WooCommerce)','marsislav' ), 'right',    'sidebar-shop',    70 ),
+		'product' => array( __( 'Position: Product Page',      'marsislav' ), 'disabled', 'sidebar-product', 80 ),
 	);
 
 	foreach ( $contexts as $ctx => $config ) {
@@ -924,7 +924,7 @@ function marsislav_sidebar_settings( $wp_customize ) {
 			'sanitize_callback' => 'marsislav_sanitize_sidebar_position',
 		) );
 		$wp_customize->add_control( $pos_key, array(
-			'label'    => __( 'Позиция', 'marsislav' ),
+			'label'    => __( 'Position', 'marsislav' ),
 			'section'  => $section_id,
 			'type'     => 'select',
 			'choices'  => $position_choices,
@@ -997,10 +997,10 @@ function marsislav_content_customizer( $wp_customize ) {
 	) );
 
 	foreach ( array(
-		'blog_show_category' => __( 'Покажи категория',      'marsislav' ),
-		'blog_show_author'   => __( 'Покажи автор',          'marsislav' ),
-		'blog_show_date'     => __( 'Покажи дата',           'marsislav' ),
-		'blog_show_comments' => __( 'Покажи линк за коментари', 'marsislav' ),
+		'blog_show_category' => __( 'Show category',      'marsislav' ),
+		'blog_show_author'   => __( 'Show the author',          'marsislav' ),
+		'blog_show_date'     => __( 'Show the date',           'marsislav' ),
+		'blog_show_comments' => __( 'Show the comments link', 'marsislav' ),
 	) as $key => $label ) {
 		$wp_customize->add_setting( $key, array(
 			'default'           => true,
@@ -1025,7 +1025,7 @@ function marsislav_footer_customizer( $wp_customize ) {
 
 	// ── Layout & Text (priority 10) ───────────────────────────────────────────
 	$wp_customize->add_section( 'marsislav_footer_section', array(
-		'title'    => __( 'Layout & Текст', 'marsislav' ),
+		'title'    => __( 'Layout & text', 'marsislav' ),
 		'panel'    => 'marsislav_footer_panel',
 		'priority' => 10,
 	) );
@@ -1035,13 +1035,13 @@ function marsislav_footer_customizer( $wp_customize ) {
 		'sanitize_callback' => 'marsislav_sanitize_footer_layout',
 	) );
 	$wp_customize->add_control( 'footer_layout', array(
-		'label'    => __( 'Оформление на copyright бара', 'marsislav' ),
+		'label'    => __( 'Styles of copyright bar', 'marsislav' ),
 		'section'  => 'marsislav_footer_section',
 		'type'     => 'radio',
 		'priority' => 10,
 		'choices'  => array(
-			'one-column' => __( 'Една колона',  'marsislav' ),
-			'two-column' => __( 'Две колони',   'marsislav' ),
+			'one-column' => __( 'One column',  'marsislav' ),
+			'two-column' => __( 'Two columns',   'marsislav' ),
 		),
 	) );
 
@@ -1051,8 +1051,8 @@ function marsislav_footer_customizer( $wp_customize ) {
 		'transport'         => 'refresh',
 	) );
 	$wp_customize->add_control( 'footer_copyright_text', array(
-		'label'       => __( 'Copyright текст (Колона 1)', 'marsislav' ),
-		'description' => __( 'HTML разрешен. Остави празно за автоматично © Година Сайт.', 'marsislav' ),
+		'label'       => __( 'Copyright text (Column 1)', 'marsislav' ),
+		'description' => __( 'HTML allowed. Leave empty for default - © year, WEB site.', 'marsislav' ),
 		'section'     => 'marsislav_footer_section',
 		'type'        => 'textarea',
 		'priority'    => 20,
@@ -1064,8 +1064,8 @@ function marsislav_footer_customizer( $wp_customize ) {
 		'transport'         => 'refresh',
 	) );
 	$wp_customize->add_control( 'footer_col2_text', array(
-		'label'       => __( 'Текст Колона 2', 'marsislav' ),
-		'description' => __( 'Само при "Две колони". HTML разрешен.', 'marsislav' ),
+		'label'       => __( 'Column  2 text' , 'marsislav' ),
+		'description' => __( 'Only for “Two columns”. HTML allowed.', 'marsislav' ),
 		'section'     => 'marsislav_footer_section',
 		'type'        => 'textarea',
 		'priority'    => 30,
@@ -1073,7 +1073,7 @@ function marsislav_footer_customizer( $wp_customize ) {
 
 	// ── Menu & Credits (priority 20) ─────────────────────────────────────────
 	$wp_customize->add_section( 'marsislav_footer_menu_section', array(
-		'title'    => __( 'Меню & Credits', 'marsislav' ),
+		'title'    => __( 'Menu & Credits', 'marsislav' ),
 		'panel'    => 'marsislav_footer_panel',
 		'priority' => 20,
 	) );
@@ -1083,7 +1083,7 @@ function marsislav_footer_customizer( $wp_customize ) {
 		'sanitize_callback' => 'marsislav_sanitize_checkbox',
 	) );
 	$wp_customize->add_control( 'show_footer_menu', array(
-		'label'    => __( 'Покажи Footer Menu', 'marsislav' ),
+		'label'    => __( 'Show Footer Menu', 'marsislav' ),
 		'section'  => 'marsislav_footer_menu_section',
 		'type'     => 'checkbox',
 		'priority' => 10,
@@ -1095,8 +1095,8 @@ function marsislav_footer_customizer( $wp_customize ) {
 		'transport'         => 'refresh',
 	) );
 	$wp_customize->add_control( 'footer_powered_text', array(
-		'label'       => __( '"Powered by" текст', 'marsislav' ),
-		'description' => __( 'Използвай %s за CMS името.', 'marsislav' ),
+		'label'       => __( '"Powered by" text', 'marsislav' ),
+		'description' => __( 'Use %s for the CMS name.', 'marsislav' ),
 		'section'     => 'marsislav_footer_menu_section',
 		'type'        => 'textarea',
 		'priority'    => 20,
@@ -1109,8 +1109,8 @@ function marsislav_footer_customizer( $wp_customize ) {
 		'transport'         => 'refresh',
 	) );
 	$wp_customize->add_control( 'footer_credits_text', array(
-		'label'       => __( 'Credits текст', 'marsislav' ),
-		'description' => __( '%1$s = тема, %2$s = автор/линк.', 'marsislav' ),
+		'label'       => __( 'Credits text', 'marsislav' ),
+		'description' => __( '%1$s = theme, %2$s = author/link.', 'marsislav' ),
 		'section'     => 'marsislav_footer_menu_section',
 		'type'        => 'textarea',
 		'priority'    => 30,
@@ -1123,7 +1123,7 @@ function marsislav_footer_customizer( $wp_customize ) {
 		'transport'         => 'refresh',
 	) );
 	$wp_customize->add_control( 'show_footer_credits', array(
-		'label'    => __( 'Покажи Footer Credits', 'marsislav' ),
+		'label'    => __( 'Show Footer Credits', 'marsislav' ),
 		'section'  => 'marsislav_footer_menu_section',
 		'type'     => 'checkbox',
 		'priority' => 40,
@@ -1142,7 +1142,7 @@ function marsislav_footer_customizer( $wp_customize ) {
 		'sanitize_callback' => 'marsislav_sanitize_checkbox',
 	) );
 	$wp_customize->add_control( 'footer_sidebar_enable', array(
-		'label'    => __( 'Покажи Footer Widget Areas', 'marsislav' ),
+		'label'    => __( 'Show Footer Widget Areas', 'marsislav' ),
 		'section'  => 'marsislav_footer_widgets_section',
 		'type'     => 'checkbox',
 		'priority' => 5,
@@ -1154,25 +1154,25 @@ function marsislav_footer_customizer( $wp_customize ) {
 		'sanitize_callback' => 'marsislav_sanitize_footer_columns',
 	) );
 	$wp_customize->add_control( 'footer_sidebar_columns', array(
-		'label'    => __( 'Брой колони', 'marsislav' ),
+		'label'    => __( 'Number of column/s', 'marsislav' ),
 		'section'  => 'marsislav_footer_widgets_section',
 		'type'     => 'select',
 		'choices'  => array(
-			'1' => __( '1 колона',  'marsislav' ),
-			'2' => __( '2 колони',  'marsislav' ),
-			'3' => __( '3 колони',  'marsislav' ),
-			'4' => __( '4 колони',  'marsislav' ),
+			'1' => __( '1 colomn',  'marsislav' ),
+			'2' => __( '2 colomns',  'marsislav' ),
+			'3' => __( '3 colomns',  'marsislav' ),
+			'4' => __( '4 colomns',  'marsislav' ),
 		),
 		'priority' => 6,
 	) );
 
 	// ── Widget Area Design (priority 35) ──────────────────────────────────────
-	// Фонът се наследява от Footer Design ако не е зададен
+	// The background is inherited from Footer Design if not set.
 	$wp_customize->add_section( 'marsislav_elem_footer_widgets', array(
 		'title'       => __( 'Widget Area Design', 'marsislav' ),
 		'panel'       => 'marsislav_footer_panel',
 		'priority'    => 35,
-		'description' => __( 'Ако не зададете фон, Widget Area наследява фона от Footer Design.', 'marsislav' ),
+		'description' => __( 'If no background is set, the Widget Area inherits the background from Footer Design.', 'marsislav' ),
 	) );
 	marsislav_register_bg_controls( $wp_customize, 'marsislav_elem_footer_widgets', 'footer_widgets', 10 );
 	marsislav_register_radius_controls( $wp_customize, 'marsislav_elem_footer_widgets', 'radius_footer_widgets', 0, 200 );
@@ -1217,16 +1217,16 @@ function marsislav_footer_customizer( $wp_customize ) {
 		'sanitize_callback' => 'marsislav_sanitize_checkbox',
 	) );
 	$wp_customize->add_control( 'footer_waves_enable', array(
-		'label'    => __( 'Включи Footer Waves', 'marsislav' ),
+		'label'    => __( 'Enable Footer Waves', 'marsislav' ),
 		'section'  => 'marsislav_footer_waves_section',
 		'type'     => 'checkbox',
 		'priority' => 10,
 	) );
 
 	foreach ( array(
-		'footer_wave_color1' => array( __( 'Цвят на вълна 1', 'marsislav' ), '#1e90ff', 20 ),
-		'footer_wave_color2' => array( __( 'Цвят на вълна 2', 'marsislav' ), '#3aa0ff', 30 ),
-		'footer_wave_color3' => array( __( 'Цвят на вълна 3', 'marsislav' ), '#63b3ff', 40 ),
+		'footer_wave_color1' => array( __( 'Color of wave 1', 'marsislav' ), '#1e90ff', 20 ),
+		'footer_wave_color2' => array( __( 'Color of wave 2', 'marsislav' ), '#3aa0ff', 30 ),
+		'footer_wave_color3' => array( __( 'Color of wave 3', 'marsislav' ), '#63b3ff', 40 ),
 	) as $key => $info ) {
 		$wp_customize->add_setting( $key, array(
 			'default'           => $info[1],
@@ -1260,28 +1260,28 @@ function marsislav_design_customizer( $wp_customize ) {
 
 	// ── Colors: Text, Links & Headings (priority 10) ──────────────────────────
 	$wp_customize->add_section( 'marsislav_sec_colors', array(
-		'title'       => __( 'Цветове (Текст & Линкове)', 'marsislav' ),
+		'title'       => __( 'Colors (Text & Links)', 'marsislav' ),
 		'panel'       => 'marsislav_design_panel',
 		'priority'    => 10,
-		'description' => __( 'Глобални цветове за текст, линкове и заглавия.', 'marsislav' ),
+		'description' => __( 'Global colors for text, links, and headings.', 'marsislav' ),
 	) );
 
 	$p = 10;
 	foreach ( array(
-		'color_body_text'         => array( __( 'Текст на страницата',      'marsislav' ), '#1f2937' ),
-		'color_body_link'         => array( __( 'Линкове',                  'marsislav' ), '#2563eb' ),
-		'color_body_link_hover'   => array( __( 'Линкове — Hover',          'marsislav' ), '#1d4ed8' ),
-		'color_nav_link'          => array( __( 'Навигационни линкове',     'marsislav' ), '#1f2937' ),
-		'color_nav_link_hover'    => array( __( 'Навигационни — Hover',     'marsislav' ), '#2563eb' ),
-		'color_footer_text'       => array( __( 'Footer текст',             'marsislav' ), '#1f2937' ),
-		'color_footer_link'       => array( __( 'Footer линкове',           'marsislav' ), '#2563eb' ),
-		'color_footer_link_hover' => array( __( 'Footer линкове — Hover',   'marsislav' ), '#1d4ed8' ),
-		'color_h1'                => array( __( 'Заглавие H1',              'marsislav' ), '#1f2937' ),
-		'color_h2'                => array( __( 'Заглавие H2',              'marsislav' ), '#1f2937' ),
-		'color_h3'                => array( __( 'Заглавие H3',              'marsislav' ), '#1f2937' ),
-		'color_h4'                => array( __( 'Заглавие H4',              'marsislav' ), '#1f2937' ),
-		'color_h5'                => array( __( 'Заглавие H5',              'marsislav' ), '#1f2937' ),
-		'color_h6'                => array( __( 'Заглавие H6',              'marsislav' ), '#1f2937' ),
+		'color_body_text'         => array( __( 'Page text',      'marsislav' ), '#1f2937' ),
+		'color_body_link'         => array( __( 'Links',                  'marsislav' ), '#2563eb' ),
+		'color_body_link_hover'   => array( __( 'Links — Hover',          'marsislav' ), '#1d4ed8' ),
+		'color_nav_link'          => array( __( 'Navigation links',     'marsislav' ), '#1f2937' ),
+		'color_nav_link_hover'    => array( __( 'Navigation links — Hover',     'marsislav' ), '#2563eb' ),
+		'color_footer_text'       => array( __( 'Footer text',             'marsislav' ), '#1f2937' ),
+		'color_footer_link'       => array( __( 'Footer links',           'marsislav' ), '#2563eb' ),
+		'color_footer_link_hover' => array( __( 'Footer links — Hover',   'marsislav' ), '#1d4ed8' ),
+		'color_h1'                => array( __( 'Title H1',              'marsislav' ), '#1f2937' ),
+		'color_h2'                => array( __( 'Title H2',              'marsislav' ), '#1f2937' ),
+		'color_h3'                => array( __( 'Title H3',              'marsislav' ), '#1f2937' ),
+		'color_h4'                => array( __( 'Title H4',              'marsislav' ), '#1f2937' ),
+		'color_h5'                => array( __( 'Title H5',              'marsislav' ), '#1f2937' ),
+		'color_h6'                => array( __( 'Title H6',              'marsislav' ), '#1f2937' ),
 	) as $key => $info ) {
 		$wp_customize->add_setting( $key, array(
 			'default'           => $info[1],
@@ -1322,15 +1322,15 @@ function marsislav_design_customizer( $wp_customize ) {
 		'title'       => __( 'Page Title', 'marsislav' ),
 		'panel'       => 'marsislav_design_panel',
 		'priority'    => 55,
-		'description' => __( 'Покажи/скрий H1 заглавието за всеки тип страница.', 'marsislav' ),
+		'description' => __( 'Show/hide the H1 heading for each page type.', 'marsislav' ),
 	) );
 
 	foreach ( array(
-		'show_title_page'     => __( 'Покажи на Pages',        'marsislav' ),
-		'show_title_post'     => __( 'Покажи на Single Posts', 'marsislav' ),
-		'show_title_archive'  => __( 'Покажи на Archives',     'marsislav' ),
-		'show_title_category' => __( 'Покажи на Categories',   'marsislav' ),
-		'show_title_home'     => __( 'Покажи на Blog Home',    'marsislav' ),
+		'show_title_page'     => __( 'Show on Pages',        'marsislav' ),
+		'show_title_post'     => __( 'Show on Single Posts', 'marsislav' ),
+		'show_title_archive'  => __( 'Show on Archives',     'marsislav' ),
+		'show_title_category' => __( 'Show on Categories',   'marsislav' ),
+		'show_title_home'     => __( 'Show on Blog Home',    'marsislav' ),
 	) as $key => $label ) {
 		$wp_customize->add_setting( $key, array(
 			'default'           => true,
@@ -1357,17 +1357,17 @@ function marsislav_design_customizer( $wp_customize ) {
 		'sanitize_callback' => 'marsislav_sanitize_checkbox',
 	) );
 	$wp_customize->add_control( 'breadcrumbs_enable', array(
-		'label'   => __( 'Покажи Breadcrumbs', 'marsislav' ),
+		'label'   => __( 'Show Breadcrumbs', 'marsislav' ),
 		'section' => 'marsislav_sec_breadcrumbs',
 		'type'    => 'checkbox',
 	) );
 
 	$p = 20;
 	foreach ( array(
-		'breadcrumbs_bg'               => array( __( 'Фон',               'marsislav' ), '#f3f4f6' ),
-		'breadcrumbs_text_color'       => array( __( 'Цвят на текст',     'marsislav' ), '#6b7280' ),
-		'breadcrumbs_link_color'       => array( __( 'Цвят на линкове',   'marsislav' ), '#2563eb' ),
-		'breadcrumbs_link_hover_color' => array( __( 'Линкове — Hover',   'marsislav' ), '#1d4ed8' ),
+		'breadcrumbs_bg'               => array( __( 'Background',               'marsislav' ), '#f3f4f6' ),
+		'breadcrumbs_text_color'       => array( __( 'Text color',     'marsislav' ), '#6b7280' ),
+		'breadcrumbs_link_color'       => array( __( 'Links color',   'marsislav' ), '#2563eb' ),
+		'breadcrumbs_link_hover_color' => array( __( 'Links — Hover',   'marsislav' ), '#1d4ed8' ),
 	) as $key => $info ) {
 		$wp_customize->add_setting( $key, array( 'default' => $info[1], 'transport' => 'postMessage', 'sanitize_callback' => 'sanitize_hex_color' ) );
 		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, $key, array( 'label' => $info[0], 'section' => 'marsislav_sec_breadcrumbs', 'priority' => $p++ ) ) );
@@ -1386,14 +1386,14 @@ function marsislav_design_customizer( $wp_customize ) {
 		'sanitize_callback' => 'marsislav_sanitize_checkbox',
 	) );
 	$wp_customize->add_control( 'dark_mode_enable', array(
-		'label'   => __( 'Покажи Dark Mode бутона', 'marsislav' ),
+		'label'   => __( 'Show Dark Mode button', 'marsislav' ),
 		'section' => 'marsislav_sec_dark_mode',
 		'type'    => 'checkbox',
 	) );
 
 	// ── Scroll-to-Top (priority 80) ───────────────────────────────────────────
 	$wp_customize->add_section( 'marsislav_sec_scroll_top', array(
-		'title'    => __( 'Scroll-to-Top бутон', 'marsislav' ),
+		'title'    => __( 'Scroll-to-Top button', 'marsislav' ),
 		'panel'    => 'marsislav_design_panel',
 		'priority' => 80,
 	) );
@@ -1404,16 +1404,16 @@ function marsislav_design_customizer( $wp_customize ) {
 		'sanitize_callback' => 'marsislav_sanitize_checkbox',
 	) );
 	$wp_customize->add_control( 'scroll_to_top_enable', array(
-		'label'   => __( 'Покажи Scroll-to-Top бутона', 'marsislav' ),
+		'label'   => __( 'Show Scroll-to-Top button', 'marsislav' ),
 		'section' => 'marsislav_sec_scroll_top',
 		'type'    => 'checkbox',
 	) );
 
 	$p = 20;
 	foreach ( array(
-		'scroll_to_top_bg'       => array( __( 'Фон',            'marsislav' ), '#2563eb' ),
-		'scroll_to_top_color'    => array( __( 'Цвят на иконата','marsislav' ), '#ffffff' ),
-		'scroll_to_top_bg_hover' => array( __( 'Фон — Hover',    'marsislav' ), '#1d4ed8' ),
+		'scroll_to_top_bg'       => array( __( 'Background',            'marsislav' ), '#2563eb' ),
+		'scroll_to_top_color'    => array( __( 'Icon color','marsislav' ), '#ffffff' ),
+		'scroll_to_top_bg_hover' => array( __( 'Background — Hover',    'marsislav' ), '#1d4ed8' ),
 	) as $key => $info ) {
 		$wp_customize->add_setting( $key, array( 'default' => $info[1], 'transport' => 'postMessage', 'sanitize_callback' => 'sanitize_hex_color' ) );
 		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, $key, array( 'label' => $info[0], 'section' => 'marsislav_sec_scroll_top', 'priority' => $p++ ) ) );
@@ -1423,13 +1423,13 @@ add_action( 'customize_register', 'marsislav_design_customizer', 25 );
 
 
 // =============================================================================
-// 5. CSS ПОМОЩНИ ФУНКЦИИ
+// 5. CSS HELPER FUNCTIONS
 // =============================================================================
 
 /**
- * Генерира CSS за фон на даден area.
- * Ако type = 'transparent' → връща transparent !important.
- * Ако type = 'solid' и няма цвят (или inherit) → наследява от parent.
+ * Generates CSS for the background of a given area.
+ * If type = 'transparent' → returns transparent !important.
+ * If type = 'solid' and no color is set (or it is inherit) → inherits from parent.
  */
 function marsislav_get_bg_css( $area, $inherit_area = '' ) {
 	$type    = (string) get_theme_mod( 'bg_' . $area . '_type',     'solid' );
@@ -1443,7 +1443,7 @@ function marsislav_get_bg_css( $area, $inherit_area = '' ) {
 
 	$imp = ( 'global' !== $area ) ? ' !important' : '';
 
-	// Прозрачен фон
+	// Transparent background
 	if ( 'transparent' === $type ) {
 		return 'background:transparent' . $imp . ';';
 	}
@@ -1453,7 +1453,7 @@ function marsislav_get_bg_css( $area, $inherit_area = '' ) {
 			$hex = sanitize_hex_color( $color );
 			if ( $hex ) return 'background:' . $hex . $imp . ';';
 		}
-		// Без цвят — наследява от parent area ако е зададен
+		// No color — inherits from the parent area if set.
 		if ( $inherit_area ) {
 			return marsislav_get_bg_css( $inherit_area );
 		}
@@ -1475,7 +1475,7 @@ function marsislav_get_bg_css( $area, $inherit_area = '' ) {
 	return '';
 }
 
-/** Генерира CSS за border-radius */
+/** Generate  CSS for border-radius */
 function marsislav_get_radius_css( $key, $default = 0 ) {
 	$global = (int) marsislav_sanitize_border_radius( get_theme_mod( $key, $default ) );
 	$tl     = marsislav_sanitize_radius_corner( get_theme_mod( $key . '_tl', '' ) );
@@ -1495,7 +1495,7 @@ function marsislav_get_radius_css( $key, $default = 0 ) {
 	return 'border-radius:' . $r_tl . 'px ' . $r_tr . 'px ' . $r_br . 'px ' . $r_bl . 'px !important;';
 }
 
-/** Генерира CSS за box-shadow */
+/** Generate CSS for box-shadow */
 function marsislav_get_shadow_css( $key ) {
 	$type = (string) get_theme_mod( $key . '_shadow_type', 'none' );
 	if ( 'none' === $type ) return '';
@@ -1516,7 +1516,7 @@ function marsislav_get_shadow_css( $key ) {
 	return 'box-shadow:' . $inset . $x . 'px ' . $y . 'px ' . $blur . 'px ' . $spread . 'px ' . $rgba . ' !important;';
 }
 
-/** Генерира CSS за border */
+/** Generate CSS for border */
 function marsislav_get_border_css( $key ) {
 	$style = (string) get_theme_mod( $key . '_border_style', 'none' );
 	if ( 'none' === $style ) return '';
@@ -1543,7 +1543,7 @@ function marsislav_get_border_css( $key ) {
 
 
 // =============================================================================
-// 6. ДИНАМИЧЕН CSS (wp_head)
+// 6. DYNAMIC CSS (wp_head)
 // =============================================================================
 
 function marsislav_dynamic_css() {
@@ -1555,14 +1555,14 @@ function marsislav_dynamic_css() {
 	}
 
 	// ── Element backgrounds, radius, shadow, border ───────────────────────────
-	// footer_widgets наследява фона от footer ако не е зададен
+	// footer_widgets inherits the background from footer if not set.
 	$element_map = array(
 		// key => [ bg_area, radius_key, radius_default, css_selector, inherit_bg_from ]
 		'global'         => array( 'global',         'radius_global',         0, 'body',                                                                       '' ),
 		'header'         => array( 'header',         'radius_header',         0, 'body #masthead',                                                              '' ),
 		'content'        => array( 'content',        'radius_content',        0, 'body #primary,body #content',                                                 '' ),
 		'sidebar'        => array( 'sidebar',        'radius_sidebar',        0, 'body #secondary',                                                             '' ),
-		'footer_widgets' => array( 'footer_widgets', 'radius_footer_widgets', 0, 'body #footer-sidebar-area',                                                   'footer' ), // наследява от footer
+		'footer_widgets' => array( 'footer_widgets', 'radius_footer_widgets', 0, 'body #footer-sidebar-area',                                                   'footer' ), // inherits from the footer
 		'footer'         => array( 'footer',         'radius_footer',         0, 'body #colophon',                                                              '' ),
 		'copyright'      => array( 'copyright',      'radius_copyright',      0, 'body #colophon .site-info',                                                   '' ),
 		'buttons'        => array( 'buttons',        'radius_buttons',        4, 'a.button,.button,button,input[type="submit"],input[type="button"]',            '' ),
@@ -1575,7 +1575,7 @@ function marsislav_dynamic_css() {
 		list( $bg_area, $radius_key, $radius_default, $selector, $inherit_from ) = $data;
 		$parts = '';
 
-		// Фон (с поддръжка на наследяване)
+		// Background (with inheritance support).
 		$bg = marsislav_get_bg_css( $bg_area, $inherit_from );
 		if ( $bg ) $parts .= $bg;
 
@@ -1596,7 +1596,7 @@ function marsislav_dynamic_css() {
 		}
 	}
 
-	// ── Глобални цветове ──────────────────────────────────────────────────────
+	// ── Global colors ──────────────────────────────────────────────────────
 	$color_map = array(
 		'color_body_text'         => array( 'html body,html .site-content',                                           '#1f2937' ),
 		'color_body_link'         => array( 'html .site-content a',                                                   '#2563eb' ),
@@ -1618,12 +1618,12 @@ function marsislav_dynamic_css() {
 		if ( $val ) $css .= $map[0] . '{color:' . $val . ' !important;}';
 	}
 
-	// ── Per-element типография ────────────────────────────────────────────────
+	// ── Per-element typography ────────────────────────────────────────────────
 	$typo_elements = array(
 		'header'         => 'body #masthead',
 		'content'        => 'body #primary,body #content',
 		'sidebar'        => 'body #secondary',
-		// Widget Area текст — специфичен селектор за по-голям приоритет
+		// Widget area text — specific selector for higher priority
 		'footer_widgets' => 'html body #footer-sidebar-area',
 		'footer'         => 'body #colophon',
 		'copyright'      => 'body #colophon .site-info',
@@ -1643,7 +1643,7 @@ function marsislav_dynamic_css() {
 		$h5    = sanitize_hex_color( (string) get_theme_mod( $pre . 'h5',         '' ) );
 		$h6    = sanitize_hex_color( (string) get_theme_mod( $pre . 'h6',         '' ) );
 
-		// Използваме html prefix за по-голям specificity
+		// We use html prefix for better specificity
 		if ( $text  ) $css .= 'html ' . $scope . '{color:' . $text . ' !important;}';
 		if ( $link  ) $css .= 'html ' . $scope . ' a{color:' . $link . ' !important;}';
 		if ( $hover ) $css .= 'html ' . $scope . ' a:hover{color:' . $hover . ' !important;}';
@@ -1718,16 +1718,16 @@ add_action( 'wp_head', 'marsislav_dynamic_css', 99 );
 
 
 // =============================================================================
-// 7. PREVIEW JS — ЗАРЕЖДАНЕ НА СКРИПТОВЕ
+// 7. PREVIEW JS — Live preview
 // =============================================================================
 
 /**
- * Зарежда всички Customizer Preview скриптове.
- * Всичко е централизирано тук.
+ * Loads all Customizer preview scripts.
+ * Everything is centralized here.
  */
 function marsislav_all_preview_scripts() {
 
-	// Основен customizer (blogname, blogdescription)
+	// Main customizer (blogname, blog description)
 	wp_enqueue_script(
 		'marsislav-customizer',
 		get_template_directory_uri() . '/js/customizer.js',
@@ -1754,7 +1754,7 @@ function marsislav_all_preview_scripts() {
 		true
 	);
 
-	// Sidebar позиции
+	// Sidebar positions
 	wp_enqueue_script(
 		'marsislav-customizer-sidebar',
 		get_template_directory_uri() . '/js/customizer-sidebar.js',
@@ -1788,7 +1788,7 @@ function marsislav_all_preview_scripts() {
 		true
 	);
 
-	// Цветове, фонове, radius, shadow, border, typography
+	// Colors, backgrounds, radius, shadow, border, typography
 	wp_enqueue_script(
 		'marsislav-customizer-colors',
 		get_template_directory_uri() . '/js/customizer-colors.js',
@@ -1797,7 +1797,7 @@ function marsislav_all_preview_scripts() {
 		true
 	);
 
-	// Pre-seed на запазените URL адреси на снимки
+	
 	$areas    = array( 'global', 'header', 'content', 'sidebar', 'footer_widgets', 'footer', 'copyright', 'buttons', 'inputs', 'cards', 'images' );
 	$img_urls = array();
 	foreach ( $areas as $area ) {
@@ -1815,11 +1815,11 @@ add_action( 'customize_preview_init', 'marsislav_all_preview_scripts' );
 
 
 /**
- * Зарежда Reset бутона в Customizer Controls (не в Preview).
+ * Loads the Reset button in Customizer Controls (not in Preview).
  */
 function marsislav_reset_enqueue() {
 
-	// Reset бутони за всяка секция
+	// Reset button for every section
 	wp_enqueue_script(
 		'marsislav-customizer-reset',
 		get_template_directory_uri() . '/js/customizer-reset.js',
@@ -1828,7 +1828,7 @@ function marsislav_reset_enqueue() {
 		true
 	);
 
-	// Статични defaults за Reset
+	// Static defaults - Reset
 	$static_defaults = array(
 		'header_sticky'              => true,
 		'breadcrumbs_enable'         => true,
@@ -1840,7 +1840,7 @@ function marsislav_reset_enqueue() {
 		'show_footer_menu'           => true,
 		'show_footer_credits'        => true,
 		'footer_sidebar_enable'      => true,
-		'footer_sidebar_columns'     => '3',
+		'footer_sidebar_columns'     => '4',
 		'topbar_enable'              => false,
 		'topbar_layout'              => 'one',
 		'topbar_marquee'             => false,

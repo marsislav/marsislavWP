@@ -13,7 +13,7 @@ msgstr ""
 "X-Domain: marsislav\n"
 
 #: inc/customizer.php:1113
-msgid "%1$s = тема, %2$s = автор/линк."
+msgid "%1$s = theme, %2$s = authonk/URL."
 msgstr ""
 
 #: inc/template-tags.php:63
@@ -22,16 +22,16 @@ msgstr ""
 
 #: inc/customizer.php:628
 #: inc/customizer.php:1161
-msgid "1 колона"
+msgid "1 column"
 msgstr ""
 
 #: inc/customizer.php:629
 #: inc/customizer.php:1162
-msgid "2 колони"
+msgid "2 columns"
 msgstr ""
 
 #: inc/customizer.php:1163
-msgid "3 колони"
+msgid "3 columns"
 msgstr ""
 
 #: inc/table-customizer.php:204
@@ -39,7 +39,7 @@ msgid "300 — Light"
 msgstr ""
 
 #: inc/customizer.php:1164
-msgid "4 колони"
+msgid "4 columns"
 msgstr ""
 
 #: inc/table-customizer.php:205
@@ -241,7 +241,7 @@ msgid "Contain (fit)"
 msgstr ""
 
 #: inc/customizer.php:256
-msgid "Contain (вписва)"
+msgid "Contain (fit)"
 msgstr ""
 
 #: inc/colors-customizer.php:587
@@ -255,7 +255,7 @@ msgid "Copyright Bar Design"
 msgstr ""
 
 #: inc/customizer.php:1054
-msgid "Copyright текст (Колона 1)"
+msgid "Copyright text (column 1)"
 msgstr ""
 
 #: inc/colors-customizer.php:209
@@ -263,11 +263,11 @@ msgid "Cover (fill)"
 msgstr ""
 
 #: inc/customizer.php:255
-msgid "Cover (запълва)"
+msgid "Cover (fill)"
 msgstr ""
 
 #: inc/customizer.php:1112
-msgid "Credits текст"
+msgid "Credits text"
 msgstr ""
 
 #: inc/colors-customizer.php:762
@@ -348,15 +348,15 @@ msgid "Footer Waves"
 msgstr ""
 
 #: inc/customizer.php:1277
-msgid "Footer линкове"
+msgid "Footer links"
 msgstr ""
 
 #: inc/customizer.php:1278
-msgid "Footer линкове — Hover"
+msgid "Footer links — Hover"
 msgstr ""
 
 #: inc/customizer.php:1276
-msgid "Footer текст"
+msgid "Footer text"
 msgstr ""
 
 #: inc/colors-customizer.php:526
@@ -404,19 +404,19 @@ msgid "Groove"
 msgstr ""
 
 #: inc/colors-customizer.php:488
-msgid "H1 Color"
+msgid "H1 color"
 msgstr ""
 
 #: inc/customizer.php:469
-msgid "H1 цвят"
+msgid "H1 color"
 msgstr ""
 
 #: inc/colors-customizer.php:489
-msgid "H2 Color"
+msgid "H2 color"
 msgstr ""
 
 #: inc/customizer.php:470
-msgid "H2 цвят"
+msgid "H2 color"
 msgstr ""
 
 #: inc/colors-customizer.php:490
@@ -424,35 +424,35 @@ msgid "H3 Color"
 msgstr ""
 
 #: inc/customizer.php:471
-msgid "H3 цвят"
+msgid "H3 color"
 msgstr ""
 
 #: inc/colors-customizer.php:491
-msgid "H4 Color"
+msgid "H4 color"
 msgstr ""
 
 #: inc/customizer.php:472
-msgid "H4 цвят"
+msgid "H4 color"
 msgstr ""
 
 #: inc/colors-customizer.php:492
-msgid "H5 Color"
+msgid "H5 color"
 msgstr ""
 
 #: inc/customizer.php:473
-msgid "H5 цвят"
+msgid "H5 color"
 msgstr ""
 
 #: inc/colors-customizer.php:493
-msgid "H6 Color"
+msgid "H6 color"
 msgstr ""
 
 #: inc/customizer.php:474
-msgid "H6 цвят"
+msgid "H6 color"
 msgstr ""
 
 #: inc/customizer.php:1055
-msgid "HTML разрешен. Остави празно за автоматично © Година Сайт."
+msgid "HTML allowed. Leave empty for automatic © Year Site."
 msgstr ""
 
 #: inc/customizer.php:521
@@ -547,7 +547,7 @@ msgid "Inset (inner)"
 msgstr ""
 
 #: inc/customizer.php:328
-msgid "Inset (вътрешна)"
+msgid "Inset (internal)"
 msgstr ""
 
 #: functions.php:232
@@ -555,7 +555,7 @@ msgid "Large"
 msgstr ""
 
 #: inc/customizer.php:1028
-msgid "Layout & Текст"
+msgid "Layout & Text"
 msgstr ""
 
 #: inc/customizer.php:131
@@ -652,7 +652,7 @@ msgid "Outset (normal)"
 msgstr ""
 
 #: inc/customizer.php:327
-msgid "Outset (нормал)"
+msgid "Outset (normal)"
 msgstr ""
 
 #: inc/colors-customizer.php:425
@@ -725,7 +725,7 @@ msgid "Scroll-to-Top Button"
 msgstr ""
 
 #: inc/customizer.php:1396
-msgid "Scroll-to-Top бутон"
+msgid "Scroll-to-Top button"
 msgstr ""
 
 #: search.php:21
@@ -927,481 +927,481 @@ msgid "min read"
 msgstr ""
 
 #: inc/customizer.php:1175
-msgid "Ако не зададете фон, Widget Area наследява фона от Footer Design."
+msgid "If you do not set background, Widget Area will get it from Footer Design."
 msgstr ""
 
 #: inc/customizer.php:390
-msgid "Без"
+msgid "Without"
 msgstr ""
 
 #: inc/customizer.php:236
-msgid "Без повторение"
+msgid "No repeat"
 msgstr ""
 
 #: inc/customizer.php:326
-msgid "Без сянка"
+msgid "Without shadow"
 msgstr ""
 
 #: inc/customizer.php:1157
-msgid "Брой колони"
+msgid "Number of column/s"
 msgstr ""
 
 #: inc/customizer.php:639
-msgid "Бягащ текст (marquee)"
+msgid "Marquee text"
 msgstr ""
 
 #: inc/customizer.php:239
-msgid "Вертикално"
+msgid "Vertical"
 msgstr ""
 
 #: inc/customizer.php:1220
-msgid "Включи Footer Waves"
+msgid "Enable Footer Waves"
 msgstr ""
 
 #: inc/customizer.php:613
-msgid "Включи Top Bar"
+msgid "Enable Top Bar"
 msgstr ""
 
 #: inc/customizer.php:1266
-msgid "Глобални цветове за текст, линкове и заглавия."
+msgid "Global colors for text, links and titles."
 msgstr ""
 
 #: inc/customizer.php:286
-msgid "Горе-дясно (px)"
+msgid "Top right (px)"
 msgstr ""
 
 #: inc/customizer.php:285
-msgid "Горе-ляво (px)"
+msgid "Topp left (px)"
 msgstr ""
 
 #: inc/customizer.php:423
-msgid "Горна ширина (px)"
+msgid "Top width (px)"
 msgstr ""
 
 #: inc/customizer.php:156
-msgid "Градиент"
+msgid "Gradient"
 msgstr ""
 
 #: inc/customizer.php:181
-msgid "Градиент — Цвят 1"
+msgid "Gradient — color 1"
 msgstr ""
 
 #: inc/customizer.php:193
-msgid "Градиент — Цвят 2"
+msgid "Gradient — color 2"
 msgstr ""
 
 #: inc/customizer.php:834
-msgid "Граничен радиус (px)"
+msgid "Border radius (px)"
 msgstr ""
 
 #: inc/customizer.php:276
-msgid "Граничен радиус — Global (px)"
+msgid "Border radius — Global (px)"
 msgstr ""
 
 #: inc/customizer.php:1044
-msgid "Две колони"
+msgid "Two columns"
 msgstr ""
 
 #: inc/customizer.php:425
-msgid "Долна ширина (px)"
+msgid "Down width (px)"
 msgstr ""
 
 #: inc/customizer.php:287
-msgid "Долу-дясно (px)"
+msgid "Down-right (px)"
 msgstr ""
 
 #: inc/customizer.php:288
-msgid "Долу-ляво (px)"
+msgid "Down-left (px)"
 msgstr ""
 
 #: inc/customizer.php:424
-msgid "Дясна ширина (px)"
+msgid "Right width (px)"
 msgstr ""
 
 #: inc/customizer.php:880
-msgid "Дясно"
+msgid "Right"
 msgstr ""
 
 #: inc/customizer.php:1043
-msgid "Една колона"
+msgid "One colun"
 msgstr ""
 
 #: inc/customizer.php:1279
-msgid "Заглавие H1"
+msgid "Title H1"
 msgstr ""
 
 #: inc/customizer.php:1280
-msgid "Заглавие H2"
+msgid "Title H2"
 msgstr ""
 
 #: inc/customizer.php:1281
-msgid "Заглавие H3"
+msgid "Title H3"
 msgstr ""
 
 #: inc/customizer.php:1282
-msgid "Заглавие H4"
+msgid "Title H4"
 msgstr ""
 
 #: inc/customizer.php:1283
-msgid "Заглавие H5"
+msgid "Title H5"
 msgstr ""
 
 #: inc/customizer.php:1284
-msgid "Заглавие H6"
+msgid "Title H6"
 msgstr ""
 
 #: inc/customizer.php:583
-msgid "Залепен header (sticky)"
+msgid "Sticky header"
 msgstr ""
 
 #: inc/customizer.php:498
 #: inc/customizer.php:882
-msgid "Изключен (Full Width)"
+msgid "Off (Full Width)"
 msgstr ""
 
 #: inc/customizer.php:1099
-msgid "Използвай %s за CMS името."
+msgid "Use %s for CMS name."
 msgstr ""
 
 #: inc/customizer.php:694
-msgid "Колона 1 (ляво) — 2 колони"
+msgid "Column 1 (left) — 2 columns"
 msgstr ""
 
 #: inc/customizer.php:706
-msgid "Колона 2 (дясно) — 2 колони"
+msgid "Column 2 (right) — 2 columns"
 msgstr ""
 
 #: inc/customizer.php:1272
-msgid "Линкове"
+msgid "Links"
 msgstr ""
 
 #: inc/customizer.php:1273
 #: inc/customizer.php:1370
-msgid "Линкове — Hover"
+msgid "Links — Hover"
 msgstr ""
 
 #: inc/customizer.php:426
-msgid "Лява ширина (px)"
+msgid "Left width (px)"
 msgstr ""
 
 #: inc/customizer.php:881
-msgid "Ляво"
+msgid "Left"
 msgstr ""
 
 #: inc/customizer.php:1076
-msgid "Меню & Credits"
+msgid "Menu & Credits"
 msgstr ""
 
 #: inc/customizer.php:1274
-msgid "Навигационни линкове"
+msgid "Navigation links"
 msgstr ""
 
 #: inc/customizer.php:1275
-msgid "Навигационни — Hover"
+msgid "Navigation — Hover"
 msgstr ""
 
 #: inc/customizer.php:348
-msgid "Непрозрачност (%)"
+msgid "Transparency (%)"
 msgstr ""
 
 #: inc/customizer.php:572
-msgid "Общи настройки"
+msgid "General settings"
 msgstr ""
 
 #: inc/customizer.php:257
-msgid "Оригинален размер"
+msgid "Original size"
 msgstr ""
 
 #: inc/customizer.php:624
-msgid "Оформление"
+msgid "Layout"
 msgstr ""
 
 #: inc/customizer.php:1038
-msgid "Оформление на copyright бара"
+msgid "Layout for copyright bar"
 msgstr ""
 
 #: inc/customizer.php:155
-msgid "Плътен цвят"
+msgid "Solid color"
 msgstr ""
 
 #: inc/customizer.php:651
-msgid "По-малко = по-бързо. Препоръчано: 8–30s."
+msgid "Less = faster. Recommended: 8–30s."
 msgstr ""
 
 #: inc/customizer.php:237
-msgid "Повторение (X и Y)"
+msgid "Repeat (X and Y)"
 msgstr ""
 
 #: inc/customizer.php:231
-msgid "Повторение на снимката"
+msgid "Background image repeat"
 msgstr ""
 
 #: inc/customizer.php:767
-msgid "Подменюта (Submenu)"
+msgid "Submenus"
 msgstr ""
 
 #: inc/customizer.php:927
-msgid "Позиция"
+msgid "Position"
 msgstr ""
 
 #: inc/customizer.php:900
-msgid "Позиция: Blog / Archive"
+msgid "Position: Blog / Archive"
 msgstr ""
 
 #: inc/customizer.php:903
-msgid "Позиция: Home Page"
+msgid "Position: Home Page"
 msgstr ""
 
 #: inc/customizer.php:902
-msgid "Позиция: Page"
+msgid "Position: Page"
 msgstr ""
 
 #: inc/customizer.php:905
-msgid "Позиция: Product Page"
+msgid "Position: Product Page"
 msgstr ""
 
 #: inc/customizer.php:904
-msgid "Позиция: Shop (WooCommerce)"
+msgid "Position: Shop (WooCommerce)"
 msgstr ""
 
 #: inc/customizer.php:901
-msgid "Позиция: Single Post"
+msgid "Position: Single Post"
 msgstr ""
 
 #: inc/customizer.php:1360
-msgid "Покажи Breadcrumbs"
+msgid "Show Breadcrumbs"
 msgstr ""
 
 #: inc/customizer.php:1389
-msgid "Покажи Dark Mode бутона"
+msgid "Show Dark Mode button"
 msgstr ""
 
 #: inc/customizer.php:1126
-msgid "Покажи Footer Credits"
+msgid "Show Footer Credits"
 msgstr ""
 
 #: inc/customizer.php:1086
-msgid "Покажи Footer Menu"
+msgid "Show Footer Menu"
 msgstr ""
 
 #: inc/customizer.php:1145
-msgid "Покажи Footer Widget Areas"
+msgid "Show Footer Widget Areas"
 msgstr ""
 
 #: inc/customizer.php:1407
-msgid "Покажи Scroll-to-Top бутона"
+msgid "Show Scroll-to-Top button"
 msgstr ""
 
 #: inc/customizer.php:1001
-msgid "Покажи автор"
+msgid "Show author"
 msgstr ""
 
 #: inc/customizer.php:1002
-msgid "Покажи дата"
+msgid "Show date"
 msgstr ""
 
 #: inc/customizer.php:864
-msgid "Покажи иконата за търсене"
+msgid "Show search icon"
 msgstr ""
 
 #: inc/customizer.php:1000
-msgid "Покажи категория"
+msgid "Show category"
 msgstr ""
 
 #: inc/customizer.php:1003
-msgid "Покажи линк за коментари"
+msgid "Show comment link"
 msgstr ""
 
 #: inc/customizer.php:1331
-msgid "Покажи на Archives"
+msgid "Show on Archives"
 msgstr ""
 
 #: inc/customizer.php:1333
-msgid "Покажи на Blog Home"
+msgid "Show on Blog Home"
 msgstr ""
 
 #: inc/customizer.php:1332
-msgid "Покажи на Categories"
+msgid "Show on Categories"
 msgstr ""
 
 #: inc/customizer.php:1329
-msgid "Покажи на Pages"
+msgid "Show on Pages"
 msgstr ""
 
 #: inc/customizer.php:1330
-msgid "Покажи на Single Posts"
+msgid "Show on Single Posts"
 msgstr ""
 
 #: inc/customizer.php:1325
-msgid "Покажи/скрий H1 заглавието за всеки тип страница."
+msgid "Show/Hide  H1 title for every type of pages."
 msgstr ""
 
 #: inc/customizer.php:865
-msgid "Показва иконата за търсене до навигацията."
+msgid "Displays the search icon next to the navigation."
 msgstr ""
 
 #: inc/customizer.php:695
 #: inc/customizer.php:707
-msgid "Показва се при избор на 2 колони. Поддържа HTML."
+msgid "Displayed when selecting 2 columns. Supports HTML."
 msgstr ""
 
 #: inc/customizer.php:205
-msgid "Посока на градиент"
+msgid "Direction of Gradient"
 msgstr ""
 
 #: inc/customizer.php:277
-msgid "Прилага се към 4-те ъгъла. Замени индивидуално по-долу."
+msgid "Applied to all 4 corners. Replace individually below."
 msgstr ""
 
 #: inc/customizer.php:158
-msgid "Прозрачен"
+msgid "Transparent"
 msgstr ""
 
 #: inc/customizer.php:250
-msgid "Размер на снимката"
+msgid "Size of image"
 msgstr ""
 
 #: inc/customizer.php:650
-msgid "Скорост на marquee (секунди)"
+msgid "Marquee speed (seconds)"
 msgstr ""
 
 #: inc/customizer.php:157
-msgid "Снимка"
+msgid "Image"
 msgstr ""
 
 #: inc/customizer.php:385
-msgid "Стил на рамка"
+msgid "Border style"
 msgstr ""
 
 #: inc/customizer.php:321
-msgid "Сянка — Тип"
+msgid "Type of shadow"
 msgstr ""
 
 #: inc/customizer.php:459
-msgid "ТИПОГРАФИЯ"
+msgid "TYPOGRAPHY"
 msgstr ""
 
 #: inc/customizer.php:663
-msgid "Текст (1 колона)"
+msgid "Text (1 column)"
 msgstr ""
 
 #: inc/customizer.php:1067
-msgid "Текст Колона 2"
+msgid "Text column  2"
 msgstr ""
 
 #: inc/customizer.php:1271
-msgid "Текст на страницата"
+msgid "Page text"
 msgstr ""
 
 #: inc/customizer.php:150
-msgid "Тип фон"
+msgid "Background type"
 msgstr ""
 
 #: inc/customizer.php:674
 #: inc/customizer.php:1367
 #: inc/customizer.php:1414
-msgid "Фон"
+msgid "Background"
 msgstr ""
 
 #: inc/customizer.php:726
-msgid "Фон на менюто"
+msgid "Menu background"
 msgstr ""
 
 #: inc/customizer.php:779
-msgid "Фон на подменю (desktop)"
+msgid "Dropdown menu background  (desktop)"
 msgstr ""
 
 #: inc/customizer.php:847
-msgid "Фон на подменю (mobile)"
+msgid "Dropdown menu background (mobile)"
 msgstr ""
 
 #: inc/customizer.php:727
-msgid "Фон на страничния панел при мобилни."
+msgid "Background of the sidebar panel on mobile."
 msgstr ""
 
 #: inc/customizer.php:812
-msgid "Фон при hover"
+msgid "Background on  hover"
 msgstr ""
 
 #: inc/customizer.php:1416
-msgid "Фон — Hover"
+msgid "Background — Hover"
 msgstr ""
 
 #: inc/customizer.php:219
-msgid "Фонова снимка"
+msgid "Background image"
 msgstr ""
 
 #: inc/customizer.php:238
-msgid "Хоризонтално"
+msgid "Horizontal"
 msgstr ""
 
 #: inc/customizer.php:1263
-msgid "Цветове (Текст & Линкове)"
+msgid "Colors (Text & Links)"
 msgstr ""
 
 #: inc/customizer.php:169
-msgid "Цвят"
+msgid "Color"
 msgstr ""
 
 #: inc/customizer.php:760
-msgid "Цвят на hamburger бутона"
+msgid "Hamburger icon color"
 msgstr ""
 
 #: inc/customizer.php:1227
-msgid "Цвят на вълна 1"
+msgid "Color of wave 1"
 msgstr ""
 
 #: inc/customizer.php:1228
-msgid "Цвят на вълна 2"
+msgid "Color of wave 2"
 msgstr ""
 
 #: inc/customizer.php:1229
-msgid "Цвят на вълна 3"
+msgid "Color of wave 3"
 msgstr ""
 
 #: inc/customizer.php:1415
-msgid "Цвят на иконата"
+msgid "Color of icon"
 msgstr ""
 
 #: inc/customizer.php:467
 #: inc/customizer.php:738
 #: inc/customizer.php:1369
-msgid "Цвят на линкове"
+msgid "Color of links"
 msgstr ""
 
 #: inc/customizer.php:468
 #: inc/customizer.php:749
-msgid "Цвят на линкове (hover)"
+msgid "Color of links (hover)"
 msgstr ""
 
 #: inc/customizer.php:790
-msgid "Цвят на линкове в подменю"
+msgid "Color of links in the submenu."
 msgstr ""
 
 #: inc/customizer.php:801
-msgid "Цвят на линкове — hover"
+msgid "Link color — hover"
 msgstr ""
 
 #: inc/customizer.php:404
-msgid "Цвят на рамка"
+msgid "Border color"
 msgstr ""
 
 #: inc/customizer.php:823
-msgid "Цвят на рамката"
+msgid "Border color"
 msgstr ""
 
 #: inc/customizer.php:333
 #: inc/customizer.php:342
-msgid "Цвят на сянката"
+msgid "Shadow color"
 msgstr ""
 
 #: inc/customizer.php:466
 #: inc/customizer.php:684
 #: inc/customizer.php:1368
-msgid "Цвят на текст"
+msgid "Text color"
 msgstr ""
 
 #: inc/customizer.php:415
-msgid "Ширина (px)"
+msgid "Width (px)"
 msgstr ""
 

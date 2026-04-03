@@ -40,7 +40,7 @@
 		} );
 	} );
 
-	/* Mobile menu colors — правилни селектори за sidebar структурата */
+	/* Mobile menu colors — correct selectors for the sidebar structure. */
 	var mobileState = {
 		mobile_menu_bg_color:         '',
 		mobile_menu_text_color:       '',

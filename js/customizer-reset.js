@@ -1,10 +1,10 @@
 /**
  * Customizer — Per-section Reset buttons
  *
- * Инжектира "↺ Reset" бутон в горната част на всяка Customizer секция.
- * При клик:
- *  - settings с transport: postMessage → set() + force-fire callbacks → live preview веднага
- *  - settings с transport: refresh     → set() + api.previewer.refresh() след края
+ * Injects a “↺ Reset” button at the top of each Customizer section.
+ * On click :
+ *  - settings with transport: postMessage → set() + force-fire callbacks → live preview instantly
+ *  - settings with transport: refresh     → set() + api.previewer.refresh() at the end
  *
  * @package marsislav
  */
@@ -25,7 +25,7 @@
         Object.keys( source ).forEach( function( k ) { target[ k ] = source[ k ]; } );
     }
 
-    /* -- Helpers за групи от свързани settings -- */
+    /* -- Helpers for groups with related settings -- */
 
     function bgDefaults( area ) {
         return {
@@ -82,7 +82,7 @@
         return d;
     }
 
-    /* -- Секции -- */
+    /* -- Sections -- */
 
     assign( sec('marsislav_sec_general'), { header_sticky: true } );
 
@@ -221,7 +221,7 @@
         show_title_home:     true,
     } );
 
-    // Sidebar position секции
+    // Sidebar position 
     var sidebarContexts = [ 'blog','post','page','home','shop','product' ];
     var sidebarPosDefs  = { blog:'right', post:'right', page:'disabled', home:'disabled', shop:'right', product:'disabled' };
     var sidebarIdDefs   = { blog:'sidebar-blog', post:'sidebar-post', page:'sidebar-page', home:'sidebar-blog', shop:'sidebar-shop', product:'sidebar-product' };
@@ -234,22 +234,22 @@
     } );
 
     /* ============================================================
-     * 2. RESET LOGIC — с поддръжка за postMessage И refresh
+     *RESET LOGIC — with support for postMessage and refresh
      * ============================================================ */
 
-    /**
-     * Прилага reset на дадена секция.
-     *
-     * За postMessage settings: api(key).set() автоматично изпраща
-     * стойността към preview iframe.
-     *
-     * За refresh settings: api(key).set() само маркира setting-а
-     * като "dirty" — preview-то НЕ се обновява докато не извикаме
-     * api.previewer.refresh().
-     *
-     * Решение: след като set()-нем всички, проверяваме дали има
-     * поне един refresh setting и ако да — refresh-ваме preview-то.
-     */
+  /**
+ * Applies reset to a given section.
+ *
+ * For postMessage settings: api(key).set() automatically sends
+ * the value to the preview iframe.
+ *
+ * For refresh settings: api(key).set() only marks the setting
+ * as "dirty" — the preview is NOT updated until we call
+ * api.previewer.refresh().
+ *
+ * Solution: after setting all values, we check if there is
+ * at least one refresh setting and if so — we refresh the preview.
+ */
     function applyReset( sectionId ) {
         var defaults = S[ sectionId ];
         if ( ! defaults ) return;
@@ -263,23 +263,23 @@
             var currentVal = setting.get();
             var newVal     = defaults[ key ];
 
-            // Пропускаме ако стойността вече е default
+            // Skipped if the value is already the default.
             if ( currentVal === newVal ) return;
 
-            // Записваме новата стойност
+            // Set new value
             setting.set( newVal );
 
-            // Проверяваме transport-а
+            // Check transport
             var transport = setting.transport || 'refresh';
             if ( transport === 'refresh' ) {
                 needsRefresh = true;
             }
-            // За postMessage — set() вече е изпратил съобщение до preview
+            // For postMessage — set() has already sent a message to the preview.
         } );
 
-        // Ако има refresh settings — refresh-ваме preview iframe
+        // If there are refresh settings — we refresh the preview iframe.
         if ( needsRefresh && api.previewer ) {
-            // Малко забавяне за да може всички set() да завършат
+            // A short delay to allow all set() calls to complete.
             setTimeout( function() {
                 api.previewer.refresh();
             }, 100 );
@@ -289,12 +289,12 @@
     }
 
     /* ============================================================
-     * 3. ИНЖЕКТИРАНЕ НА БУТОНИТЕ
+     * 3. BUTTON INJECTION
      * ============================================================ */
 
     var btnLabel   = '↺ Reset section';
-    var doneLabel  = '✓ Reset! Натисни Save & Publish.';
-    var doneRefLabel = '✓ Reset! Preview се обновява…';
+    var doneLabel  = '✓ Reset! Click Save & Publish.';
+    var doneRefLabel = '✓ Reset! Preview is loading...';
 
     function buildButton( sectionId ) {
         var $wrap = $(

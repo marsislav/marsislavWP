@@ -533,7 +533,7 @@ table {
   tr { border: 1px solid #ccc; margin-bottom: 1rem; }
 
   td {
-    display: flex;          /* вместо position: relative + padding-left */
+    display: flex;          /* instead position: relative + padding-left */
     gap: 1rem;
     border-bottom: 1px solid #eee;
     padding: 8px 12px;
@@ -542,8 +542,8 @@ table {
   td::before {
     content: attr(data-label);
     font-weight: bold;
-    min-width: 80px;        /* фиксирана ширина за лейбъла */
-    flex-shrink: 0;         /* не се свива */
+    min-width: 80px;        /* Fixed width for label */
+    flex-shrink: 0;        
   }
   
   td, th {
@@ -3353,7 +3353,7 @@ nav.single-post-nav {
    
 }
 
-/* Вълните седят в горната част на footer-а като първи елемент */
+/* Waves are ot the top of footer */
 .footer-waves {
     position: relative;
     width: 100%;
@@ -3436,92 +3436,4 @@ nav.single-post-nav {
 .footer-navigation .footer-menu li a:hover {
     opacity: 1;
     text-decoration: underline;
-}
-
-/*resgistracia-firma*/
-.vc_tta-color-peacoc .vc_tta-title-text {
-	color:#fff!important;
-}
-.vc_tta-color-peacoc .vc_active .vc_tta-title-text {
-	color:#000!important;
-}
-
-a.vc_general.vc_btn3.vc_btn3-size-md.vc_btn3-shape-rounded.vc_btn3-style-modern.vc_btn3-block.vc_btn3-icon-right.vc_btn3-color-peacoc,
-a.vc_general.vc_btn3.vc_btn3-size-md.vc_btn3-shape-rounded.vc_btn3-style-modern.vc_btn3-block.vc_btn3-icon-left.vc_btn3-color-peacoc {
-    color: #fff !important;
-}
-
-.vc-hoverbox-block.vc-hoverbox-front {
-    background-size: 70%;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-
-.vc_separator h4 {
-    text-align: center!important;
-}
-
-.sideLink .wpb_wrapper p a {
-    
-    display: block;
-    padding: 10px;
-    border-radius: 7px;
-    text-align: center;
-    color: red !important;
-	background-color: #3799b5;
-    border-color: #3799b5;
-	color:#fff!important;
-	transition:0.3s;
-	
-}
-
-.sideLink .wpb_wrapper p a:hover  {
-	color:#cecece!important;
-	background:#338ca6!important;
-}
-
-.vc-hoverbox-block-inner.vc-hoverbox-back-inner, .vc-hoverbox-block-inner.vc-hoverbox-back-inner h2{
-    color: white !important;
- 
- 
-}
-.vc-hoverbox-front-inner h2 {
-	position: relative;
-	overflow: hidden;
-	font-size:20px!important;
-	padding:5px;
-	backdrop-filter: blur(252px) saturate(380%);
-	-webkit-backdrop-filter: blur(252px) saturate(380%);
-	background: rgba(255, 255, 255, 0.88);
-	border: 1px solid rgba(255, 255, 255, 0.98);
-	border-radius: 10px;
-}
-
-/* Отблясък */
-.vc-hoverbox-front-inner h2::after {
-	content: "";
-	position: absolute;
-	top: 0;
-	left: -75%;
-	width: 50%;
-	height: 100%;
-	background: linear-gradient(
-		120deg,
-		transparent,
-		rgba(255,255,255,0.8),
-		transparent
-	);
-	transform: skewX(-20deg);
-	animation: shine 3s infinite;
-}
-
-/* Анимация */
-@keyframes shine {
-	0% {
-		left: -75%;
-	}
-	100% {
-		left: 125%;
-	}
 }
